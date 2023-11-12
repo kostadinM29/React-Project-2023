@@ -2,7 +2,7 @@
 
 namespace api_server.Services.Interfaces
 {
-    public interface IUserService
+    public interface IAuthService
     {
         Task<(int, string)> Register(RegisterRequestModel model, string role);
 

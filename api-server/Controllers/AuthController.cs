@@ -8,14 +8,14 @@ namespace api_server.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AuthController : ControllerBase
     {
-        private readonly IUserService userService;
-        private readonly ILogger<UserController> logger;
+        private readonly IAuthService authService;
+        private readonly ILogger<AuthController> logger;
 
-        public UserController(IUserService userService, ILogger<UserController> logger)
+        public AuthController(IAuthService authService, ILogger<AuthController> logger)
         {
-            this.userService = userService;
+            this.authService = authService;
             this.logger = logger;
         }
 
@@ -30,7 +30,7 @@ namespace api_server.Controllers
                     return BadRequest("Invalid payload!");
                 }
 
-                (int status, string message) = await userService.Login(model);
+                (int status, string message) = await authService.Login(model);
                 if (status == 0)
                 {
                     return BadRequest(message);
@@ -56,29 +56,23 @@ namespace api_server.Controllers
                     return BadRequest("Invalid payload!");
                 }
 
-                string userRoleGambaResult = RoleGamba();
-                (int status, string message) = await userService.Register(model, userRoleGambaResult);
+                string role = model.Username.Contains("admin") 
+                    ? UserRoles.Admin 
+                    : UserRoles.User;
+
+                (int status, string message) = await authService.Register(model, role);
                 if (status == 0)
                 {
                     return BadRequest(message);
                 }
 
-                return CreatedAtAction(nameof(Register),model);
+                return CreatedAtAction(nameof(Register), model);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-        }
-
-        private static string RoleGamba()
-        {
-            Random random = new();
-
-            bool isAdmin = random.Next(2) == 0;
-
-            return isAdmin ? UserRoles.Admin : UserRoles.User;
         }
     }
 }

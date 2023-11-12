@@ -11,12 +11,12 @@ using System.Text;
 
 namespace api_server.Services
 {
-    public class UserService : IUserService
+    public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration _configuration;
-        public UserService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
