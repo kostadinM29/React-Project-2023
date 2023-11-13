@@ -8,14 +8,12 @@ const ThemeSwitcher = () =>
 
     useEffect(() =>
     {
-        console.log('in first effect');
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
         setDarkMode(isDarkMode);
     }, []);
 
     useEffect(() =>
     {
-        console.log('in second effect');
         document.documentElement.classList.toggle('dark', darkMode);
         localStorage.setItem('darkMode', darkMode);
     }, [darkMode]);

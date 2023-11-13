@@ -13,6 +13,7 @@ using api_server.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -66,6 +67,17 @@ namespace api_server
                 });
             });
 
+            builder.Services.AddCors(options =>
+            {
+                string[]? corsOrigins = builder.Configuration.GetSection("CorsOrigins").Get<string[]>();
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins(corsOrigins)
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection"));
@@ -116,6 +128,8 @@ namespace api_server
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors();
 
             app.UseHttpsRedirection();
 

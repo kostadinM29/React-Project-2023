@@ -36,7 +36,7 @@ namespace api_server.Controllers
                     return BadRequest(message);
                 }
 
-                return Ok(message);
+                return Ok(new { Token = message });
             }
             catch (Exception ex)
             {
