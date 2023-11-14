@@ -1,4 +1,5 @@
-﻿using api_server.RequestModels;
+﻿using api_server.Models;
+using api_server.RequestModels;
 
 namespace api_server.Services.Interfaces
 {
@@ -6,6 +7,6 @@ namespace api_server.Services.Interfaces
     {
         Task<(int, string)> Register(RegisterRequestModel model, string role);
 
-        Task<(int, string)> Login(LoginRequestModel model);
+        Task<(int, UserTokens?, string)> Login(LoginRequestModel model);
     }
 }

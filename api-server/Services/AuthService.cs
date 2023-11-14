@@ -1,13 +1,12 @@
-﻿using api_server.Data.Models;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
+using api_server.Data.Models;
+using api_server.Models;
 using api_server.RequestModels;
 using api_server.Services.Interfaces;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace api_server.Services
 {
@@ -15,13 +14,15 @@ namespace api_server.Services
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IConfiguration _configuration;
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        private readonly IConfiguration configuration;
+        private readonly IJWTService jwtService;
+
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IJWTService jwtService)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
-            _configuration = configuration;
-
+            this.configuration = configuration;
+            this.jwtService = jwtService;
         }
         public async Task<(int, string)> Register(RegisterRequestModel model, string role)
         {
@@ -59,17 +60,17 @@ namespace api_server.Services
             return (1, "User created successfully!");
         }
 
-        public async Task<(int, string)> Login(LoginRequestModel model)
+        public async Task<(int, UserTokens?, string)> Login(LoginRequestModel model)
         {
-            var user = await userManager.FindByNameAsync(model.Username);
+            ApplicationUser? user = await userManager.FindByNameAsync(model.Username);
             if (user is null)
             {
-                return (0, "Invalid username");
+                return (0, null,"Invalid username");
             }
 
             if (!await userManager.CheckPasswordAsync(user, model.Password))
             {
-                return (0, "Invalid password");
+                return (0, null,"Invalid password");
             }
 
             IList<string> userRoles = await userManager.GetRolesAsync(user);
@@ -83,27 +84,11 @@ namespace api_server.Services
             {
                 authClaims.Add(new Claim(ClaimTypes.Role, userRole));
             }
-            string token = GenerateToken(authClaims);
-            return (1, token);
-        }
 
+            ClaimsIdentity claimsIdentity = new(authClaims);
+            UserTokens? token = jwtService.GenerateToken(claimsIdentity);
 
-        private string GenerateToken(IEnumerable<Claim> claims)
-        {
-            SymmetricSecurityKey authSigningKey = new(Encoding.UTF8.GetBytes(_configuration["JWTKey:Secret"]));
-            long _TokenExpiryTimeInHour = Convert.ToInt64(_configuration["JWTKey:TokenExpiryTimeInHour"]);
-            SecurityTokenDescriptor tokenDescriptor = new()
-            {
-                Issuer = _configuration["JWTKey:ValidIssuer"],
-                Audience = _configuration["JWTKey:ValidAudience"],
-                Expires = DateTime.UtcNow.AddHours(_TokenExpiryTimeInHour),
-                SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256),
-                Subject = new ClaimsIdentity(claims)
-            };
-
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return (1, token, "Login successful.");
         }
     }
 }

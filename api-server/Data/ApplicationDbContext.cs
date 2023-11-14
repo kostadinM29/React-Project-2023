@@ -11,6 +11,7 @@ namespace api_server.Data
         {
         }
 
-        public DbSet<ApplicationUser> Users { get; set; }
+        public virtual DbSet<ApplicationUser> Users { get; set; }
+        public virtual DbSet<UserRefreshTokens> UserRefreshToken { get; set; }
     }
 }

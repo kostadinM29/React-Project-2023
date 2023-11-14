@@ -119,6 +119,8 @@ namespace api_server
             builder.Services.AddScoped<ApplicationDbContext>();
 
             builder.Services.AddTransient<IAuthService, AuthService>();
+            builder.Services.AddTransient<IJWTService, JWTService>();
+            builder.Services.AddTransient<IUserService, UserService>();
 
             WebApplication app = builder.Build();
 

@@ -1,4 +1,5 @@
 ﻿using api_server.Identity;
+using api_server.Models;
 using api_server.RequestModels;
 using api_server.Services.Interfaces;
 
@@ -30,13 +31,13 @@ namespace api_server.Controllers
                     return BadRequest("Invalid payload!");
                 }
 
-                (int status, string message) = await authService.Login(model);
+                (int status, UserTokens? userTokens,string message) = await authService.Login(model);
                 if (status == 0)
                 {
                     return BadRequest(message);
                 }
 
-                return Ok(new { Token = message });
+                return Ok(new { accessToken = userTokens?.AccessToken , refreshToken = userTokens?.RefreshToken });
             }
             catch (Exception ex)
             {
