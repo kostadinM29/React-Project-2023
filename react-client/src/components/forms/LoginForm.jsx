@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import InputField from '../partials/InputField';
 import { Login } from '../../api/auth/auth';
-import { useUser } from '../UserContext';
+import useAuth from '../../hooks/useAuth';
 
 function LoginForm()
 {
-    const { user, updateUser } = useUser();
+    const { updateAuth } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
@@ -38,17 +38,15 @@ function LoginForm()
             {
                 const response = await Login({ username, password });
 
-                const { token } = response;
+                updateAuth(response);
 
-                localStorage.setItem('jwtToken', token);
-
-                // redirect to some page
-                console.log('Login successful. JWT token:', token);
-
-                updateUser(token);
+                // Redirect to some page
+                console.log('Login successful. JWT token:', response.accessToken);
             } catch (error)
             {
                 console.error('API request error:', error);
+
+                setErrors({ apiError: 'Invalid credentials. Please try again.' });
             }
         }
     };
@@ -56,13 +54,13 @@ function LoginForm()
     const onUsernameChange = (event) =>
     {
         setUsername(event.target.value);
-        setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
+        setErrors((prevErrors) => ({ ...prevErrors, username: '', apiError: '' }));
     };
 
     const onPasswordChange = (event) =>
     {
         setPassword(event.target.value);
-        setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
+        setErrors((prevErrors) => ({ ...prevErrors, password: '', apiError: '' }));
     };
 
     return (
@@ -91,6 +89,9 @@ function LoginForm()
                     onChange={onPasswordChange}
                     error={errors.password}
                 />
+                {errors.apiError && (
+                    <p className="text-red-500 mb-4">{errors.apiError}</p>
+                )}
                 <button
                     type="submit"
                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -98,7 +99,7 @@ function LoginForm()
                     Submit
                 </button>
             </form>
-        </div >
+        </div>
     );
 }
 

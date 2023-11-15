@@ -1,8 +1,8 @@
-import { useUser } from "../UserContext";
+import useAuth from "../../hooks/useAuth";
 
 const Navigation = () =>
 {
-    const { user, updateUser } = useUser();
+    const { auth } = useAuth();
     return (
         <nav className='bg-white border-gray-200 dark:bg-gray-900'>
             <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
@@ -44,9 +44,9 @@ const Navigation = () =>
                         </svg> */}
                     </button>
                 </div>
-                {user &&
+                {auth &&
                     <h1>
-                        hello {user.unique_name}
+                        hello {auth.user.unique_name}
                     </h1>}
 
                 <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-user'>

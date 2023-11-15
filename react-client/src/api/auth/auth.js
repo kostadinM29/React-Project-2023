@@ -14,14 +14,12 @@ export const Login = async (credentials) =>
 
         if (!response.ok)
         {
-            // Handle non-2xx response (e.g., display an error message)
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         return await response.json();
     } catch (error)
     {
-        // Handle fetch error (e.g., network error)
         throw new Error(`Fetch error: ${error.message}`);
     }
 };
