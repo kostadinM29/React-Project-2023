@@ -60,9 +60,10 @@ const Navigation = () =>
                         </svg> */}
                     </button>
                 </div>
-                {auth.length !== 0 &&
+                {/* what have i done :( this is just for testing only tho */}
+                {auth && auth.user && Object.keys(auth.user).length > 0 &&
                     <h1>
-                        hello {auth.user.unique_name}
+                        hello {auth.user?.unique_name}
                     </h1>}
 
                 <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-user'>

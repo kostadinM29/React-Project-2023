@@ -9,10 +9,20 @@ const useRefreshToken = () =>
 
     const refresh = async () =>
     {
-        const response = await axios.get(ENDPOINTS.REFRESH_TOKEN, {
-            withCredentials: true,
-        });
-        updateAuth(response.data);
+        try
+        {
+            const response = await axios.get(ENDPOINTS.REFRESH_TOKEN, {
+                withCredentials: true,
+            });
+            console.log(response);
+
+            updateAuth(response.data);
+        }
+        catch (error)
+        {
+            console.log('Error occured while sending a refresh token request!')
+            updateAuth({});
+        }
     }
     return refresh;
 };

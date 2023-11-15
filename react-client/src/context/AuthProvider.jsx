@@ -10,16 +10,23 @@ export const AuthProvider = ({ children }) =>
 
     useEffect(() =>
     {
-        const storedAccessToken = Cookies.get('accessToken');
-        const storedRefreshToken = Cookies.get('refreshToken');
-
-        if (storedAccessToken)
+        try
         {
-            setAuth({
-                user: jwtDecode(storedAccessToken),
-                accessToken: storedAccessToken,
-                refreshToken: storedRefreshToken,
-            });
+            const storedAccessToken = Cookies.get('accessToken');
+            const storedRefreshToken = Cookies.get('refreshToken');
+
+            if (storedAccessToken)
+            {
+                setAuth({
+                    user: jwtDecode(storedAccessToken),
+                    accessToken: storedAccessToken,
+                    refreshToken: storedRefreshToken,
+                });
+            }
+        }
+        catch (error)
+        {
+            setAuth({});
         }
     }, []);
 
