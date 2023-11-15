@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 
+using api_server.Data.Models;
 using api_server.Models;
 
 namespace api_server.Services.Interfaces
@@ -8,6 +9,6 @@ namespace api_server.Services.Interfaces
     {
         UserTokens? GenerateToken(ClaimsIdentity claimsIdentity);
         UserTokens? GenerateRefreshToken(ClaimsIdentity claimsIdentity);
-        ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
+        Task<ApplicationUser?> GetUserFromExpiredToken(string token);
     }
 }

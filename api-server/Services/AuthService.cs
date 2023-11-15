@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 using api_server.Data.Models;
 using api_server.Models;
@@ -14,15 +13,15 @@ namespace api_server.Services
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IConfiguration configuration;
         private readonly IJWTService jwtService;
+        private readonly IUserService userService;
 
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IJWTService jwtService)
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IJWTService jwtService, IUserService userService)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
-            this.configuration = configuration;
             this.jwtService = jwtService;
+            this.userService = userService;
         }
         public async Task<(int, string)> Register(RegisterRequestModel model, string role)
         {
@@ -73,19 +72,7 @@ namespace api_server.Services
                 return (0, null,"Invalid password");
             }
 
-            IList<string> userRoles = await userManager.GetRolesAsync(user);
-            List<Claim> authClaims = new()
-            {
-               new Claim(ClaimTypes.Name, user.UserName),
-               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
-
-            foreach (var userRole in userRoles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-            }
-
-            ClaimsIdentity claimsIdentity = new(authClaims);
+            ClaimsIdentity? claimsIdentity = await userService.GetClaimsPrincipalFromUser(user);
             UserTokens? token = jwtService.GenerateToken(claimsIdentity);
 
             return (1, token, "Login successful.");

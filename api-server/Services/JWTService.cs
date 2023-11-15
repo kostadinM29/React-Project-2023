@@ -3,9 +3,11 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
+using api_server.Data.Models;
 using api_server.Models;
 using api_server.Services.Interfaces;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace api_server.Services
@@ -13,10 +15,12 @@ namespace api_server.Services
     public class JWTService : IJWTService
     {
         private readonly IConfiguration configuration;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public JWTService(IConfiguration configuration)
+        public JWTService(IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
             this.configuration = configuration;
+            this.userManager = userManager;
         }
         public UserTokens? GenerateToken(ClaimsIdentity claimsIdentity)
         {
@@ -66,7 +70,7 @@ namespace api_server.Services
             return Convert.ToBase64String(randomNumber);
         }
 
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public async Task<ApplicationUser?> GetUserFromExpiredToken(string token)
         {
             byte[]? Key = Encoding.UTF8.GetBytes(configuration["JWTKey:Secret"]);
 
@@ -77,7 +81,9 @@ namespace api_server.Services
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Key),
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+                ValidIssuer = configuration["JWTKey:ValidIssuer"],
+                ValidAudience = configuration["JWTKey:ValidAudience"]
             };
 
             JwtSecurityTokenHandler? tokenHandler = new();
@@ -88,7 +94,11 @@ namespace api_server.Services
                 throw new SecurityTokenException("Invalid token");
             }
 
-            return principal;
+            string? username = principal.Identity?.Name;
+
+            ApplicationUser? user = await userManager.FindByNameAsync(username);
+
+            return user;
         }
     }
 }
