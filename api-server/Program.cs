@@ -1,24 +1,15 @@
-
-using System.Diagnostics.Metrics;
-using System.Net;
-using System.Reflection.Metadata;
 using System.Text;
 
 using api_server.Data;
 using api_server.Data.Models;
-using api_server.Identity;
 using api_server.Services;
 using api_server.Services.Interfaces;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-
-using static System.Net.Mime.MediaTypeNames;
 
 namespace api_server
 {
@@ -33,39 +24,7 @@ namespace api_server
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(swagger =>
-            {
-                //This is to generate the Default UI of Swagger Documentation
-                swagger.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "ASP.NET 7 Web API",
-                    Description = "Authentication and Authorization in ASP.NET 7 with JWT and Swagger"
-                });
-                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "Enter ‘Bearer’ [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
-                });
-                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                                }
-                        },
-                    Array.Empty<string>()
-                    }
-                });
-            });
+            builder.Services.AddSwaggerGen();
 
             builder.Services.AddCors(options =>
             {
@@ -74,7 +33,8 @@ namespace api_server
                 {
                     builder.WithOrigins(corsOrigins)
                            .AllowAnyHeader()
-                           .AllowAnyMethod();
+                           .AllowAnyMethod()
+                           .AllowCredentials();
                 });
             });
 
@@ -109,10 +69,19 @@ namespace api_server
                   {
                       ValidateIssuer = true,
                       ValidateAudience = true,
+                      ValidateLifetime = true,
                       ValidAudience = builder.Configuration["JWTKey:ValidAudience"],
                       ValidIssuer = builder.Configuration["JWTKey:ValidIssuer"],
                       ClockSkew = TimeSpan.Zero,
                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTKey:Secret"]))
+                  };
+                  options.Events = new JwtBearerEvents
+                  {
+                      OnMessageReceived = context =>
+                      {
+                          context.Token = context.Request.Cookies["accessToken"];
+                          return Task.CompletedTask;
+                      }
                   };
               });
 

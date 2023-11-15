@@ -1,4 +1,5 @@
 ﻿using api_server.Identity;
+using api_server.Models;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace api_server.Controllers.Admin
         [Authorize(Roles = UserRoles.Admin)]
         public ActionResult Test()
         {
-            return Ok();
+            return Ok("You are in!");
         }
     }
 }

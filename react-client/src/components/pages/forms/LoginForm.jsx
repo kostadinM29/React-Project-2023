@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
-import InputField from '../partials/InputField';
-import { Login } from '../../api/auth/auth';
-import useAuth from '../../hooks/useAuth';
+import InputField from '../../partials/InputField';
+import { Login } from '../../../api/auth/auth';
+import useAuth from '../../../hooks/useAuth';
 
 function LoginForm()
 {

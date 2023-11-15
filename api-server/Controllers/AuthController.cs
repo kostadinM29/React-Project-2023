@@ -93,23 +93,30 @@ namespace api_server.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpGet]
         [Route("refresh-token")]
-        public async Task<IActionResult> Refresh(UserTokens token)
+        public async Task<IActionResult> Refresh()
         {
             try
             {
-                ApplicationUser? user = await jwtService.GetUserFromExpiredToken(token.AccessToken);
+                string? accessToken = Request.Cookies["accessToken"];
+                string? refreshToken = Request.Cookies["refreshToken"];
+
+                if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+                {
+                    return Unauthorized("Invalid attempt!");
+                }
+
+                ApplicationUser? user = await jwtService.GetUserFromExpiredToken(accessToken);
 
                 if (user is null)
                 {
                     return Unauthorized("Invalid attempt!");
                 }
 
-                UserRefreshTokens? savedRefreshToken = userService.GetSavedRefreshTokens(user.UserName, token.RefreshToken);
+                UserRefreshTokens? savedRefreshToken = userService.GetSavedRefreshTokens(user.UserName, refreshToken);
 
-                if (savedRefreshToken is null
-                    || savedRefreshToken.RefreshToken != token.RefreshToken)
+                if (savedRefreshToken is null || savedRefreshToken.RefreshToken != refreshToken)
                 {
                     return Unauthorized("Invalid attempt!");
                 }
@@ -122,16 +129,16 @@ namespace api_server.Controllers
                     return Unauthorized("Invalid attempt!");
                 }
 
-                UserRefreshTokens obj = new()
+                UserRefreshTokens tokensToSave = new()
                 {
                     RefreshToken = newJwtToken.RefreshToken,
                     UserName = user.UserName,
                 };
 
-                userService.DeleteUserRefreshTokens(user.UserName, token.RefreshToken);
-                userService.AddUserRefreshTokens(obj);
+                userService.DeleteUserRefreshTokens(user.UserName, refreshToken);
+                userService.AddUserRefreshTokens(tokensToSave);
 
-                return Ok(newJwtToken);
+                return Ok(new { accessToken = newJwtToken?.AccessToken, refreshToken = newJwtToken?.RefreshToken });
             }
             catch (Exception ex)
             {
@@ -139,5 +146,6 @@ namespace api_server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
     }
 }

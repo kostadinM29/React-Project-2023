@@ -6,7 +6,7 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) =>
 {
-    const [auth, setAuth] = useState(null);
+    const [auth, setAuth] = useState({});
 
     useEffect(() =>
     {
@@ -25,13 +25,28 @@ export const AuthProvider = ({ children }) =>
 
     const updateAuth = (tokens) =>
     {
-        setAuth({
-            user: jwtDecode(tokens.accessToken),
-            ...tokens,
-        });
+        try
+        {
 
-        Cookies.set('accessToken', tokens.accessToken, { secure: true, sameSite: 'strict' });
-        Cookies.set('refreshToken', tokens.refreshToken, { secure: true, sameSite: 'strict' });
+            setAuth({
+                user: jwtDecode(tokens.accessToken),
+                ...tokens,
+            });
+        }
+        catch (error)
+        {
+            // If decoding the JWT fails, it indicates that either the accessToken was undefined or tampered with.
+            setAuth({});
+        }
+        finally
+        {
+            tokens && tokens.accessToken
+                ? Cookies.set('accessToken', tokens.accessToken, { secure: true, sameSite: 'strict' })
+                : Cookies.remove('accessToken');
+            tokens && tokens.refreshToken
+                ? Cookies.set('refreshToken', tokens.refreshToken, { secure: true, sameSite: 'strict' })
+                : Cookies.remove('refreshToken');
+        }
     };
 
     return (
