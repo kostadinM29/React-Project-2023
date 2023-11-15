@@ -64,12 +64,12 @@ namespace api_server.Services
             ApplicationUser? user = await userManager.FindByNameAsync(model.Username);
             if (user is null)
             {
-                return (0, null,"Invalid username");
+                return (0, null, "Invalid username");
             }
 
             if (!await userManager.CheckPasswordAsync(user, model.Password))
             {
-                return (0, null,"Invalid password");
+                return (0, null, "Invalid password");
             }
 
             ClaimsIdentity? claimsIdentity = await userService.GetClaimsPrincipalFromUser(user);

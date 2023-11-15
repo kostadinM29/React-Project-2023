@@ -24,12 +24,12 @@ namespace api_server.Services
         }
         public UserTokens? GenerateToken(ClaimsIdentity claimsIdentity)
         {
-            return  GenerateJWTTokens(claimsIdentity);
+            return GenerateJWTTokens(claimsIdentity);
         }
 
         public UserTokens? GenerateRefreshToken(ClaimsIdentity claimsIdentity)
         {
-            return  GenerateJWTTokens(claimsIdentity);
+            return GenerateJWTTokens(claimsIdentity);
         }
 
         public UserTokens? GenerateJWTTokens(ClaimsIdentity claimsIdentity)
