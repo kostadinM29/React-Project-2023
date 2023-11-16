@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import InputField from '../../partials/InputField';
 import { Login } from '../../../api/auth/auth';
 import useAuth from '../../../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 function LoginForm()
 {
@@ -64,42 +65,59 @@ function LoginForm()
     };
 
     return (
-        <div className='bg-slate-300 ml-20 mr-20'>
-            <form onSubmit={handleSubmit}>
-                <div className='text-2xl font-bold mb-6'>Login</div>
-                <InputField
-                    id='username'
-                    label='Username'
-                    name='username'
-                    placeholder='Username'
-                    type='text'
-                    required={true}
-                    wrapperClassName={'relative z-0 w-full mb-6 group'}
-                    onChange={onUsernameChange}
-                    error={errors.username}
-                />
-                <InputField
-                    id='password'
-                    label='Password'
-                    name='password'
-                    placeholder='Password'
-                    type='password'
-                    required={true}
-                    wrapperClassName={'relative z-0 w-full mb-6 group'}
-                    onChange={onPasswordChange}
-                    error={errors.password}
-                />
-                {errors.apiError && (
-                    <p className="text-red-500 mb-4">{errors.apiError}</p>
-                )}
-                <button
-                    type="submit"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                    Submit
-                </button>
-            </form>
-        </div>
+        <section className='w-full max-w-xl mx-auto p-6'>
+            <div className='mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700'>
+                <div className='p-4 sm:p-7'>
+                    <div className="text-center">
+                        <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Log in</h1>
+                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                            Don't have an account yet?
+                            <Link className="ml-1 text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                to='/register'>
+                                Register here
+                            </Link>
+                        </p>
+                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className='w-full mx-auto p-6'>
+                            <div className='grid gap-y-4'>
+                                <InputField
+                                    id='username'
+                                    label='Username'
+                                    name='username'
+                                    placeholder='Username'
+                                    type='text'
+                                    required={true}
+                                    wrapperClassName={''}
+                                    onChange={onUsernameChange}
+                                    error={errors.username}
+                                />
+                                <InputField
+                                    id='password'
+                                    label='Password'
+                                    name='password'
+                                    placeholder='Password'
+                                    type='password'
+                                    required={true}
+                                    wrapperClassName={''}
+                                    onChange={onPasswordChange}
+                                    error={errors.password}
+                                />
+                                {errors.apiError && (
+                                    <p className="text-red-500 mb-4">{errors.apiError}</p>
+                                )}
+                                <button
+                                    type="submit"
+                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
     );
 }
 
