@@ -1,13 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import InputField from '../../partials/InputField';
-import { Login } from '../../../api/auth/auth';
-import useAuth from '../../../hooks/useAuth';
+import { Register } from '../../../api/auth/auth'; // Assuming you have an API function for registration
 import { Link } from 'react-router-dom';
 
-function LoginForm()
+function RegistrationForm()
 {
-    const { updateAuth } = useAuth();
     const [username, setUsername] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
 
@@ -18,6 +19,11 @@ function LoginForm()
         if (!username.trim())
         {
             errors.username = 'Username is required!';
+        }
+
+        if (!email.trim())
+        {
+            errors.email = 'Email is required!';
         }
 
         if (!password.trim())
@@ -37,17 +43,27 @@ function LoginForm()
         {
             try
             {
-                const response = await Login({ username, password });
+                const response = await Register({
+                    username,
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                });
 
-                updateAuth(response.data);
+                // Handle the response as needed
 
-                // Redirect to some page
-                console.log('Login successful. JWT token:', response.data.accessToken);
+                console.log('Registration successful. User data:', response);
+
+                // You may want to redirect the user to the login page or perform other actions
+
             } catch (error)
             {
                 console.error('API request error:', error);
 
-                setErrors({ apiError: 'Invalid credentials. Please try again.' });
+                // Handle API errors and update the state accordingly
+
+                setErrors({ apiError: 'Registration failed. Please try again.' });
             }
         }
     };
@@ -56,6 +72,22 @@ function LoginForm()
     {
         setUsername(event.target.value);
         setErrors((prevErrors) => ({ ...prevErrors, username: '', apiError: '' }));
+    };
+
+    const onFirstNameChange = (event) =>
+    {
+        setFirstName(event.target.value);
+    };
+
+    const onLastNameChange = (event) =>
+    {
+        setLastName(event.target.value);
+    };
+
+    const onEmailChange = (event) =>
+    {
+        setEmail(event.target.value);
+        setErrors((prevErrors) => ({ ...prevErrors, email: '', apiError: '' }));
     };
 
     const onPasswordChange = (event) =>
@@ -69,13 +101,13 @@ function LoginForm()
             <div className='mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700'>
                 <div className='p-4 sm:p-7'>
                     <div className="text-center">
-                        <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Log in</h1>
+                        <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Register</h1>
                         <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                            Don't have an account yet?
+                            Already have an account?
                             <Link
                                 className="ml-1 text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                                to='/register'>
-                                Register here
+                                to='/login'>
+                                Log in here
                             </Link>
                         </p>
                     </div>
@@ -92,6 +124,37 @@ function LoginForm()
                                     wrapperClassName={''}
                                     onChange={onUsernameChange}
                                     error={errors.username}
+                                />
+                                <InputField
+                                    id='firstName'
+                                    label='First Name'
+                                    name='firstName'
+                                    placeholder='First Name'
+                                    type='text'
+                                    required={false}
+                                    wrapperClassName={''}
+                                    onChange={onFirstNameChange}
+                                />
+                                <InputField
+                                    id='lastName'
+                                    label='Last Name'
+                                    name='lastName'
+                                    placeholder='Last Name'
+                                    type='text'
+                                    required={false}
+                                    wrapperClassName={''}
+                                    onChange={onLastNameChange}
+                                />
+                                <InputField
+                                    id='email'
+                                    label='Email'
+                                    name='email'
+                                    placeholder='Email'
+                                    type='email'
+                                    required={true}
+                                    wrapperClassName={''}
+                                    onChange={onEmailChange}
+                                    error={errors.email}
                                 />
                                 <InputField
                                     id='password'
@@ -111,7 +174,7 @@ function LoginForm()
                                     type="submit"
                                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
                                 >
-                                    Submit
+                                    Register
                                 </button>
                             </div>
                         </div>
@@ -122,4 +185,4 @@ function LoginForm()
     );
 }
 
-export default LoginForm;
+export default RegistrationForm;

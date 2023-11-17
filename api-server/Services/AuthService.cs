@@ -23,12 +23,12 @@ namespace api_server.Services
             this.jwtService = jwtService;
             this.userService = userService;
         }
-        public async Task<(int, string)> Register(RegisterRequestModel model, string role)
+        public async Task<(int, UserTokens?, string)> Register(RegisterRequestModel model, string role)
         {
             ApplicationUser? userExists = await userManager.FindByNameAsync(model.Username);
             if (userExists is not null)
             {
-                return (0, "User already exists");
+                return (0, null, "User already exists");
             }
 
             ApplicationUser user = new()
@@ -43,7 +43,7 @@ namespace api_server.Services
             IdentityResult createUserResult = await userManager.CreateAsync(user, model.Password);
             if (!createUserResult.Succeeded)
             {
-                return (0, "User creation failed! Please check user details and try again.");
+                return (0, null, string.Join(", ", createUserResult.Errors.Select(error => error.Description)));
             }
 
             if (!await roleManager.RoleExistsAsync(role))
@@ -56,7 +56,10 @@ namespace api_server.Services
                 await userManager.AddToRoleAsync(user, role);
             }
 
-            return (1, "User created successfully!");
+            ClaimsIdentity? claimsIdentity = await userService.GetClaimsPrincipalFromUser(user);
+            UserTokens? token = jwtService.GenerateToken(claimsIdentity);
+
+            return (1, token, "User created successfully!");
         }
 
         public async Task<(int, UserTokens?, string)> Login(LoginRequestModel model)

@@ -24,14 +24,14 @@ const ThemeSwitcher = () =>
     };
 
     return (
-        <label className="relative inline-block">
+        <label className='relative inline-block'>
             <input
-                type="checkbox"
+                type='checkbox'
                 checked={darkMode}
                 onChange={toggleDarkMode}
-                className="hidden"
+                className='hidden'
             />
-            <div className="w-12 h-6 bg-gray-800 rounded-full p-1 flex items-center cursor-pointer">
+            <div className='w-12 h-6 bg-gray-800 dark:bg-gray-400 rounded-full p-1 flex items-center cursor-pointer'>
                 <div
                     className={`w-5 h-5 rounded-full ${darkMode
                         ? 'bg-yellow-400'

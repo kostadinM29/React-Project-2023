@@ -1,25 +1,46 @@
-const BASE_URL = 'https://localhost:5001/api/';
+import { ENDPOINTS } from '../../constants/apiEndpoints';
+import axios from '../axios';
 
 export const Login = async (credentials) =>
 {
     try
     {
-        const response = await fetch(`${BASE_URL}user/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(credentials),
-        });
+        const response = await axios.post(ENDPOINTS.LOGIN, credentials);
 
-        if (!response.ok)
-        {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        return await response.json();
+        return response;
     } catch (error)
     {
-        throw new Error(`Fetch error: ${error.message}`);
+        console.log(error.response.data);
+        throw new Error(`Axios error: ${error.message}`);
+    }
+};
+
+export const Register = async (userData) =>
+{
+    try
+    {
+        const response = await axios.post(ENDPOINTS.REGISTER, userData);
+
+        return response;
+    } catch (error)
+    {
+        console.log(error.response.data);
+        throw new Error(`Axios error: ${error.message}`);
+    }
+};
+
+export const RefreshToken = async () =>
+{
+    try
+    {
+        const response = await axios.get(ENDPOINTS.REFRESH_TOKEN, {
+            withCredentials: true,
+        });
+
+        return response;
+    } catch (error)
+    {
+        console.log(error.response.data);
+        throw new Error(`Axios error: ${error.message}`);
     }
 };

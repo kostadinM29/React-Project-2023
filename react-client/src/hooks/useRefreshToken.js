@@ -1,7 +1,5 @@
-import axios from "../api/axios";
-import { ENDPOINTS } from "../constants/apiEndpoints";
+import { RefreshToken } from "../api/auth/auth";
 import useAuth from "./useAuth";
-
 
 const useRefreshToken = () =>
 {
@@ -11,11 +9,9 @@ const useRefreshToken = () =>
     {
         try
         {
-            const response = await axios.get(ENDPOINTS.REFRESH_TOKEN, {
-                withCredentials: true,
-            });
-            console.log(response);
+            const response = await RefreshToken();
 
+            console.log(response)
             updateAuth(response.data);
         }
         catch (error)

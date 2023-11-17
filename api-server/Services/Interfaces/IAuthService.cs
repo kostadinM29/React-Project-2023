@@ -5,7 +5,7 @@ namespace api_server.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<(int, string)> Register(RegisterRequestModel model, string role);
+        Task<(int, UserTokens?, string)> Register(RegisterRequestModel model, string role);
 
         Task<(int, UserTokens?, string)> Login(LoginRequestModel model);
     }
