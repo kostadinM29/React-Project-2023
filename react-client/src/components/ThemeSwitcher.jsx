@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import MoonIcon from '../assets/moon.svg?react';
-import SunIcon from '../assets/sun.svg?react';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ThemeSwitcher = () =>
 {
@@ -31,26 +31,19 @@ const ThemeSwitcher = () =>
                 onChange={toggleDarkMode}
                 className='hidden'
             />
-            <div className='w-12 h-6 bg-gray-800 dark:bg-gray-400 rounded-full p-1 flex items-center cursor-pointer'>
+            <div
+                className={`w-12 h-4 bg-gray-200 dark:bg-gray-700 rounded-full p-1 flex items-center cursor-pointer`}
+            >
                 <div
-                    className={`w-5 h-5 rounded-full ${darkMode
-                        ? 'bg-yellow-400'
-                        : 'bg-gray-800'
-                        } shadow-md`}
-                    style={{
-                        transform: darkMode && 'translateX(100%)',
-                    }}
+                    className={`w-5 h-5 rounded-full bg-gray-800 dark:bg-yellow-400 dark:translate-x-full shadow-md`}
+                // style={{
+                //     transform: darkMode && 'translateX(100%)',
+                // }}
                 />
-                <div
-                    className={`absolute w-6 h-6 rounded-full bg-white transition-transform transform ${darkMode
-                        ? 'translate-x-6'
-                        : 'translate-x-0'
-                        }`}
-                >
+                <div className='absolute w-6 h-6 rounded-full bg-white dark:bg-gray-200 flex items-center justify-center transition-transform transform -translate-x-2.5 dark:translate-x-6'>
                     {darkMode
-                        ? <MoonIcon />
-                        : <SunIcon />
-                    }
+                        ? <FontAwesomeIcon icon={faMoon} size="xl" style={{ color: "#05090f", }} />
+                        : <FontAwesomeIcon icon={faSun} size="xl" style={{ color: "#ffbf00", }} />}
                 </div>
             </div>
         </label>

@@ -1,6 +1,7 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import Menu from '../../assets/menuHamburger.svg?react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 const Navigation = () =>
 {
@@ -56,7 +57,7 @@ const Navigation = () =>
                     </div> */}
                     <button data-collapse-toggle='navbar-user' type='button' className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600' aria-controls='navbar-user' aria-expanded='false'>
                         <span className='sr-only'>Open main menu</span>
-                        <Menu />
+                        <FontAwesomeIcon icon={faBars} size="2xl" />
                     </button>
                 </div>
                 <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-user'>

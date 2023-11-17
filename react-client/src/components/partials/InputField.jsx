@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import EyeHidden from '../../assets/eyeHidden.svg?react';
-import EyeVisible from '../../assets/eyeVisible.svg?react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 
 const InputField = ({ id, value, label, name, placeholder, type, required, wrapperClassName, onChange }) =>
 {
@@ -35,7 +35,9 @@ const InputField = ({ id, value, label, name, placeholder, type, required, wrapp
                         className='absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-600 dark:text-gray-400 cursor-pointer'
                         onClick={togglePasswordVisibility}
                     >
-                        {showPassword ? <EyeHidden /> : <EyeVisible />}
+                        {showPassword
+                            ? <FontAwesomeIcon icon={faEyeSlash} />
+                            : <FontAwesomeIcon icon={faEye} />}
                     </button>
                 )}
             </div>
