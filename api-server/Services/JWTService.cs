@@ -70,17 +70,17 @@ namespace api_server.Services
             return Convert.ToBase64String(randomNumber);
         }
 
-        public async Task<ApplicationUser?> GetUserFromExpiredToken(string token)
+        public async Task<ApplicationUser?> GetUserFromToken(string token, bool validateLifetime = false)
         {
-            byte[]? Key = Encoding.UTF8.GetBytes(configuration["JWTKey:Secret"]);
+            byte[]? key = Encoding.UTF8.GetBytes(configuration["JWTKey:Secret"]);
 
             TokenValidationParameters? tokenValidationParameters = new()
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidateLifetime = false, // Do not validate because the token is expired.
+                ValidateLifetime = validateLifetime,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Key),
+                IssuerSigningKey = new SymmetricSecurityKey(key),
                 ClockSkew = TimeSpan.Zero,
                 ValidIssuer = configuration["JWTKey:ValidIssuer"],
                 ValidAudience = configuration["JWTKey:ValidAudience"]
@@ -88,6 +88,7 @@ namespace api_server.Services
 
             JwtSecurityTokenHandler? tokenHandler = new();
             ClaimsPrincipal? principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
             if (securityToken is not JwtSecurityToken jwtSecurityToken
                 || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {

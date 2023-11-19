@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api_server.Controllers
 {
+    [AllowAnonymous]
     [Route("api/user")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -77,13 +78,13 @@ namespace api_server.Controllers
                     ? UserRoles.Admin
                     : UserRoles.User;
 
-                (int status, string message) = await authService.Register(model, role);
+                (int status, UserTokens? userTokens, string message) = await authService.Register(model, role);
                 if (status is 0)
                 {
                     return BadRequest(message);
                 }
 
-                return CreatedAtAction(nameof(Register), model);
+                return Ok(new { accessToken = userTokens?.AccessToken, refreshToken = userTokens?.RefreshToken });
             }
             catch (Exception ex)
             {
@@ -92,7 +93,6 @@ namespace api_server.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpGet]
         [Route("refresh-token")]
         public async Task<IActionResult> Refresh()
@@ -107,14 +107,14 @@ namespace api_server.Controllers
                     return Unauthorized("Invalid attempt!");
                 }
 
-                ApplicationUser? user = await jwtService.GetUserFromExpiredToken(accessToken);
+                ApplicationUser? user = await jwtService.GetUserFromToken(accessToken,false);
 
                 if (user is null)
                 {
                     return Unauthorized("Invalid attempt!");
                 }
 
-                UserRefreshTokens? savedRefreshToken = userService.GetSavedRefreshTokens(user.UserName, refreshToken);
+                UserRefreshTokens? savedRefreshToken = await userService.GetSavedRefreshTokens(user.UserName, refreshToken);
 
                 if (savedRefreshToken is null || savedRefreshToken.RefreshToken != refreshToken)
                 {
@@ -146,6 +146,5 @@ namespace api_server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
     }
 }

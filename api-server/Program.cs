@@ -2,6 +2,7 @@ using System.Text;
 
 using api_server.Data;
 using api_server.Data.Models;
+using api_server.Extensions;
 using api_server.Services;
 using api_server.Services.Interfaces;
 
@@ -24,7 +25,35 @@ namespace api_server
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Cookie,
+                    Name = "accessToken",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    Description = "JWT Authorization header using the Bearer scheme",
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer",
+                            },
+                        },
+                        Array.Empty<string>()
+                    },
+                });
+            });
 
             builder.Services.AddCors(options =>
             {
@@ -90,6 +119,7 @@ namespace api_server
             builder.Services.AddTransient<IAuthService, AuthService>();
             builder.Services.AddTransient<IJWTService, JWTService>();
             builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IListingService, ListingService>();
 
             WebApplication app = builder.Build();
 
@@ -107,6 +137,8 @@ namespace api_server
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseJwtAuthorization();
 
             app.MapControllers();
 

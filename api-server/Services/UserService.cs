@@ -5,6 +5,7 @@ using api_server.Data;
 using api_server.Data.Models;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace api_server.Services.Interfaces
 {
@@ -19,26 +20,26 @@ namespace api_server.Services.Interfaces
             this.userManager = userManager;
         }
 
-        public UserRefreshTokens AddUserRefreshTokens(UserRefreshTokens userTokens)
+        public async Task<UserRefreshTokens> AddUserRefreshTokens(UserRefreshTokens userTokens)
         {
-            db.UserRefreshToken.Add(userTokens);
-            db.SaveChanges();
+            await db.UserRefreshToken.AddAsync(userTokens);
+            await db.SaveChangesAsync();
             return userTokens;
         }
 
-        public void DeleteUserRefreshTokens(string username, string refreshToken)
+        public async void DeleteUserRefreshTokens(string username, string refreshToken)
         {
-            UserRefreshTokens? item = db.UserRefreshToken.FirstOrDefault(x => x.UserName == username && x.RefreshToken == refreshToken);
+            UserRefreshTokens? item = await db.UserRefreshToken.FirstOrDefaultAsync(x => x.UserName == username && x.RefreshToken == refreshToken);
             if (item is not null)
             {
                 db.UserRefreshToken.Remove(item);
             }
         }
 
-        public UserRefreshTokens? GetSavedRefreshTokens(string username, string refreshToken)
+        public async Task<UserRefreshTokens?> GetSavedRefreshTokens(string username, string refreshToken)
         {
-            return db.UserRefreshToken
-                .FirstOrDefault(x => x.UserName == username && x.RefreshToken == refreshToken && x.IsActive == true);
+            return await db.UserRefreshToken
+                .FirstOrDefaultAsync(x => x.UserName == username && x.RefreshToken == refreshToken && x.IsActive == true);
         }
 
         public async Task<ClaimsIdentity> GetClaimsPrincipalFromUser(ApplicationUser user)
@@ -48,6 +49,7 @@ namespace api_server.Services.Interfaces
             List<Claim> authClaims = new()
             {
                new Claim(ClaimTypes.Name, user.UserName),
+               new Claim(ClaimTypes.NameIdentifier, user.Id),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 

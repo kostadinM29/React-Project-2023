@@ -6,8 +6,8 @@ namespace api_server.Services.Interfaces
 {
     public interface IUserService
     {
-        UserRefreshTokens AddUserRefreshTokens(UserRefreshTokens user);
-        UserRefreshTokens? GetSavedRefreshTokens(string username, string refreshtoken);
+        Task<UserRefreshTokens> AddUserRefreshTokens(UserRefreshTokens userTokens);
+        Task<UserRefreshTokens?> GetSavedRefreshTokens(string username, string refreshtoken);
         void DeleteUserRefreshTokens(string username, string refreshToken);
         Task<ClaimsIdentity> GetClaimsPrincipalFromUser(ApplicationUser user);
     }

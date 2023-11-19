@@ -9,6 +9,6 @@ namespace api_server.Services.Interfaces
     {
         UserTokens? GenerateToken(ClaimsIdentity claimsIdentity);
         UserTokens? GenerateRefreshToken(ClaimsIdentity claimsIdentity);
-        Task<ApplicationUser?> GetUserFromExpiredToken(string token);
+        Task<ApplicationUser?> GetUserFromToken(string token, bool validateLifetime = false);
     }
 }

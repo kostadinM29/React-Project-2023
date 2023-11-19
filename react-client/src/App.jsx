@@ -2,8 +2,9 @@ import { Route, Routes } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Test from './components/Test';
 import Home from './components/pages/Home';
-import LoginForm from './components/pages/forms/LoginForm';
-import RegistrationForm from './components/pages/forms/RegistrationForm';
+import CreateListingForm from './components/pages/forms/listing/CreateListingForm';
+import RegistrationForm from './components/pages/forms/auth/RegistrationForm';
+import LoginForm from './components/pages/forms/auth/LoginForm';
 
 function App()
 {
@@ -18,9 +19,11 @@ function App()
         {/* public routes */}
         <Route path="register" element={<RegistrationForm />} />
         <Route path="login" element={<LoginForm />} />
-        {/* <Route path="register" element={<Register />} />
-        
-        <Route path="unauthorized" element={<Unauthorized />} /> */}
+        <Route path="listing/create" element={<CreateListingForm />} />
+
+        {/* <Route path="" element={<Register />} /> */}
+
+        {/* <Route path="unauthorized" element={<Unauthorized />} /> */}
         {/* <Route path="test" element={<Test />} /> */}
 
         {/* todo: add role specific routes */}
