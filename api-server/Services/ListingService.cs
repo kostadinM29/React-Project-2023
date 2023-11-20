@@ -16,7 +16,12 @@ namespace api_server.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Listing>> GetListings(string userId)
+        public async Task<IEnumerable<Listing>> GetListings()
+        {
+            return await _context.Listings.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Listing>> GetListingsByUser(string userId)
         {
             return await _context.Listings
                 .Where(listing => listing.UserId == userId)

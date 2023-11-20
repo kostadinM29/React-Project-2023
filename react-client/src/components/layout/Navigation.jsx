@@ -71,9 +71,9 @@ const Navigation = () =>
                         </li>
                         <li>
                             <NavLink
-                                to='/test'
+                                to='listings'
                                 className={({ isActive }) => getNavLinkClassName(isActive)}
-                            >Test</NavLink>
+                            >Listings</NavLink>
                         </li>
                         <li>
                             <NavLink

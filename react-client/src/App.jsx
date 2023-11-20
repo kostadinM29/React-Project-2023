@@ -5,6 +5,7 @@ import Home from './components/pages/Home';
 import CreateListingForm from './components/pages/forms/listing/CreateListingForm';
 import RegistrationForm from './components/pages/forms/auth/RegistrationForm';
 import LoginForm from './components/pages/forms/auth/LoginForm';
+import Listings from './components/pages/listings/Listings';
 
 function App()
 {
@@ -15,7 +16,7 @@ function App()
       <Routes>
         <Route path="test" element={<Test />} />
         <Route path="/" element={<Home />} />
-        {/* <Route path="/" element={<Layout />}> */}
+        <Route path="listings" element={<Listings />} />
         {/* public routes */}
         <Route path="register" element={<RegistrationForm />} />
         <Route path="login" element={<LoginForm />} />

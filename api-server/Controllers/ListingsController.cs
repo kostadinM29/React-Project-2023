@@ -28,8 +28,8 @@ namespace api_server.Controllers
             }
 
             [HttpGet]
-            [Route("get-all")]
-            public async Task<IActionResult> GetListings()
+            [Route("all-for-user")]
+            public async Task<IActionResult> GetListingsByUser()
             {
                 try
                 {
@@ -40,12 +40,29 @@ namespace api_server.Controllers
                         return BadRequest("User not found!");
                     }
 
-                    IEnumerable<Listing>? listings = await listingService.GetListings(userId);
+                    IEnumerable<Listing>? listings = await listingService.GetListingsByUser(userId);
 
                     if (listings.IsNullOrEmpty())
                     {
                         return NotFound("No listings found for the user!");
                     }
+
+                    return Ok(listings);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message);
+                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                }
+            }
+
+            [HttpGet]
+            [Route("all")]
+            public async Task<IActionResult> GetListings()
+            {
+                try
+                {
+                    IEnumerable<Listing>? listings = await listingService.GetListings();
 
                     return Ok(listings);
                 }

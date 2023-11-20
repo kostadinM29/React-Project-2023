@@ -5,7 +5,8 @@ namespace api_server.Services.Interfaces
 {
     public interface IListingService
     {
-        Task<IEnumerable<Listing>> GetListings(string userId);
+        Task<IEnumerable<Listing>> GetListings();
+        Task<IEnumerable<Listing>> GetListingsByUser(string userId);
         Task<Listing> Create(ListingRequestModel listingRequest, string userId);
     }
 }
