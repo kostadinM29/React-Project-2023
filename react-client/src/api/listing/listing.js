@@ -5,12 +5,14 @@ export const Create = async (data) =>
 {
     try
     {
-        const response = await axiosPrivate(
+        const response = await axiosPrivate.post(
+            ENDPOINTS.LISTING_CREATE,
+            data,
             {
-                Accept: "multipart/form-data",
-            }).post(ENDPOINTS.LISTING_CREATE, data);
-
-        console.log(response);
+                headers: { 'Accept': "multipart/form-data" },
+                withCredentials: true
+            }
+        );
 
         return response.data;
     } catch (error)

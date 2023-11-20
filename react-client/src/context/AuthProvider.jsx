@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }) =>
         }
         catch (error)
         {
+            console.log('Error occured while setting up token on page load!')
             setAuth({});
         }
     }, []);

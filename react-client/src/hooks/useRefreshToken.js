@@ -11,7 +11,6 @@ const useRefreshToken = () =>
         {
             const response = await RefreshToken();
 
-            console.log(response)
             updateAuth(response.data);
         }
         catch (error)

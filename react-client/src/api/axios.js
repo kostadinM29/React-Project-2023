@@ -5,11 +5,10 @@ export default axios.create({
     baseURL: ENDPOINTS.BASE_URL
 });
 
-export const axiosPrivate = (headers) => axios.create({
+export const axiosPrivate = axios.create({
     baseURL: ENDPOINTS.BASE_URL,
     headers: {
         'Content-Type': 'application/json',
-        ...headers,
     },
     withCredentials: true
 });

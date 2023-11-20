@@ -50,11 +50,9 @@ const CreateListingForm = () =>
                     images: images,
                 };
 
-                console.log(requestData);
-
                 const response = await Create(requestData);
 
-                console.log('Listing created successfully:', response.data);
+                console.log('Listing created successfully with id:', response);
                 navigate('/');
             } catch (error)
             {
@@ -85,7 +83,27 @@ const CreateListingForm = () =>
 
     const onImageChange = (event) =>
     {
-        setImages(Array.from(event.target.files));
+        const files = event.target.files;
+
+        for (let i = 0; i < files.length; i++)
+        {
+            const reader = new FileReader();
+
+            reader.onloadend = ((index) =>
+            {
+                return () =>
+                {
+                    const newImages = [...images];
+                    newImages.push(reader.result.split(',')[1]);
+                    setImages(newImages);
+                };
+            })(i);
+
+            if (files[i])
+            {
+                reader.readAsDataURL(files[i]);
+            }
+        }
     };
 
     return (

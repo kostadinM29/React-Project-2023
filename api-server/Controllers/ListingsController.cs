@@ -80,7 +80,7 @@ namespace api_server.Controllers
                         return StatusCode(StatusCodes.Status500InternalServerError, "Something happened and listing wasn't created!");
                     }
 
-                    return Ok(listing);
+                    return Ok(listing.Id);
                 }
                 catch (Exception ex)
                 {
