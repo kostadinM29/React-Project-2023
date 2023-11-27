@@ -8,7 +8,7 @@ namespace api_server.Services.Interfaces
     {
         Task<UserRefreshTokens> AddUserRefreshTokens(UserRefreshTokens userTokens);
         Task<UserRefreshTokens?> GetSavedRefreshTokens(string username, string refreshtoken);
-        void DeleteUserRefreshTokens(string username, string refreshToken);
+        Task DeleteUserRefreshTokens(string username, string refreshToken);
         Task<ClaimsIdentity> GetClaimsPrincipalFromUser(ApplicationUser user);
     }
 }

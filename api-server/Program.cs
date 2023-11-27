@@ -3,6 +3,7 @@ using System.Text;
 using api_server.Data;
 using api_server.Data.Models;
 using api_server.Extensions;
+using api_server.Profiles;
 using api_server.Services;
 using api_server.Services.Interfaces;
 
@@ -55,12 +56,14 @@ namespace api_server
                 });
             });
 
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
             builder.Services.AddCors(options =>
             {
                 string[]? corsOrigins = builder.Configuration.GetSection("CorsOrigins").Get<string[]>();
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins(corsOrigins)
+                    builder.WithOrigins(corsOrigins!)
                            .AllowAnyHeader()
                            .AllowAnyMethod()
                            .AllowCredentials();
@@ -102,7 +105,7 @@ namespace api_server
                       ValidAudience = builder.Configuration["JWTKey:ValidAudience"],
                       ValidIssuer = builder.Configuration["JWTKey:ValidIssuer"],
                       ClockSkew = TimeSpan.Zero,
-                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTKey:Secret"]))
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTKey:Secret"]!))
                   };
                   options.Events = new JwtBearerEvents
                   {

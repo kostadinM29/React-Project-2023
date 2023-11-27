@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '../../constants/apiEndpoints';
-import { axiosPrivate } from '../axios';
+import axios, { axiosPrivate } from '../axios';
 
 export const Create = async (data) =>
 {
@@ -13,6 +13,20 @@ export const Create = async (data) =>
                 withCredentials: true
             }
         );
+
+        return response.data;
+    } catch (error)
+    {
+        console.log(error.response.data);
+        throw new Error(`Axios error: ${error.message}`);
+    }
+};
+
+export const GetAll = async () =>
+{
+    try
+    {
+        const response = await axios.get(ENDPOINTS.LISTING_ALL);
 
         return response.data;
     } catch (error)

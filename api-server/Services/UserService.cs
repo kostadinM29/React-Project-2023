@@ -27,12 +27,15 @@ namespace api_server.Services.Interfaces
             return userTokens;
         }
 
-        public async void DeleteUserRefreshTokens(string username, string refreshToken)
+        public async Task DeleteUserRefreshTokens(string username, string refreshToken)
         {
-            UserRefreshTokens? item = await db.UserRefreshToken.FirstOrDefaultAsync(x => x.UserName == username && x.RefreshToken == refreshToken);
+            UserRefreshTokens? item = await db.UserRefreshToken
+                .FirstOrDefaultAsync(x => x.UserName == username && x.RefreshToken == refreshToken);
+
             if (item is not null)
             {
                 db.UserRefreshToken.Remove(item);
+                await db.SaveChangesAsync();
             }
         }
 

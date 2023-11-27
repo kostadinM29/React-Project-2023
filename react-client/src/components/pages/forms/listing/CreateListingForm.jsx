@@ -81,29 +81,44 @@ const CreateListingForm = () =>
         setErrors((prevErrors) => ({ ...prevErrors, contactDetails: '', apiError: '' }));
     };
 
-    const onImageChange = (event) =>
+    const onImageChange = async (event) =>
     {
         const files = event.target.files;
 
+        const readAsDataURL = (file) =>
+        {
+            return new Promise((resolve, reject) =>
+            {
+                const reader = new FileReader();
+
+                reader.onloadend = () =>
+                {
+                    resolve(reader.result);
+                };
+
+                reader.onerror = reject;
+
+                reader.readAsDataURL(file);
+            });
+        };
+
+        const newImages = [];
         for (let i = 0; i < files.length; i++)
         {
-            const reader = new FileReader();
-
-            reader.onloadend = ((index) =>
-            {
-                return () =>
-                {
-                    const newImages = [...images];
-                    newImages.push(reader.result.split(',')[1]);
-                    setImages(newImages);
-                };
-            })(i);
-
             if (files[i])
             {
-                reader.readAsDataURL(files[i]);
+                try
+                {
+                    const base64String = await readAsDataURL(files[i]);
+                    newImages.push(base64String);
+                } catch (error)
+                {
+                    console.error("Error reading file:", error);
+                }
             }
         }
+
+        setImages(newImages);
     };
 
     return (

@@ -37,7 +37,7 @@ namespace api_server.Services
             try
             {
                 JwtSecurityTokenHandler? tokenHandler = new();
-                byte[]? tokenKey = Encoding.UTF8.GetBytes(configuration["JWTKey:Secret"]);
+                byte[]? tokenKey = Encoding.UTF8.GetBytes(configuration["JWTKey:Secret"]!);
                 long _TokenExpiryTimeInHour = Convert.ToInt64(configuration["JWTKey:TokenExpiryTimeInHour"]);
 
                 SecurityTokenDescriptor? tokenDescriptor = new()
@@ -72,7 +72,7 @@ namespace api_server.Services
 
         public async Task<ApplicationUser?> GetUserFromToken(string token, bool validateLifetime = false)
         {
-            byte[]? key = Encoding.UTF8.GetBytes(configuration["JWTKey:Secret"]);
+            byte[]? key = Encoding.UTF8.GetBytes(configuration["JWTKey:Secret"]!);
 
             TokenValidationParameters? tokenValidationParameters = new()
             {
@@ -97,7 +97,7 @@ namespace api_server.Services
 
             string? username = principal.Identity?.Name;
 
-            ApplicationUser? user = await userManager.FindByNameAsync(username);
+            ApplicationUser? user = await userManager.FindByNameAsync(username!);
 
             return user;
         }

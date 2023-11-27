@@ -48,11 +48,11 @@ namespace api_server.Controllers
 
                 UserRefreshTokens userRefreshTokens = new()
                 {
-                    RefreshToken = userTokens.RefreshToken,
-                    UserName = model.Username,
+                    RefreshToken = userTokens!.RefreshToken,
+                    UserName = model.Username!,
                 };
 
-                userService.AddUserRefreshTokens(userRefreshTokens);
+                await userService.AddUserRefreshTokens(userRefreshTokens);
 
                 return Ok(new { accessToken = userTokens?.AccessToken, refreshToken = userTokens?.RefreshToken });
             }
@@ -107,14 +107,14 @@ namespace api_server.Controllers
                     return Unauthorized("Invalid attempt!");
                 }
 
-                ApplicationUser? user = await jwtService.GetUserFromToken(accessToken,false);
+                ApplicationUser? user = await jwtService.GetUserFromToken(accessToken, false);
 
                 if (user is null)
                 {
                     return Unauthorized("Invalid attempt!");
                 }
 
-                UserRefreshTokens? savedRefreshToken = await userService.GetSavedRefreshTokens(user.UserName, refreshToken);
+                UserRefreshTokens? savedRefreshToken = await userService.GetSavedRefreshTokens(user.UserName!, refreshToken);
 
                 if (savedRefreshToken is null || savedRefreshToken.RefreshToken != refreshToken)
                 {
@@ -132,13 +132,46 @@ namespace api_server.Controllers
                 UserRefreshTokens tokensToSave = new()
                 {
                     RefreshToken = newJwtToken.RefreshToken,
-                    UserName = user.UserName,
+                    UserName = user.UserName!,
                 };
 
-                userService.DeleteUserRefreshTokens(user.UserName, refreshToken);
-                userService.AddUserRefreshTokens(tokensToSave);
+                await userService.DeleteUserRefreshTokens(user.UserName!, refreshToken);
+                await userService.AddUserRefreshTokens(tokensToSave);
 
                 return Ok(new { accessToken = newJwtToken?.AccessToken, refreshToken = newJwtToken?.RefreshToken });
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            try
+            {
+                string? accessToken = Request.Cookies["accessToken"];
+                string? refreshToken = Request.Cookies["refreshToken"];
+
+                if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+                {
+                    return Unauthorized("Invalid attempt!");
+                }
+
+                ApplicationUser? user = await jwtService.GetUserFromToken(accessToken, false);
+
+                if (user is null)
+                {
+                    return BadRequest("Invalid attempt!");
+                }
+
+                await userService.DeleteUserRefreshTokens(user.UserName!, refreshToken);
+
+                return Ok(new { Message = "Logout successful." });
             }
             catch (Exception ex)
             {

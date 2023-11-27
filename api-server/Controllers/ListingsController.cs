@@ -1,4 +1,7 @@
-﻿using api_server.Data.Models;
+﻿using System.Text.Json.Serialization;
+using System.Text.Json;
+
+using api_server.Data.Models;
 using api_server.RequestModels;
 using api_server.Services.Interfaces;
 
@@ -6,104 +9,107 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Text.Encodings.Web;
+using api_server.Dtos;
 
 namespace api_server.Controllers
 {
-    namespace api_server.Controllers
+    [Route("api/listings")]
+    [ApiController]
+    public class ListingController : ControllerBase
     {
-        [Authorize]
-        [Route("api/listings")]
-        [ApiController]
-        public class ListingController : ControllerBase
+        private readonly IListingService listingService;
+        private readonly ILogger<ListingController> logger;
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public ListingController(IListingService listingService, ILogger<ListingController> logger, UserManager<ApplicationUser> userManager)
         {
-            private readonly IListingService listingService;
-            private readonly ILogger<ListingController> logger;
-            private readonly UserManager<ApplicationUser> userManager;
+            this.listingService = listingService;
+            this.logger = logger;
+            this.userManager = userManager;
+        }
 
-            public ListingController(IListingService listingService, ILogger<ListingController> logger, UserManager<ApplicationUser> userManager)
+        [Authorize]
+        [HttpGet]
+        [Route("all-for-user")]
+        public async Task<IActionResult> GetListingsByUser()
+        {
+            try
             {
-                this.listingService = listingService;
-                this.logger = logger;
-                this.userManager = userManager;
+                string? userId = userManager.GetUserId(User);
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return BadRequest("User not found!");
+                }
+
+                IEnumerable<ListingDTO>? listings = await listingService.GetListingsByUser(userId);
+
+                if (listings.IsNullOrEmpty())
+                {
+                    return NotFound("No listings found for the user!");
+                }
+
+                return Ok(listings);
             }
-
-            [HttpGet]
-            [Route("all-for-user")]
-            public async Task<IActionResult> GetListingsByUser()
+            catch (Exception ex)
             {
-                try
-                {
-                    string? userId = userManager.GetUserId(User);
-
-                    if (string.IsNullOrEmpty(userId))
-                    {
-                        return BadRequest("User not found!");
-                    }
-
-                    IEnumerable<Listing>? listings = await listingService.GetListingsByUser(userId);
-
-                    if (listings.IsNullOrEmpty())
-                    {
-                        return NotFound("No listings found for the user!");
-                    }
-
-                    return Ok(listings);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex.Message);
-                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-                }
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
 
-            [HttpGet]
-            [Route("all")]
-            public async Task<IActionResult> GetListings()
+        [HttpGet]
+        [Route("all")]
+        public async Task<IActionResult> GetListings()
+        {
+            try
             {
-                try
-                {
-                    IEnumerable<Listing>? listings = await listingService.GetListings();
+                IEnumerable<ListingDTO>? listings = await listingService.GetListings();
 
-                    return Ok(listings);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex.Message);
-                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-                }
+                string jsonString = JsonSerializer.Serialize(listings);
+
+                return Ok(jsonString);
             }
-
-            [HttpPost]
-            [Route("create")]
-            public async Task<IActionResult> CreateListing(ListingRequestModel listingRequest)
+            catch (Exception ex)
             {
-                try
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> CreateListing(ListingRequestModel listingRequest)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
                 {
-                    if (!ModelState.IsValid)
-                    {
-                        return BadRequest("Invalid payload!");
-                    }
-
-                    string? userId = userManager.GetUserId(User);
-
-                    if (string.IsNullOrEmpty(userId))
-                    {
-                        return BadRequest("User not found!");
-                    }
-
-                    Listing? listing = await listingService.Create(listingRequest, userId);
-                    if (listing is null)
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, "Something happened and listing wasn't created!");
-                    }
-
-                    return Ok(listing.Id);
+                    return BadRequest("Invalid payload!");
                 }
-                catch (Exception ex)
+
+                string? userId = userManager.GetUserId(User);
+
+                if (string.IsNullOrEmpty(userId))
                 {
-                    logger.LogError(ex.Message);
-                    return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                    return BadRequest("User not found!");
                 }
+
+                ListingDTO? listingDTO = await listingService.Create(listingRequest, userId);
+
+                if (listingDTO is not null)
+                {
+                    return Ok(listingDTO);
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something happened and listing wasn't created!");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }

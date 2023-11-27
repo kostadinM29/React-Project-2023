@@ -3,5 +3,7 @@ export const ENDPOINTS = {
   LOGIN: 'user/login',
   REGISTER: 'user/register',
   REFRESH_TOKEN: 'user/refresh-token',
+  LOGOUT: 'user/logout',
   LISTING_CREATE: 'listings/create',
+  LISTING_ALL: 'listings/all',
 };

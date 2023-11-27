@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputField from '../../../partials/InputField';
 import useAuth from '../../../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,6 +11,15 @@ const LoginForm = () =>
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
+    const abortController = new AbortController();
+
+    useEffect(() =>
+    {
+        return () =>
+        {
+            abortController.abort();
+        };
+    }, []);
 
     function validateForm()
     {
@@ -38,15 +47,25 @@ const LoginForm = () =>
         {
             try
             {
-                const response = await Login({ username, password });
+                const response = await Login
+                    (
+                        { username, password },
+                        { signal: abortController.signal } // Pass the signal to the API request
+                    );
 
                 updateAuth(response.data);
 
                 console.log('Login successful. JWT token:', response.data.accessToken);
 
                 navigate('/');
-            } catch (error)
+            }
+            catch (error)
             {
+                if (error.name === 'AbortError')
+                {
+                    return;
+                }
+
                 console.error('API request error:', error);
 
                 setErrors({ apiError: 'Invalid credentials. Please try again.' });
@@ -122,6 +141,6 @@ const LoginForm = () =>
             </div>
         </section>
     );
-}
+};
 
 export default LoginForm;

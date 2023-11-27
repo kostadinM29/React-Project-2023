@@ -14,6 +14,15 @@ const RegistrationForm = () =>
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
+    const abortController = new AbortController();
+
+    useEffect(() =>
+    {
+        return () =>
+        {
+            abortController.abort();
+        };
+    }, []);
 
     const validateForm = () =>
     {
@@ -36,7 +45,7 @@ const RegistrationForm = () =>
 
         setErrors(errors);
         return Object.keys(errors).length === 0;
-    }
+    };
 
     const handleSubmit = async (event) =>
     {
@@ -46,21 +55,30 @@ const RegistrationForm = () =>
         {
             try
             {
-                const response = await Register({
-                    username,
-                    firstName,
-                    lastName,
-                    email,
-                    password,
-                });
+                const response = await Register(
+                    {
+                        username,
+                        firstName,
+                        lastName,
+                        email,
+                        password,
+                    },
+                    { signal: abortController.signal }
+                );
 
                 updateAuth(response.data);
 
                 console.log('Registration successful. JWT token:', response.data.accessToken);
 
                 navigate('/');
-            } catch (error)
+            }
+            catch (error)
             {
+                if (error.name === 'AbortError')
+                {
+                    return;
+                }
+
                 console.error('API request error:', error);
 
                 setErrors({ apiError: 'Registration failed. Please try again.' });

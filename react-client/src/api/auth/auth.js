@@ -1,5 +1,5 @@
 import { ENDPOINTS } from '../../constants/apiEndpoints';
-import axios from '../axios';
+import axios, { axiosPrivate } from '../axios';
 
 export const Login = async (credentials) =>
 {
@@ -33,14 +33,26 @@ export const RefreshToken = async () =>
 {
     try
     {
-        const response = await axios.get(ENDPOINTS.REFRESH_TOKEN, {
-            withCredentials: true,
-        });
+        const response = await axiosPrivate.get(ENDPOINTS.REFRESH_TOKEN);
 
         return response;
     } catch (error)
     {
         console.log(error.response.data);
+        throw new Error(`Axios error: ${error.message}`);
+    }
+};
+
+export const Logout = async () =>
+{
+    try
+    {
+        const response = await axiosPrivate.post(ENDPOINTS.LOGOUT);
+
+        return response;
+    } catch (error)
+    {
+        console.log(error.response);
         throw new Error(`Axios error: ${error.message}`);
     }
 };
