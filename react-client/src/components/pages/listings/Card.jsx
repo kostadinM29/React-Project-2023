@@ -28,10 +28,10 @@ const Card = ({ listing }) =>
     };
 
     return (
-        <div className='max-w-md mx-auto bg-white dark:bg-gray-800 rounded-md overflow-hidden shadow-md'>
+        <div className='max-w-lg mx-2 bg-white dark:bg-gray-800 rounded-md overflow-hidden shadow-md'>
             <div className='bg-gray-700 text-white dark:bg-gray-600 dark:text-white p-4 flex justify-between items-center'>
-                <h2 className='text-xl font-bold'>{listing.title}</h2>
-                {listing.images &&
+                <h2 className='text-xl font-bold overflow-hidden overflow-ellipsis'>{listing.title}</h2>
+                {listing.images.length > 1 &&
                     <div className="flex pl-2 space-x-2">
                         {listing.images.map((_, index) => (
                             <div
@@ -47,25 +47,36 @@ const Card = ({ listing }) =>
             </div>
 
             {listing.images &&
-                <div className="slider-container w-full overflow-hidden relative">
-                    <div className="slider-wrapper flex" style={updateSlider()}>
-                        {listing.images.map((imageUrl, index) => (
-                            <img key={index} src={imageUrl} alt={`Image ${index + 1}`} className="slider-item w-full" />
-                        ))}
+                (
+                    <div className="slider-container flex overflow-hidden relative">
+                        <div className="slider-wrapper flex" style={updateSlider()}>
+                            {listing.images.map((imageUrl, index) => (
+                                <div
+                                    key={index}
+                                    className="slider-item flex-shrink-0 w-full"
+                                >
+                                    <img
+                                        src={imageUrl}
+                                        className="object-cover w-full h-full"
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            }
+                )}
 
             <div className="p-4">
-                <p className="text-gray-700 dark:text-gray-300">{listing.description}</p>
+                <p className="text-gray-700 dark:text-gray-300 overflow-ellipsis break-words">
+                    {listing.description}
+                </p>
             </div>
 
             {listing.tags &&
-                <div>
+                <div className="m-2 space-x-1">
                     {listing.tags.map((title, index) => (
                         <span
                             key={index}
-                            className='bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300'
+                            className='bg-gray-100 text-gray-800 text-xs font-medium p-1 rounded dark:bg-gray-700 dark:text-gray-300 overflow-ellipsis break-words'
                         >
                             {title}
                         </span>
@@ -73,7 +84,7 @@ const Card = ({ listing }) =>
                 </div>
             }
 
-            {listing.images &&
+            {listing.images.length > 1 &&
                 <div className="flex justify-between p-4">
                     <button onClick={handlePrev} className="text-gray-700 dark:text-gray-300 focus:outline-none">
                         <FontAwesomeIcon icon={faChevronLeft} />

@@ -31,9 +31,9 @@ const CreateListingForm = () =>
         {
             errors.description = 'Description is required!';
         }
-        else if (description.length > 100)
+        else if (description.length > 200)
         {
-            errors.description = 'Description cannot exceed 100 characters!';
+            errors.description = 'Description cannot exceed 200 characters!';
         }
 
         if (!contactDetails.trim())
@@ -156,7 +156,7 @@ const CreateListingForm = () =>
                                     id='description'
                                     label='Description'
                                     name='description'
-                                    placeholder='Description'
+                                    placeholder='Description of the listing.'
                                     type='text'
                                     required={true}
                                     onChange={onDescriptionChange}
@@ -166,7 +166,7 @@ const CreateListingForm = () =>
                                     id='contactDetails'
                                     label='Contact Details'
                                     name='contactDetails'
-                                    placeholder='Contact Details'
+                                    placeholder='Add your contact details like phone, email etc.'
                                     type='text'
                                     required={true}
                                     onChange={onContactDetailsChange}

@@ -20,9 +20,11 @@ namespace api_server.Data.Models
         public virtual ApplicationUser User { get; set; }
 
         [Required]
+        [MaxLength(30)]
         public string Title { get; set; }
 
         [Required]
+        [MaxLength(200)]
         public string Description { get; set; }
 
         public virtual ICollection<Tag> Tags { get; set; }

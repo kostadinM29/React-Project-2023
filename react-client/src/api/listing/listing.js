@@ -22,16 +22,24 @@ export const Create = async (data) =>
     }
 };
 
-export const GetAll = async () =>
+export const GetAll = async (signal) =>
 {
     try
     {
-        const response = await axios.get(ENDPOINTS.LISTING_ALL);
+        const response = await axios.get(ENDPOINTS.LISTING_ALL, { signal });
 
         return response.data;
-    } catch (error)
+    }
+    catch (error)
     {
-        console.log(error.response.data);
-        throw new Error(`Axios error: ${error.message}`);
+        if (error.name === 'AbortError')
+        {
+            console.log('Fetch aborted');
+        }
+        else
+        {
+            console.log(error.response.data);
+            throw new Error(`Axios error: ${error.message}`);
+        }
     }
 };

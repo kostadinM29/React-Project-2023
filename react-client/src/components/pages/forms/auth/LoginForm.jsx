@@ -50,7 +50,7 @@ const LoginForm = () =>
                 const response = await Login
                     (
                         { username, password },
-                        { signal: abortController.signal } // Pass the signal to the API request
+                        { signal: abortController.signal }
                     );
 
                 updateAuth(response.data);
