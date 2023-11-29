@@ -28,9 +28,11 @@ const Card = ({ listing }) =>
     };
 
     return (
-        <div className='max-w-lg mx-2 bg-white dark:bg-gray-800 rounded-md overflow-hidden shadow-md'>
-            <div className='bg-gray-700 text-white dark:bg-gray-600 dark:text-white p-4 flex justify-between items-center'>
-                <h2 className='text-xl font-bold overflow-hidden overflow-ellipsis'>{listing.title}</h2>
+        <div className='max-w-lg bg-white dark:bg-gray-800 rounded-md overflow-hidden shadow-md'>
+            <div className='bg-gray-700 text-white dark:bg-gray-600 dark:text-white p-4 flex flex-wrap justify-between items-center'>
+                <h2 className='text-lg break-all'>
+                    {listing.title}
+                </h2>
                 {listing.images.length > 1 &&
                     <div className="flex pl-2 space-x-2">
                         {listing.images.map((_, index) => (
@@ -43,7 +45,8 @@ const Card = ({ listing }) =>
                                     }`}
                             />
                         ))}
-                    </div>}
+                    </div>
+                }
             </div>
 
             {listing.images &&
