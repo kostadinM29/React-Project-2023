@@ -12,6 +12,8 @@ namespace api_server.RequestModels
 
         public string? ContactDetails { get; set; }
 
+        public List<string> Tags { get; set; } = new List<string>();
+
         public List<string> Images { get; set; } = new List<string>();
     }
 }

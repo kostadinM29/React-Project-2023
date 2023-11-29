@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InputField from '../../../partials/InputField';
 import { Create } from '../../../../api/listing/listing';
+import TagsInputField from '../../../partials/TagInputField';
 
 const CreateListingForm = () =>
 {
@@ -9,6 +10,7 @@ const CreateListingForm = () =>
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [contactDetails, setContactDetails] = useState('');
+    const [tags, setTags] = useState([]);
     const [images, setImages] = useState([]);
     const [errors, setErrors] = useState({});
 
@@ -20,10 +22,18 @@ const CreateListingForm = () =>
         {
             errors.title = 'Title is required!';
         }
+        else if (title.length > 30)
+        {
+            errors.title = 'Title cannot exceed 30 characters!';
+        }
 
         if (!description.trim())
         {
             errors.description = 'Description is required!';
+        }
+        else if (description.length > 100)
+        {
+            errors.description = 'Description cannot exceed 100 characters!';
         }
 
         if (!contactDetails.trim())
@@ -33,7 +43,7 @@ const CreateListingForm = () =>
 
         setErrors(errors);
         return Object.keys(errors).length === 0;
-    }
+    };
 
     const handleSubmit = async (event) =>
     {
@@ -47,6 +57,7 @@ const CreateListingForm = () =>
                     title: title,
                     description: description,
                     contactDetails: contactDetails,
+                    tags: tags,
                     images: images,
                 };
 
@@ -58,7 +69,7 @@ const CreateListingForm = () =>
             {
                 console.error('API request error:', error);
 
-                setErrors({ apiError: 'Listing creation failed. Please try again.' });
+                setErrors({ apiError: 'Listing creation failed. Please try again later!' });
             }
         }
     };
@@ -123,8 +134,8 @@ const CreateListingForm = () =>
 
     return (
         <section className='w-full max-w-xl mx-auto p-6'>
-            <div className='mt-7 bg-white border border-gray-200 rounded-xl shadow-sm'>
-                <div className='p-4 sm:p-7'>
+            <div className='mt-7 bg-white border border-gray-200 rounded'>
+                <div className='p-4 sm:p-7 dark:bg-gray-700'>
                     <div className="text-center">
                         <h1 className="block text-2xl font-bold text-gray-800">Create Listing</h1>
                     </div>
@@ -161,6 +172,13 @@ const CreateListingForm = () =>
                                     onChange={onContactDetailsChange}
                                     error={errors.contactDetails}
                                 />
+                                <TagsInputField
+                                    label='Tags'
+                                    placeholder='Press enter or comma to add new tag.'
+                                    separators={["Enter", ","]}
+                                    removers={["Backspace"]}
+                                    onChange={setTags}
+                                />
                                 <InputField
                                     id='images'
                                     label='Images'
@@ -169,7 +187,6 @@ const CreateListingForm = () =>
                                     accept='image/*'
                                     multiple={true}
                                     onChange={onImageChange}
-                                // no errors for now
                                 />
                                 {errors.apiError && (
                                     <p className="text-red-500 mb-4">{errors.apiError}</p>
@@ -183,9 +200,9 @@ const CreateListingForm = () =>
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </section>
+                </div >
+            </div >
+        </section >
     );
 }
 

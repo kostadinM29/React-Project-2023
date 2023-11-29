@@ -26,9 +26,10 @@ namespace api_server.Services
             List<Listing>? listings = await _context.Listings
                 .Include(l => l.User)
                 .Include(l => l.Images)
+                .Include(l => l.Tags)
                 .ToListAsync();
 
-            return listings.Select(l=>_mapper.Map<ListingDTO>(l)).ToList();
+            return listings.Select(l => _mapper.Map<ListingDTO>(l)).ToList();
         }
 
         public async Task<IEnumerable<ListingDTO>> GetListingsByUser(string userId)
@@ -37,6 +38,7 @@ namespace api_server.Services
                 .Where(listing => listing.UserId == userId)
                 .Include(l => l.User)
                 .Include(l => l.Images)
+                .Include(l => l.Tags)
                 .ToListAsync();
 
             return listings.Select(l => _mapper.Map<ListingDTO>(l)).ToList();
@@ -45,7 +47,6 @@ namespace api_server.Services
         public async Task<ListingDTO?> Create(ListingRequestModel listingRequest, string userId)
         {
             List<Image> images = new();
-
             foreach (string imageData in listingRequest.Images)
             {
                 Image image = new()
@@ -56,11 +57,23 @@ namespace api_server.Services
                 images.Add(image);
             }
 
+            List<Tag> tags = new();
+            foreach (string title in listingRequest.Tags)
+            {
+                Tag tag = new()
+                {
+                    Title = title,
+                };
+
+                tags.Add(tag);
+            }
+
             Listing listing = new()
             {
                 UserId = userId,
                 Title = listingRequest.Title,
                 Description = listingRequest.Description,
+                Tags = tags,
                 Images = images,
                 ContactDetails = listingRequest.ContactDetails,
             };

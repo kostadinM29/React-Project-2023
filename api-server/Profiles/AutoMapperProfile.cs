@@ -11,6 +11,7 @@ namespace api_server.Profiles
         {
             CreateMap<Listing, ListingDTO>()
             .ForMember(dest => dest.ImageUrls, opt => opt.MapFrom(src => src.Images.Select(image => image.Data)))
+            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Title)))
             .ConstructUsing((src, context) => new ListingDTO(
                 src.Id,
                 src.UserId,

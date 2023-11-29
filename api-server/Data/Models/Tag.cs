@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api_server.Data.Models
 {
-    public class Image
+    public class Tag
     {
         [Key]
         public int Id { get; set; }
@@ -13,6 +13,6 @@ namespace api_server.Data.Models
 
         public virtual Listing Listing { get; set; }
 
-        public string Data { get; set; }
+        public string Title { get; set; }
     }
 }

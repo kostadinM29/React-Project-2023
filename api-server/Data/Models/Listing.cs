@@ -25,6 +25,8 @@ namespace api_server.Data.Models
         [Required]
         public string Description { get; set; }
 
+        public virtual ICollection<Tag> Tags { get; set; }
+
         public virtual ICollection<Image> Images { get; set; }
 
         public string? ContactDetails { get; set; }

@@ -16,6 +16,9 @@ namespace api_server.Dtos
         [JsonPropertyName("images")]
         public List<string> ImageUrls { get; set; }
 
+        [JsonPropertyName("tags")]
+        public List<string> Tags { get; set; }
+
         public string ContactDetails { get; set; }
 
         public ListingDTO(int id, string userId, string userName, string title, string description, List<string> imageUrls, string contactDetails)
