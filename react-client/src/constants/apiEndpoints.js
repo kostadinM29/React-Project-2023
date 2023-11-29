@@ -6,4 +6,5 @@ export const ENDPOINTS = {
   LOGOUT: 'user/logout',
   LISTING_CREATE: 'listings/create',
   LISTING_ALL: 'listings/all',
+  LISTING_BY_USER: 'listings/all-by-user',
 };

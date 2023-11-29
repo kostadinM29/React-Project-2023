@@ -1,6 +1,7 @@
 ﻿using api_server.Data;
 using api_server.Data.Models;
 using api_server.Dtos;
+using api_server.Extensions;
 using api_server.RequestModels;
 using api_server.Services.Interfaces;
 
@@ -14,11 +15,13 @@ namespace api_server.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public ListingService(ApplicationDbContext context, IMapper mapper)
+        public ListingService(ApplicationDbContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
             _mapper = mapper;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public async Task<IEnumerable<ListingDTO>> GetListings()
@@ -47,11 +50,14 @@ namespace api_server.Services
         public async Task<ListingDTO?> Create(ListingRequestModel listingRequest, string userId)
         {
             List<Image> images = new();
+
             foreach (string imageData in listingRequest.Images)
             {
+                string imagePath = await SaveImageAsync(imageData);
+
                 Image image = new()
                 {
-                    Data = imageData,
+                    Path = imagePath,
                 };
 
                 images.Add(image);
@@ -89,6 +95,30 @@ namespace api_server.Services
             }
 
             return null;
+        }
+
+        private async Task<string> SaveImageAsync(string imageData)
+        {
+            string[] imageDataParts = imageData.Split(',');
+
+            if (imageDataParts.Length != 2)
+            {
+                return string.Empty;
+            }
+
+            string base64String = imageDataParts[1];
+
+            string fileExtension = FileExtensions.GetImageFileExtension(imageDataParts[0]);
+            string fileName = $"{Guid.NewGuid()}.{fileExtension}";
+
+            string wwwrootPath = _hostingEnvironment.WebRootPath;
+
+            string imagePath = Path.Combine(wwwrootPath, "images", fileName);
+
+            byte[] imageBytes = Convert.FromBase64String(base64String);
+            await File.WriteAllBytesAsync(imagePath, imageBytes);
+
+            return Path.Combine("images", fileName);
         }
     }
 }

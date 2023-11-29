@@ -3,6 +3,7 @@ import InputField from '../../../partials/InputField';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../../../hooks/useAuth';
 import { Register } from '../../../../api/auth/auth';
+import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
 
 const RegistrationForm = () =>
 {
@@ -70,7 +71,7 @@ const RegistrationForm = () =>
 
                 console.log('Registration successful. JWT token:', response.data.accessToken);
 
-                navigate('/');
+                navigate(ROUTE_ENDPOINTS.HOME);
             }
             catch (error)
             {

@@ -1,7 +1,7 @@
-﻿using System.Text.Json.Serialization;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 using api_server.Data.Models;
+using api_server.Dtos;
 using api_server.RequestModels;
 using api_server.Services.Interfaces;
 
@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.Text.Encodings.Web;
-using api_server.Dtos;
 
 namespace api_server.Controllers
 {
@@ -31,7 +29,7 @@ namespace api_server.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("all-for-user")]
+        [Route("all-by-user")]
         public async Task<IActionResult> GetListingsByUser()
         {
             try

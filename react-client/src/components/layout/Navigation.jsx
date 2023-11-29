@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Logout } from "../../api/auth/auth";
+import { ROUTE_ENDPOINTS } from "../../constants/routeEndpoints";
 
 const Navigation = () =>
 {
@@ -68,48 +69,50 @@ const Navigation = () =>
                     <ul className='flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
                         <li>
                             <NavLink
-                                to='/'
+                                to={ROUTE_ENDPOINTS.HOME}
                                 className={({ isActive }) => getNavLinkClassName(isActive)}
                                 aria-current='page'
                             >Home</NavLink>
                         </li>
                         <li>
                             <NavLink
-                                to='listings'
+                                to={ROUTE_ENDPOINTS.LISTINGS_ALL}
                                 className={({ isActive }) => getNavLinkClassName(isActive)}
                             >Listings</NavLink>
                         </li>
                         <li>
                             <NavLink
-                                to='listing/create'
+                                to={ROUTE_ENDPOINTS.CREATE_LISTING}
                                 className={({ isActive }) => getNavLinkClassName(isActive)}
                             >Create Listing</NavLink>
                         </li>
-                        <li>
-                            <a href='#' className='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'>Pricing</a>
-                        </li>
-                        <li>
-                            <a href='#' className='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'>Contact</a>
-                        </li>
 
                         {auth && auth.user && Object.keys(auth.user).length > 0
-                            ? <li>
-                                <button
-                                    onClick={logout}
-                                    type="button"
-                                    className='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'
-                                >Logout</button>
-                            </li>
+                            ? <>
+                                <li>
+                                    <NavLink
+                                        to={ROUTE_ENDPOINTS.USER_PROFILE}
+                                        className='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'
+                                    >Profile</NavLink>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={logout}
+                                        type="button"
+                                        className='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'
+                                    >Logout</button>
+                                </li>
+                            </>
                             : <>
                                 <li>
                                     <NavLink
-                                        to='/register'
+                                        to={ROUTE_ENDPOINTS.REGISTER}
                                         className={({ isActive }) => getNavLinkClassName(isActive)}
                                     >Register</NavLink>
                                 </li>
                                 <li>
                                     <NavLink
-                                        to='/login'
+                                        to={ROUTE_ENDPOINTS.LOGIN}
                                         className={({ isActive }) => getNavLinkClassName(isActive)}
                                     >Login</NavLink>
                                 </li>

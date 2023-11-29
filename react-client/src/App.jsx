@@ -6,6 +6,8 @@ import CreateListingForm from './components/pages/forms/listing/CreateListingFor
 import RegistrationForm from './components/pages/forms/auth/RegistrationForm';
 import LoginForm from './components/pages/forms/auth/LoginForm';
 import Listings from './components/pages/listings/Listings';
+import ListingsByUser from './components/pages/listings/ListingsByUser';
+import { ROUTE_ENDPOINTS } from './constants/routeEndpoints';
 
 function App()
 {
@@ -15,13 +17,13 @@ function App()
 
       <Routes>
         <Route path="test" element={<Test />} />
-        <Route path="/" element={<Home />} />
-        <Route path="listings" element={<Listings />} />
+        <Route path={ROUTE_ENDPOINTS.HOME} element={<Home />} />
+        <Route path={ROUTE_ENDPOINTS.LISTINGS_ALL} element={<Listings />} />
         {/* public routes */}
-        <Route path="register" element={<RegistrationForm />} />
-        <Route path="login" element={<LoginForm />} />
-        <Route path="listing/create" element={<CreateListingForm />} />
-
+        <Route path={ROUTE_ENDPOINTS.REGISTER} element={<RegistrationForm />} />
+        <Route path={ROUTE_ENDPOINTS.LOGIN} element={<LoginForm />} />
+        <Route path={ROUTE_ENDPOINTS.CREATE_LISTING} element={<CreateListingForm />} />
+        <Route path={ROUTE_ENDPOINTS.USER_PROFILE} element={<ListingsByUser />} />
         {/* <Route path="" element={<Register />} /> */}
 
         {/* <Route path="unauthorized" element={<Unauthorized />} /> */}

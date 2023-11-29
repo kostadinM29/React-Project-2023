@@ -7,11 +7,9 @@ const Layout = ({ children }) =>
     return (
         <>
             <Header />
-
             <main className='bg-white border-gray-200 dark:bg-gray-900'>
                 {children}
             </main>
-
             <Footer />
         </>
     );

@@ -54,13 +54,10 @@ const Card = ({ listing }) =>
                     <div className="slider-container flex overflow-hidden relative">
                         <div className="slider-wrapper flex" style={updateSlider()}>
                             {listing.images.map((imageUrl, index) => (
-                                <div
-                                    key={index}
-                                    className="slider-item flex-shrink-0 w-full"
-                                >
+                                <div key={index} className="slider-item flex-shrink-0 w-full">
                                     <img
                                         src={imageUrl}
-                                        className="object-cover w-full h-full"
+                                        className="h-48 w-96"
                                     />
                                 </div>
                             ))}

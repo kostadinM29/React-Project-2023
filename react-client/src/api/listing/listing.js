@@ -43,3 +43,29 @@ export const GetAll = async (signal) =>
         }
     }
 };
+
+export const GetAllByUser = async (signal) =>
+{
+    try
+    {
+        const response = await axiosPrivate.get(ENDPOINTS.LISTING_BY_USER,
+            {
+                signal: signal,
+                withCredentials: true
+            });
+
+        return response.data;
+    }
+    catch (error)
+    {
+        if (error.name === 'AbortError')
+        {
+            console.log('Fetch aborted');
+        }
+        else
+        {
+            console.log(error.response.data);
+            throw new Error(`Axios error: ${error.message}`);
+        }
+    }
+};

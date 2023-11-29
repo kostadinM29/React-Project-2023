@@ -34,6 +34,7 @@ namespace api_server.Services
 
         public UserTokens? GenerateJWTTokens(ClaimsIdentity claimsIdentity)
         {
+#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
                 JwtSecurityTokenHandler? tokenHandler = new();
@@ -59,6 +60,7 @@ namespace api_server.Services
             {
                 return null;
             }
+#pragma warning restore CS0168 // Variable is declared but never used
         }
 
         public string GenerateRefreshToken()

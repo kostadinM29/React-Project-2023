@@ -49,12 +49,14 @@ namespace api_server.Services.Interfaces
         {
             IList<string> userRoles = await userManager.GetRolesAsync(user);
 
+#pragma warning disable CS8604 // Possible null reference argument.
             List<Claim> authClaims = new()
             {
                new Claim(ClaimTypes.Name, user.UserName),
                new Claim(ClaimTypes.NameIdentifier, user.Id),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
+#pragma warning restore CS8604 // Possible null reference argument.
 
             foreach (string userRole in userRoles)
             {

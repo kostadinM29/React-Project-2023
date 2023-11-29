@@ -13,6 +13,6 @@ namespace api_server.Data.Models
 
         public virtual Listing Listing { get; set; }
 
-        public string Data { get; set; }
+        public string Path { get; set; }
     }
 }

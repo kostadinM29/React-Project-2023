@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import InputField from '../../../partials/InputField';
 import { Create } from '../../../../api/listing/listing';
 import TagsInputField from '../../../partials/TagInputField';
+import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
 
 const CreateListingForm = () =>
 {
@@ -64,7 +65,7 @@ const CreateListingForm = () =>
                 const response = await Create(requestData);
 
                 console.log('Listing created successfully with id:', response);
-                navigate('/');
+                navigate(ROUTE_ENDPOINTS.HOME);
             } catch (error)
             {
                 console.error('API request error:', error);

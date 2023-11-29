@@ -123,6 +123,7 @@ namespace api_server
             builder.Services.AddTransient<IJWTService, JWTService>();
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IListingService, ListingService>();
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             WebApplication app = builder.Build();
 
@@ -136,6 +137,8 @@ namespace api_server
             app.UseCors();
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
 
             app.UseAuthentication();
 
