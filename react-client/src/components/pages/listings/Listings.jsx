@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GetAll } from '../../../api/listing/listing';
-import Card from './Card';
+import Card from './cards/Card';
 
 const Listings = () =>
 {
@@ -26,10 +26,12 @@ const Listings = () =>
     }, []);
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-3">
-            {listings?.map((listing, index) => (
-                <Card key={index} listing={listing} />
-            ))}
+        <div className='container mx-auto'>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-3">
+                {listings?.map((listing, index) => (
+                    <Card key={index} listing={listing} />
+                ))}
+            </div>
         </div>
     );
 };
