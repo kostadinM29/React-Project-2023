@@ -1,6 +1,7 @@
 import { React, createContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Cookies from 'js-cookie';
+import { RefreshToken } from '../api/auth/auth';
 
 const AuthContext = createContext({});
 
@@ -8,34 +9,10 @@ export const AuthProvider = ({ children }) =>
 {
     const [auth, setAuth] = useState({});
 
-    useEffect(() =>
-    {
-        try
-        {
-            const storedAccessToken = Cookies.get('accessToken');
-            const storedRefreshToken = Cookies.get('refreshToken');
-
-            if (storedAccessToken)
-            {
-                setAuth({
-                    user: jwtDecode(storedAccessToken),
-                    accessToken: storedAccessToken,
-                    refreshToken: storedRefreshToken,
-                });
-            }
-        }
-        catch (error)
-        {
-            console.log('Error occured while setting up token on page load!')
-            setAuth({});
-        }
-    }, []);
-
     const updateAuth = (tokens) =>
     {
         try
         {
-
             setAuth({
                 user: jwtDecode(tokens.accessToken),
                 ...tokens,
@@ -43,7 +20,6 @@ export const AuthProvider = ({ children }) =>
         }
         catch (error)
         {
-            // If decoding the JWT fails, it indicates that either the accessToken was undefined or tampered with.
             setAuth({});
         }
         finally
@@ -56,6 +32,27 @@ export const AuthProvider = ({ children }) =>
                 : Cookies.remove('refreshToken');
         }
     };
+
+
+    useEffect(() =>
+    {
+        const setInitialStateFromCookies = async () =>
+        {
+            try
+            {
+                const response = await RefreshToken();
+
+                updateAuth(response.data);
+            }
+            catch (error)
+            {
+                console.log('Error occured while setting up token on initial page load!')
+                setAuth({});
+            }
+        };
+
+        setInitialStateFromCookies();
+    }, []);
 
     return (
         <AuthContext.Provider value={{ auth, updateAuth }}>

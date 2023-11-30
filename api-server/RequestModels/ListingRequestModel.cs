@@ -4,6 +4,8 @@ namespace api_server.RequestModels
 {
     public class ListingRequestModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Title is required!")]
         [MaxLength(30)]
         public string Title { get; set; }
@@ -15,8 +17,8 @@ namespace api_server.RequestModels
         [Required(ErrorMessage = "Contact Details is required!")]
         public string ContactDetails { get; set; }
 
-        public List<string> Tags { get; set; } = new List<string>();
+        public List<string> Tags { get; set; } = [];
 
-        public List<string> Images { get; set; } = new List<string>();
+        public List<string> Images { get; set; } = [];
     }
 }

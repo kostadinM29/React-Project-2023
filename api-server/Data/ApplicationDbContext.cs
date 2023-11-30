@@ -16,6 +16,7 @@ namespace api_server.Data
 #pragma warning disable CS0114 // Member hides inherited member; missing override keyword
         public virtual DbSet<ApplicationUser> Users { get; set; }
 #pragma warning restore CS0114 // Member hides inherited member; missing override keyword
+        public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<UserRefreshTokens> UserRefreshToken { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -14,21 +14,8 @@ namespace api_server.Controllers
     [AllowAnonymous]
     [Route("api/user")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController(IAuthService authService, IUserService userService, IJWTService jwtService, ILogger<AuthController> logger) : ControllerBase
     {
-        private readonly IAuthService authService;
-        private readonly IUserService userService;
-        private readonly IJWTService jwtService;
-        private readonly ILogger<AuthController> logger;
-
-        public AuthController(IAuthService authService, IUserService userService, IJWTService jwtService, ILogger<AuthController> logger)
-        {
-            this.authService = authService;
-            this.userService = userService;
-            this.jwtService = jwtService;
-            this.logger = logger;
-        }
-
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(LoginRequestModel model)

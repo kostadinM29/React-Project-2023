@@ -3,6 +3,7 @@ import InputField from '../../../partials/InputField';
 import useAuth from '../../../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { Login } from '../../../../api/auth/auth';
+import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
 
 const LoginForm = () =>
 {
@@ -57,7 +58,7 @@ const LoginForm = () =>
 
                 console.log('Login successful. JWT token:', response.data.accessToken);
 
-                navigate('/');
+                navigate(ROUTE_ENDPOINTS.HOME);
             }
             catch (error)
             {

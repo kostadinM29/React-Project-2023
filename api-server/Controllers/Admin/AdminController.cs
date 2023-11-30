@@ -1,5 +1,4 @@
 ﻿using api_server.Identity;
-using api_server.Models;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

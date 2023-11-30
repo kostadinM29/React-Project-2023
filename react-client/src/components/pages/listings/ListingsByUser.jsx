@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { GetAllByUser } from '../../../api/listing/listing';
+import { Link } from 'react-router-dom';
+import { ROUTE_ENDPOINTS } from '../../../constants/routeEndpoints';
 
 const ListingsByUser = () =>
 {
@@ -56,14 +58,14 @@ const ListingsByUser = () =>
                             <h2 className="text-xl font-bold mb-2">{listing.title}</h2>
                             <p className="text-gray-700">{listing.description}</p>
                         </div>
-
                         <div className="flex justify-between p-4">
-                            <button
-                                onClick={() => handleEdit(listing.id)}
+                            <Link
+                                as={Link}
+                                to={`/${ROUTE_ENDPOINTS.EDIT_LISTING}/${listing.id}`}
                                 className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                             >
                                 Edit
-                            </button>
+                            </Link>
                             <button
                                 onClick={() => handleDelete(listing.id)}
                                 className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"

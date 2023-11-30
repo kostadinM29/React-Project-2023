@@ -14,17 +14,55 @@ namespace api_server.Controllers
 {
     [Route("api/listings")]
     [ApiController]
-    public class ListingController : ControllerBase
+    public class ListingController(IListingService listingService, ILogger<ListingController> logger, UserManager<ApplicationUser> userManager) : ControllerBase
     {
-        private readonly IListingService listingService;
-        private readonly ILogger<ListingController> logger;
-        private readonly UserManager<ApplicationUser> userManager;
-
-        public ListingController(IListingService listingService, ILogger<ListingController> logger, UserManager<ApplicationUser> userManager)
+        [Authorize]
+        [HttpGet]
+        [Route("one")]
+        public async Task<IActionResult> GetListingsByUser(int id)
         {
-            this.listingService = listingService;
-            this.logger = logger;
-            this.userManager = userManager;
+            try
+            {
+                string? userId = userManager.GetUserId(User);
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return BadRequest("User not found!");
+                }
+
+                ListingDTO? listing = await listingService.GetListingById(id, userId);
+
+                if (listing is null)
+                {
+                    return NotFound("Listing not found by the user!");
+                }
+
+                return Ok(listing);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("all")]
+        public async Task<IActionResult> GetListings()
+        {
+            try
+            {
+                IEnumerable<ListingDTO>? listings = await listingService.GetListings();
+
+                string jsonString = JsonSerializer.Serialize(listings);
+
+                return Ok(jsonString);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [Authorize]
@@ -57,29 +95,10 @@ namespace api_server.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("all")]
-        public async Task<IActionResult> GetListings()
-        {
-            try
-            {
-                IEnumerable<ListingDTO>? listings = await listingService.GetListings();
-
-                string jsonString = JsonSerializer.Serialize(listings);
-
-                return Ok(jsonString);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
         [Authorize]
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateListing(ListingRequestModel listingRequest)
+        public async Task<IActionResult> Create(ListingRequestModel listingRequest)
         {
             try
             {
@@ -102,7 +121,42 @@ namespace api_server.Controllers
                     return Ok(listingDTO);
                 }
 
-                return StatusCode(StatusCodes.Status500InternalServerError, "Something happened and listing wasn't created!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something happened and the listing wasn't saved!");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("edit")]
+        public async Task<IActionResult> Edit(ListingRequestModel listingRequest)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid payload!");
+                }
+
+                string? userId = userManager.GetUserId(User);
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return BadRequest("User not found!");
+                }
+
+                ListingDTO? listingDTO = await listingService.Edit(listingRequest, userId);
+
+                if (listingDTO is not null)
+                {
+                    return Ok(listingDTO);
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something happened and the listing wasn't saved!");
             }
             catch (Exception ex)
             {

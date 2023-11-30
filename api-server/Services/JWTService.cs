@@ -12,16 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace api_server.Services
 {
-    public class JWTService : IJWTService
+    public class JWTService(IConfiguration configuration, UserManager<ApplicationUser> userManager) : IJWTService
     {
-        private readonly IConfiguration configuration;
-        private readonly UserManager<ApplicationUser> userManager;
-
-        public JWTService(IConfiguration configuration, UserManager<ApplicationUser> userManager)
-        {
-            this.configuration = configuration;
-            this.userManager = userManager;
-        }
         public UserTokens? GenerateToken(ClaimsIdentity claimsIdentity)
         {
             return GenerateJWTTokens(claimsIdentity);

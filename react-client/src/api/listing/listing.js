@@ -1,17 +1,13 @@
 import { ENDPOINTS } from '../../constants/apiEndpoints';
 import axios, { axiosPrivate } from '../axios';
 
-export const Create = async (data) =>
+export const Edit = async (data) =>
 {
     try
     {
         const response = await axiosPrivate.post(
-            ENDPOINTS.LISTING_CREATE,
+            ENDPOINTS.LISTING_EDIT,
             data,
-            {
-                headers: { 'Accept': "multipart/form-data" },
-                withCredentials: true
-            }
         );
 
         return response.data;
@@ -19,6 +15,50 @@ export const Create = async (data) =>
     {
         console.log(error.response.data);
         throw new Error(`Axios error: ${error.message}`);
+    }
+};
+
+export const Create = async (data) =>
+{
+    try
+    {
+        const response = await axiosPrivate.post(
+            ENDPOINTS.LISTING_CREATE,
+            data,
+        );
+
+        return response.data;
+    } catch (error)
+    {
+        console.log(error.response.data);
+        throw new Error(`Axios error: ${error.message}`);
+    }
+};
+
+export const GetOneById = async (id, signal) =>
+{
+    try
+    {
+        const response = await axiosPrivate.get(ENDPOINTS.LISTING_BY_ID, {
+            params: {
+                id,
+            },
+            signal: signal,
+        });
+
+        return response.data;
+    }
+    catch (error)
+    {
+        if (error.name === 'AbortError')
+        {
+            console.log('Fetch aborted');
+        }
+        else
+        {
+            console.log(error.response.data);
+            throw new Error(`Axios error: ${error.message}`);
+        }
     }
 };
 
@@ -51,7 +91,6 @@ export const GetAllByUser = async (signal) =>
         const response = await axiosPrivate.get(ENDPOINTS.LISTING_BY_USER,
             {
                 signal: signal,
-                withCredentials: true
             });
 
         return response.data;

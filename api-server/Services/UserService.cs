@@ -9,17 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api_server.Services.Interfaces
 {
-    public class UserService : IUserService
+    public class UserService(ApplicationDbContext db, UserManager<ApplicationUser> userManager) : IUserService
     {
-        private readonly ApplicationDbContext db;
-        private readonly UserManager<ApplicationUser> userManager;
-
-        public UserService(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
-        {
-            this.db = db;
-            this.userManager = userManager;
-        }
-
         public async Task<UserRefreshTokens> AddUserRefreshTokens(UserRefreshTokens userTokens)
         {
             await db.UserRefreshToken.AddAsync(userTokens);
@@ -50,12 +41,12 @@ namespace api_server.Services.Interfaces
             IList<string> userRoles = await userManager.GetRolesAsync(user);
 
 #pragma warning disable CS8604 // Possible null reference argument.
-            List<Claim> authClaims = new()
-            {
+            List<Claim> authClaims =
+            [
                new Claim(ClaimTypes.Name, user.UserName),
                new Claim(ClaimTypes.NameIdentifier, user.Id),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
+            ];
 #pragma warning restore CS8604 // Possible null reference argument.
 
             foreach (string userRole in userRoles)

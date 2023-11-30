@@ -19,11 +19,10 @@ const Navigation = () =>
 
     const logout = async () =>
     {
-        const result = await Logout();
-        console.log(result);
+        await Logout();
 
         updateAuth({});
-        navigate('/');
+        navigate(ROUTE_ENDPOINTS.HOME);
     };
 
     return (

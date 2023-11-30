@@ -9,20 +9,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace api_server.Services
 {
-    public class AuthService : IAuthService
+    public class AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IJWTService jwtService, IUserService userService) : IAuthService
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IJWTService jwtService;
-        private readonly IUserService userService;
-
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IJWTService jwtService, IUserService userService)
-        {
-            this.userManager = userManager;
-            this.roleManager = roleManager;
-            this.jwtService = jwtService;
-            this.userService = userService;
-        }
         public async Task<(int, UserTokens?, string)> Register(RegisterRequestModel model, string role)
         {
             ApplicationUser? userExists = await userManager.FindByNameAsync(model.Username);

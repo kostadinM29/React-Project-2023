@@ -302,7 +302,7 @@ namespace api_server.Migrations
 
                     b.HasIndex("ListingId");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("api_server.Data.Models.UserRefreshTokens", b =>
