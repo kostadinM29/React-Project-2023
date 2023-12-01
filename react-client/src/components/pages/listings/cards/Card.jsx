@@ -28,7 +28,7 @@ const Card = ({ listing }) =>
     };
 
     return (
-        <div className='max-w-lg bg-white dark:gray-800 rounded-md overflow-hidden shadow-md'>
+        <div className='max-w-lg bg-white dark:bg-gray-800 rounded-md overflow-hidden shadow-md'>
             <div className='bg-gray-700 text-white dark:bg-gray-600 dark:text-white p-4 flex flex-wrap justify-between items-center'>
                 <h2 className='text-lg break-all'>
                     {listing.title}

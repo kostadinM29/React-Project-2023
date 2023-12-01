@@ -11,12 +11,32 @@ export const Edit = async (data) =>
         );
 
         return response.data;
-    } catch (error)
+    }
+    catch (error)
     {
         console.log(error.response.data);
         throw new Error(`Axios error: ${error.message}`);
     }
 };
+
+export const Delete = async (id) =>
+{
+    try
+    {
+        const response = await axiosPrivate.post(
+            ENDPOINTS.LISTING_DELETE,
+            id,
+        );
+
+        return response.data;
+    }
+    catch (error)
+    {
+        console.log(error.response.data);
+        throw new Error(`Axios error: ${error.message}`);
+    }
+};
+
 
 export const Create = async (data) =>
 {
@@ -28,7 +48,8 @@ export const Create = async (data) =>
         );
 
         return response.data;
-    } catch (error)
+    }
+    catch (error)
     {
         console.log(error.response.data);
         throw new Error(`Axios error: ${error.message}`);

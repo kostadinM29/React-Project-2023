@@ -6,9 +6,9 @@ import { ROUTE_ENDPOINTS } from "../../constants/routeEndpoints";
 
 const Private = ({ Component }) =>
 {
-    const auth = useAuth();
+    const { auth } = useAuth();
 
-    return auth.accessToken
+    return auth.user
         ? <Component />
         : <Navigate to={`/${ROUTE_ENDPOINTS.LOGIN}`} />;
 }

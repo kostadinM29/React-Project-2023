@@ -26,9 +26,9 @@ function App()
           <Route path={ROUTE_ENDPOINTS.LOGIN} element={<LoginForm />} />
 
           {/* Private Routes */}
-          <Route path={`${ROUTE_ENDPOINTS.EDIT_LISTING}/:id`} element={<Private><SaveListingForm /></Private>} />
-          <Route path={ROUTE_ENDPOINTS.CREATE_LISTING} element={<Private><SaveListingForm /></Private>} />
-          <Route path={ROUTE_ENDPOINTS.USER_PROFILE} element={<Private><ListingsByUser /></Private>} />
+          <Route path={`${ROUTE_ENDPOINTS.EDIT_LISTING}/:id`} element={<Private Component={SaveListingForm} />} />
+          <Route path={ROUTE_ENDPOINTS.CREATE_LISTING} element={<Private Component={SaveListingForm} />} />
+          <Route path={ROUTE_ENDPOINTS.USER_PROFILE} element={<Private Component={ListingsByUser} />} />
         </Routes>
       </Layout>
     </div >

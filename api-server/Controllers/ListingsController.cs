@@ -164,5 +164,35 @@ namespace api_server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [Authorize]
+        [HttpPost]
+        [Route("delete")]
+        public async Task<IActionResult> Delete([FromBody] int id)
+        {
+            try
+            {
+                string? userId = userManager.GetUserId(User);
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return BadRequest("User not found!");
+                }
+
+                (int result, string message) = await listingService.Delete(id, userId);
+
+                if (result > 0)
+                {
+                    return Ok(new { id, message });
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, message);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

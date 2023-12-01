@@ -1,4 +1,5 @@
 ﻿using api_server.Constants;
+using api_server.Controllers;
 using api_server.Data;
 using api_server.Data.Models;
 using api_server.Dtos;
@@ -13,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace api_server.Services
 {
-    public class ListingService(ApplicationDbContext context, IMapper mapper, IWebHostEnvironment hostingEnvironment) : IListingService
+    public class ListingService(ApplicationDbContext context, IMapper mapper, ILogger<ListingController> logger, IWebHostEnvironment hostingEnvironment) : IListingService
     {
         public async Task<IEnumerable<ListingDTO>> GetListings()
         {
@@ -112,11 +113,7 @@ namespace api_server.Services
 
         public async Task<ListingDTO?> Edit(ListingRequestModel listingRequest, string userId)
         {
-            Listing? listing = await context.Listings
-                .Include(l => l.User)
-                .Include(l => l.Images)
-                .Include(l => l.Tags)
-                .FirstOrDefaultAsync(l => l.Id == listingRequest.Id && l.UserId == userId);
+            Listing? listing = await GetListing(listingRequest.Id, userId);
 
             if (listing is null)
             {
@@ -152,7 +149,7 @@ namespace api_server.Services
             List<Tag> tags = [];
             foreach (string title in listingRequest.Tags)
             {
-                if (!listing.Tags.IsNullOrEmpty() 
+                if (!listing.Tags.IsNullOrEmpty()
                     && listing.Tags.Any(t => t.Title == title))
                 {
                     Tag? alreadyExistingTag = await context.Tags.FirstOrDefaultAsync(t => t.Title == title && t.ListingId == listing.Id);
@@ -191,6 +188,40 @@ namespace api_server.Services
             }
 
             return null;
+        }
+
+        public async Task<(int, string)> Delete(int listingId, string userId)
+        {
+            try
+            {
+                Listing? listing = await GetListing(listingId, userId);
+
+                if (listing is null)
+                {
+                    return (-1, "Listing not found for the user!");
+                }
+
+                context.RemoveRange(listing.Tags);
+                context.RemoveRange(listing.Images);
+                context.Remove(listing);
+
+                int result  = await context.SaveChangesAsync();
+                return (result, "Listing deleted!");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return (-1, "Something happened and the listing wasn't deleted!");
+            }
+        }
+
+        private async Task<Listing?> GetListing(int listingId, string userId)
+        {
+            return await context.Listings
+                .Include(l => l.User)
+                .Include(l => l.Images)
+                .Include(l => l.Tags)
+                .FirstOrDefaultAsync(l => l.Id == listingId && l.UserId == userId);
         }
 
         private async Task<string> SaveImageAsync(string imageData)

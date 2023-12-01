@@ -8,6 +8,8 @@ const AuthContext = createContext({});
 export const AuthProvider = ({ children }) =>
 {
     const [auth, setAuth] = useState({});
+    // Set loading state because if we refresh the page Private Guard's auth is not yet set and it redirects to login even though cookies are valid.
+    const [loading, setLoading] = useState(true);
 
     const updateAuth = (tokens) =>
     {
@@ -17,12 +19,10 @@ export const AuthProvider = ({ children }) =>
                 user: jwtDecode(tokens.accessToken),
                 ...tokens,
             });
-        }
-        catch (error)
+        } catch (error)
         {
             setAuth({});
-        }
-        finally
+        } finally
         {
             tokens && tokens.accessToken
                 ? Cookies.set('accessToken', tokens.accessToken, { secure: true, sameSite: 'strict' })
@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }) =>
         }
     };
 
-
     useEffect(() =>
     {
         const setInitialStateFromCookies = async () =>
@@ -41,13 +40,14 @@ export const AuthProvider = ({ children }) =>
             try
             {
                 const response = await RefreshToken();
-
                 updateAuth(response.data);
-            }
-            catch (error)
+            } catch (error)
             {
-                console.log('Error occured while setting up token on initial page load!')
+                console.log('Error occurred while setting up token on initial page load!');
                 setAuth({});
+            } finally
+            {
+                setLoading(false);
             }
         };
 
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) =>
 
     return (
         <AuthContext.Provider value={{ auth, updateAuth }}>
-            {children}
+            {!loading && children}
         </AuthContext.Provider>
     );
 };

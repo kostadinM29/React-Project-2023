@@ -149,6 +149,11 @@ const SaveListingForm = () =>
                     console.log('Listing created successfully:', response);
                 }
 
+                if (isEditing)
+                {
+                    navigate(`/${ROUTE_ENDPOINTS.USER_PROFILE}`);
+                }
+
                 navigate(`/${ROUTE_ENDPOINTS.LISTINGS_ALL}`);
             }
             catch (error)
