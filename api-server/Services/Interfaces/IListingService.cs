@@ -5,6 +5,7 @@ namespace api_server.Services.Interfaces
 {
     public interface IListingService
     {
+        Task<ListingDTO?> GetListingById(int listingId);
         Task<ListingDTO?> GetListingById(int listingId, string userId);
         Task<IEnumerable<ListingDTO>> GetListings();
         Task<IEnumerable<ListingDTO>?> GetListingsByUser(string userId);

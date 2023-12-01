@@ -7,16 +7,8 @@ using System.Security.Claims;
 
 namespace api_server.Middlewares
 {
-    public class JwtAuthorizationMiddleware
+    public class JwtAuthorizationMiddleware(RequestDelegate next)
     {
-
-        private readonly RequestDelegate _next;
-
-        public JwtAuthorizationMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
-
         public async Task Invoke(HttpContext context)
         {
             UserManager<ApplicationUser>? userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
@@ -37,7 +29,7 @@ namespace api_server.Middlewares
                 }
             }
 
-            await _next(context);
+            await next(context);
         }
     }
 }

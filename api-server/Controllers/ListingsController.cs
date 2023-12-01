@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 
+using api_server.Attributes;
 using api_server.Data.Models;
 using api_server.Dtos;
 using api_server.RequestModels;
@@ -14,12 +15,36 @@ namespace api_server.Controllers
 {
     [Route("api/listings")]
     [ApiController]
+    [SimulateSlowResponse(1000)] // 1000 milliseconds (1 seconds) delay.
     public class ListingController(IListingService listingService, ILogger<ListingController> logger, UserManager<ApplicationUser> userManager) : ControllerBase
     {
         [Authorize]
         [HttpGet]
         [Route("one")]
-        public async Task<IActionResult> GetListingsByUser(int id)
+        public async Task<IActionResult> GetListing(int id)
+        {
+            try
+            {
+                ListingDTO? listing = await listingService.GetListingById(id);
+
+                if (listing is null)
+                {
+                    return NotFound("Listing not found!");
+                }
+
+                return Ok(listing);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("one-by-user")]
+        public async Task<IActionResult> GetListingByUser(int id)
         {
             try
             {

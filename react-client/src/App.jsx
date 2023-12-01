@@ -11,6 +11,7 @@ import Listings from './components/pages/listings/Listings';
 import ListingsByUser from './components/pages/listings/ListingsByUser';
 import SaveListingForm from './components/pages/forms/listing/SaveListingForm';
 import Private from './components/guards/Private';
+import Details from './components/pages/listings/Details';
 
 function App()
 {
@@ -26,6 +27,7 @@ function App()
           <Route path={ROUTE_ENDPOINTS.LOGIN} element={<LoginForm />} />
 
           {/* Private Routes */}
+          <Route path={`${ROUTE_ENDPOINTS.LISTING_DETAIL}/:id`} element={<Private Component={Details} />} />
           <Route path={`${ROUTE_ENDPOINTS.EDIT_LISTING}/:id`} element={<Private Component={SaveListingForm} />} />
           <Route path={ROUTE_ENDPOINTS.CREATE_LISTING} element={<Private Component={SaveListingForm} />} />
           <Route path={ROUTE_ENDPOINTS.USER_PROFILE} element={<Private Component={ListingsByUser} />} />

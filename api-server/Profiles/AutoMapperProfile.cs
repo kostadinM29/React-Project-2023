@@ -11,17 +11,10 @@ namespace api_server.Profiles
         public AutoMapperProfile()
         {
             CreateMap<Listing, ListingDTO>()
-            .ForMember(dest => dest.ImageUrls, opt => opt.MapFrom(src => src.Images.Select(image => image.Path.ToFullImagePath())))
-            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Title)))
-            .ConstructUsing((src, context) => new ListingDTO(
-                src.Id,
-                src.UserId,
-                src.User.UserName,
-                src.Title,
-                src.Description,
-                src.Images.Select(image => image.Path.ToFullImagePath()).ToList(),
-                src.ContactDetails
-            ));
+                .ForMember(dest => dest.ImageUrls, opt => opt.MapFrom(src => src.Images.Select(image => image.Path.ToFullImagePath())))
+                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Title)))
+                .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.CreatedDate.ToString("yyyy-MM-dd")))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName));
         }
     }
 }

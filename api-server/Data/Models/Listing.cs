@@ -5,11 +5,6 @@ namespace api_server.Data.Models
 {
     public class Listing
     {
-        public Listing()
-        {
-            Images = new List<Image>();
-        }
-
         [Key]
         public int Id { get; set; }
 
@@ -27,9 +22,13 @@ namespace api_server.Data.Models
         [MaxLength(200)]
         public string Description { get; set; }
 
-        public virtual ICollection<Tag> Tags { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
-        public virtual ICollection<Image> Images { get; set; }
+        public int ViewsCount { get; set; }
+
+        public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
+
+        public virtual ICollection<Image> Images { get; set; } = new List<Image>();
 
         public string? ContactDetails { get; set; }
     }

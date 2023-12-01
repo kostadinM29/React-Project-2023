@@ -1,6 +1,8 @@
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
 
 const Card = ({ listing }) =>
 {
@@ -14,12 +16,16 @@ const Card = ({ listing }) =>
 
     const handlePrev = () =>
     {
-        setCurrentIndex((prevIndex) => (prevIndex === 0 ? listing.images.length - 1 : prevIndex - 1));
+        setCurrentIndex((prevIndex) => (prevIndex === 0
+            ? listing.images.length - 1
+            : prevIndex - 1));
     };
 
     const handleNext = () =>
     {
-        setCurrentIndex((prevIndex) => (prevIndex === listing.images.length - 1 ? 0 : prevIndex + 1));
+        setCurrentIndex((prevIndex) => (prevIndex === listing.images.length - 1
+            ? 0
+            : prevIndex + 1));
     };
 
     const handleDotClick = (index) =>
@@ -28,7 +34,7 @@ const Card = ({ listing }) =>
     };
 
     return (
-        <div className='max-w-lg bg-white dark:bg-gray-800 rounded-md overflow-hidden shadow-md'>
+        <div className='max-w-lg bg-white dark:bg-gray-800 rounded-md border dark:border-gray-600 overflow-hidden'>
             <div className='bg-gray-700 text-white dark:bg-gray-600 dark:text-white p-4 flex flex-wrap justify-between items-center'>
                 <h2 className='text-lg break-all'>
                     {listing.title}
@@ -40,8 +46,8 @@ const Card = ({ listing }) =>
                                 key={index}
                                 onClick={() => handleDotClick(index)}
                                 className={`h-2 w-2 rounded-full cursor-pointer ${index === currentIndex
-                                    ? 'bg-gray-200'
-                                    : 'bg-gray-500'
+                                    ? 'bg-pink-500'
+                                    : 'bg-teal-500'
                                     }`}
                             />
                         ))}
@@ -51,10 +57,13 @@ const Card = ({ listing }) =>
 
             {listing.images &&
                 (
-                    <div className="slider-container flex overflow-hidden relative">
-                        <div className="slider-wrapper flex" style={updateSlider()}>
+                    <div className="flex overflow-hidden relative">
+                        <div className="flex" style={updateSlider()}>
                             {listing.images.map((imageUrl, index) => (
-                                <div key={index} className="slider-item flex-shrink-0 w-full">
+                                <div
+                                    key={index}
+                                    className="flex-shrink-0 w-full"
+                                >
                                     <img
                                         src={imageUrl}
                                         className="h-48 w-96"
@@ -63,13 +72,17 @@ const Card = ({ listing }) =>
                             ))}
                         </div>
                     </div>
-                )}
+                )
+            }
 
-            <div className="p-4">
+            <div className="p-2">
                 <p className="text-gray-700 dark:text-gray-300 overflow-ellipsis break-words">
                     {listing.description}
                 </p>
             </div>
+            <p className="text-xs ml-2 text-gray-500 dark:text-gray-400 ">
+                {listing.created}
+            </p>
 
             {listing.tags &&
                 <div className="m-2 space-x-1">
@@ -86,14 +99,26 @@ const Card = ({ listing }) =>
 
             {listing.images.length > 1 &&
                 <div className="flex justify-between p-4">
-                    <button onClick={handlePrev} className="text-gray-700 dark:text-gray-300 focus:outline-none">
+                    <button
+                        onClick={handlePrev}
+                        className="text-gray-700 dark:text-gray-300 focus:outline-none">
                         <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
-                    <button onClick={handleNext} className="text-gray-700 dark:text-gray-300 focus:outline-none">
+                    <button
+                        onClick={handleNext}
+                        className="text-gray-700 dark:text-gray-300 focus:outline-none">
                         <FontAwesomeIcon icon={faChevronRight} />
                     </button>
                 </div>
             }
+            <Link
+                to={`/${ROUTE_ENDPOINTS.LISTING_DETAIL}/${listing.id}`}
+                className="inline-flex items-center m-2 px-3 py-2 text-sm font-medium text-center text-white bg-teal-600 rounded-lg hover:bg-pink-600 focus:ring-4">
+                Read more
+                <FontAwesomeIcon
+                    icon={faArrowRight}
+                    className='ml-2' />
+            </Link>
         </div>
     );
 };

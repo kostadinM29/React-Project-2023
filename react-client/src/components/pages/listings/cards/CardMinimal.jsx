@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { faEdit, faTrashAlt, faInfoCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
-import { Delete } from '../../../../api/listing/listing';
 
 const CardMinimal = ({ listing, onDelete }) =>
 {
@@ -42,13 +42,19 @@ const CardMinimal = ({ listing, onDelete }) =>
                 </div>
             </Link>
             <div className="flex flex-row-reverse gap-1 p-4">
-                <Link to={`/${ROUTE_ENDPOINTS.EDIT_LISTING}/${listing.id}`} className={buttonStyles}>
+                <Link
+                    to={`/${ROUTE_ENDPOINTS.EDIT_LISTING}/${listing.id}`}
+                    className={buttonStyles}>
                     <FontAwesomeIcon icon={faEdit} />
                 </Link>
-                <button onClick={openDeleteModal} className={buttonStyles}>
+                <button
+                    onClick={openDeleteModal}
+                    className={buttonStyles}>
                     <FontAwesomeIcon icon={faTrashAlt} />
                 </button>
-                <Link className={buttonStyles}>
+                <Link
+                    to={`/${ROUTE_ENDPOINTS.LISTING_DETAIL}/${listing.id}`}
+                    className={buttonStyles}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                 </Link>
             </div>

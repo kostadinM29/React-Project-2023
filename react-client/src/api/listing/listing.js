@@ -56,7 +56,7 @@ export const Create = async (data) =>
     }
 };
 
-export const GetOneById = async (id, signal) =>
+export const GetOne = async (id, signal) =>
 {
     try
     {
@@ -83,11 +83,38 @@ export const GetOneById = async (id, signal) =>
     }
 };
 
+export const GetOneByUser = async (id, signal) =>
+{
+    try
+    {
+        const response = await axiosPrivate.get(ENDPOINTS.LISTING_BY_USER, {
+            params: {
+                id,
+            },
+            signal: signal,
+        });
+
+        return response.data;
+    }
+    catch (error)
+    {
+        if (error.name === 'AbortError')
+        {
+            console.log('Fetch aborted');
+        }
+        else
+        {
+            console.log(error.response.data);
+            throw new Error(`Axios error: ${error.message}`);
+        }
+    }
+};
+
 export const GetAll = async (signal) =>
 {
     try
     {
-        const response = await axios.get(ENDPOINTS.LISTING_ALL, { signal });
+        const response = await axios.get(ENDPOINTS.LISTINGS_ALL, { signal });
 
         return response.data;
     }
@@ -109,7 +136,7 @@ export const GetAllByUser = async (signal) =>
 {
     try
     {
-        const response = await axiosPrivate.get(ENDPOINTS.LISTING_BY_USER,
+        const response = await axiosPrivate.get(ENDPOINTS.LISTINGS_ALL_BY_USER,
             {
                 signal: signal,
             });

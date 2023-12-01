@@ -2,7 +2,7 @@
 
 namespace api_server.Extensions
 {
-    public static class JwtAuthorizationMiddlewareExtensions
+    public static class MiddlewareExtensions
     {
         public static IApplicationBuilder UseJwtAuthorization(this IApplicationBuilder builder)
         {

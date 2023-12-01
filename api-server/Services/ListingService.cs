@@ -27,14 +27,21 @@ namespace api_server.Services
             return listings.Select(l => mapper.Map<ListingDTO>(l)).ToList();
         }
 
+        public async Task<ListingDTO?> GetListingById(int listingId)
+        {
+            Listing? listing = await GetListing(listingId);
+
+            if (listing is null)
+            {
+                return null;
+            }
+
+            return mapper.Map<ListingDTO>(listing);
+        }
+
         public async Task<ListingDTO?> GetListingById(int listingId, string userId)
         {
-            Listing? listing = await context.Listings
-                .Include(l => l.User)
-                .Include(l => l.Images)
-                .Include(l => l.Tags)
-                .FirstOrDefaultAsync(listing => listing.Id == listingId
-                && listing.UserId == userId);
+            Listing? listing = await GetListingByUser(listingId, userId);
 
             if (listing is null)
             {
@@ -113,7 +120,7 @@ namespace api_server.Services
 
         public async Task<ListingDTO?> Edit(ListingRequestModel listingRequest, string userId)
         {
-            Listing? listing = await GetListing(listingRequest.Id, userId);
+            Listing? listing = await GetListingByUser(listingRequest.Id, userId);
 
             if (listing is null)
             {
@@ -194,7 +201,7 @@ namespace api_server.Services
         {
             try
             {
-                Listing? listing = await GetListing(listingId, userId);
+                Listing? listing = await GetListingByUser(listingId, userId);
 
                 if (listing is null)
                 {
@@ -215,7 +222,16 @@ namespace api_server.Services
             }
         }
 
-        private async Task<Listing?> GetListing(int listingId, string userId)
+        private async Task<Listing?> GetListing(int listingId)
+        {
+            return await context.Listings
+                .Include(l => l.User)
+                .Include(l => l.Images)
+                .Include(l => l.Tags)
+                .FirstOrDefaultAsync(l => l.Id == listingId);
+        }
+
+        private async Task<Listing?> GetListingByUser(int listingId, string userId)
         {
             return await context.Listings
                 .Include(l => l.User)
