@@ -31,7 +31,7 @@ namespace api_server.Services
             {
                 JwtSecurityTokenHandler? tokenHandler = new();
                 byte[]? tokenKey = Encoding.UTF8.GetBytes(configuration["JWTKey:Secret"]!);
-                long _TokenExpiryTimeInHour = Convert.ToInt64(configuration["JWTKey:TokenExpiryTimeInHour"]);
+                long _TokenExpiryTimeInHour = Convert.ToInt64(configuration["JWTKey:TokenExpiryTimeInHours"]);
 
                 SecurityTokenDescriptor? tokenDescriptor = new()
                 {

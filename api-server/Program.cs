@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 
 using api_server.Data;
@@ -127,28 +128,41 @@ namespace api_server
 
             WebApplication app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            try
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                using (IServiceScope? serviceScope = app.Services.CreateScope())
+                {
+                    ApplicationDbContext? dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    dbContext.Database.Migrate();
+                }
+
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI();
+                }
+
+                app.UseCors();
+
+                app.UseHttpsRedirection();
+
+                app.UseStaticFiles();
+
+                app.UseAuthentication();
+
+                app.UseAuthorization();
+
+                app.UseJwtAuthorization();
+
+                app.MapControllers();
+
+                app.Run();
             }
-
-            app.UseCors();
-
-            app.UseHttpsRedirection();
-
-            app.UseStaticFiles();
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
-
-            app.UseJwtAuthorization();
-
-            app.MapControllers();
-
-            app.Run();
+            catch (Exception e)
+            {
+                ILogger<Program>? logger = app.Services.GetRequiredService<ILogger<Program>>();
+                logger.LogCritical(e, "An exception occurred during the service startup");
+            }
         }
     }
 }
