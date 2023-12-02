@@ -36,12 +36,12 @@ The project was created as a project assignment for [ReactJS - октомври 
 2. **Open a terminal in the *api-server* folder and run the following commands:**
    ``` bash
    dotnet user-secrets init
-   dotnet user-secrets set "JWTKey:ValidIssuer" "your-api-url"
-   dotnet user-secrets set "JWTKey:ValidAudience" "your-api-url"
+   dotnet user-secrets set "JWTKey:ValidIssuer" "https://localhost:5001"
+   dotnet user-secrets set "JWTKey:ValidAudience" "https://localhost:5001"
    dotnet user-secrets set "JWTKey:TokenExpiryTimeInHour" "your desired hours"
    dotnet user-secrets set "JWTKey:Secret" "your-secret"
    dotnet user-secrets set "ConnectionStrings:DatabaseConnection" "your-db-connection-string"
-   dotnet user-secrets set "CorsOrigins:AllowedOrigins" "your-client-url"
+   dotnet user-secrets set "CorsOrigins:AllowedOrigins" "https://localhost:5173"
   Please change the values with your own.
   
 3. **Run Backend:**
@@ -53,3 +53,5 @@ The project was created as a project assignment for [ReactJS - октомври 
    ```bash
    npm install
    npm run dev
+### Notes
+- Make sure the the Backend API url is *https://localhost:5001* and the Frontend URL is https://localhost:5173 because of some hardcoded values in the code. :(
