@@ -54,4 +54,4 @@ The project was created as a project assignment for [ReactJS - октомври 
    npm install
    npm run dev
 ### Notes
-- Make sure the the Backend API url is *https://localhost:5001* and the Frontend URL is https://localhost:5173 because of some hardcoded values in the code. :(
+- Make sure the the Backend API url is *https://localhost:5001* and the Frontend URL is *https://localhost:5173* because of some hardcoded values in the code. :(
