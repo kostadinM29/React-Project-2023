@@ -42,16 +42,25 @@ The project was created as a project assignment for [ReactJS - октомври 
    dotnet user-secrets set "JWTKey:Secret" "{YOUR SECRET}"
    dotnet user-secrets set "ConnectionStrings:DatabaseConnection" "Server={YOUR SERVER NAME};Database=MarketMingle;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;"
    dotnet user-secrets set "CorsOrigins:AllowedOrigins" "https://localhost:5173"
+   ```
   *Please change the values in **{ }** with your own.*
   
 3. **Run Backend:**
    1. Open the solution in Visual Studio or your preferred IDE.
-   3. Build and run the solution.
+   2. Build and run the solution.
+   3. Now when the database was created with your connection string we will need to manually apply the migrations.
+   4. Open a terminal in the *api-server* folder and run the following command:
+    ``` bash
+    dotnet ef database update
+    ```
+   5. You are ready to run the solution.
+
   
 ### Frontend     
 1. **Open a terminal in the *react-client* folder and run the following commands:**
    ```bash
    npm install
    npm run dev
+   ```
 ### Notes
 - Make sure the the Backend API url is *https://localhost:5001* and the Frontend URL is *https://localhost:5173* because of some hardcoded values in the code. :(
