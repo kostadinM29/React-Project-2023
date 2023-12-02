@@ -1,5 +1,6 @@
-# MarketMingle 
-> A react project with .net backend.
+# MarketMingle
+
+> A React project with a .NET backend.
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -9,45 +10,43 @@
 * [Setup](#setup)
 * [Room for Improvement](#room-for-improvement)
 
-
 ## General Information
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
-<!-- You don't have to answer all the questions - just the ones relevant to your project. -->
-
+MarketMingle is a project designed to [provide brief project overview]. It aims to solve [specific problems] and serves the purpose of [its intended use]. The project was undertaken to [mention reasons behind starting the project].
 
 ## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
-- Tech 3 - version 3.0
+- AutoMapper
+- JWT
+- EntityFrameworkCore
+- SqlServer
 
 
 ## Features
-List the ready features here:
 - Awesome feature 1
 - Awesome feature 2
 - Awesome feature 3
 
-
 ## Screenshots
 ![Example screenshot](./img/screenshot.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
-
 
 ## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
+### Backend (ASP.NET Core 8.0)
 
-Proceed to describe how to install / setup one's local environment / get started with the project.
-
-## Room for Improvement
-Include areas you believe need improvement / could be improved. Also add TODOs for future development.
-
-Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
-
-To do:
-- Feature to be added 1
-- Feature to be added 2
+1. **Clone the Repository**
+2. **Open a terminal in the *api-server* folder and run the following commands:**
+   ``` bash
+   dotnet user-secrets init
+   dotnet user-secrets set "JWTKey:ValidIssuer" "your-api-url"
+   dotnet user-secrets set "JWTKey:ValidAudience" "your-api-url"
+   dotnet user-secrets set "JWTKey:TokenExpiryTimeInHour" "your desired hours"
+   dotnet user-secrets set "JWTKey:Secret" "your-secret"
+   dotnet user-secrets set "ConnectionStrings:DatabaseConnection" "your-db-connection-string"
+   dotnet user-secrets set "CorsOrigins:AllowedOrigins" "your-client-url"
+  Please change the values with your own.
+3. Run Backend:
+   1. Open the solution in Visual Studio or your preferred IDE.
+   3. Build and run the solution.
+4. **Open a terminal in the *react-client* folder and run the following commands:**
+   ```bash
+   npm install
+   npm run dev
+5. You are ready to browse the project.
