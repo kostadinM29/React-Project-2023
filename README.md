@@ -38,11 +38,11 @@ The project was created as a project assignment for [ReactJS - октомври 
    dotnet user-secrets init
    dotnet user-secrets set "JWTKey:ValidIssuer" "https://localhost:5001"
    dotnet user-secrets set "JWTKey:ValidAudience" "https://localhost:5001"
-   dotnet user-secrets set "JWTKey:TokenExpiryTimeInHour" "your desired hours"
-   dotnet user-secrets set "JWTKey:Secret" "your-secret"
-   dotnet user-secrets set "ConnectionStrings:DatabaseConnection" "your-db-connection-string"
+   dotnet user-secrets set "JWTKey:TokenExpiryTimeInHour" "10"
+   dotnet user-secrets set "JWTKey:Secret" "{YOUR SECRET}"
+   dotnet user-secrets set "ConnectionStrings:DatabaseConnection" "Server={YOUR SERVER NAME};Database=MarketMingle;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;"
    dotnet user-secrets set "CorsOrigins:AllowedOrigins" "https://localhost:5173"
-  Please change the values with your own.
+  *Please change the values in **{ }** with your own.*
   
 3. **Run Backend:**
    1. Open the solution in Visual Studio or your preferred IDE.
