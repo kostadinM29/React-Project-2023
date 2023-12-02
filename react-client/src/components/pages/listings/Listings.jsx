@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { GetAll } from '../../../api/listing/listing';
+import * as listingService from '../../../api/listing/listing';
 
 import Card from './cards/Card';
 import Spinner from '../../Spinner';
@@ -16,7 +16,7 @@ const Listings = () =>
     {
         const fetchData = async () =>
         {
-            const listings = await GetAll(signal);
+            const listings = await listingService.GetAll(signal);
 
             setListings(listings);
             setLoading(false);
@@ -34,13 +34,17 @@ const Listings = () =>
         <>
             {isLoading
                 ? <Spinner />
-                : <div className='container mx-auto '>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-3">
-                        {listings?.map((listing) => (
-                            <Card key={listing.id} listing={listing} />
-                        ))}
+                : listings.length > 0
+                    ? <div className='container mx-auto '>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-3">
+                            {listings?.map((listing) => (
+                                <Card key={listing.id} listing={listing} />
+                            ))}
+                        </div>
                     </div>
-                </div>
+                    : <h2 className='text-center text-lg text-gray dark:text-white'>
+                        No listings have been created yet!
+                    </h2>
             }
         </>
     );

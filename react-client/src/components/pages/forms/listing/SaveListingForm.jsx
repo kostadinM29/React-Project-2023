@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 
 import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
-import { Create, Edit, GetOneByUser } from '../../../../api/listing/listing';
+import * as listingService from '../../../../api/listing/listing';
 
 import InputField from '../../../partials/InputField';
 import TagsInputField from '../../../partials/TagInputField';
@@ -34,7 +34,7 @@ const SaveListingForm = () =>
         {
             if (isEditing)
             {
-                const response = await GetOneByUser(id, signal);
+                const response = await listingService.GetOneByUser(id, signal);
 
                 const { title, description, contactDetails, tags, images } = response;
                 setTitle(title);
@@ -146,12 +146,12 @@ const SaveListingForm = () =>
 
                 if (isEditing)
                 {
-                    const response = await Edit(requestData);
+                    const response = await listingService.Edit(requestData);
                     console.log('Listing edited successfully:', response);
                 }
                 else
                 {
-                    const response = await Create(requestData);
+                    const response = await listingService.Create(requestData);
                     console.log('Listing created successfully:', response);
                 }
 

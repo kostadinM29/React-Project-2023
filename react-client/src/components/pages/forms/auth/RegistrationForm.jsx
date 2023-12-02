@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import InputField from '../../../partials/InputField';
 import { Link, useNavigate } from 'react-router-dom';
-import useAuth from '../../../../hooks/useAuth';
-import { Register } from '../../../../api/auth/auth';
+
+import * as authService from '../../../../api/auth/auth';
 import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
+import useAuth from '../../../../hooks/useAuth';
+
+import InputField from '../../../partials/InputField';
 
 const RegistrationForm = () =>
 {
@@ -15,13 +17,14 @@ const RegistrationForm = () =>
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const abortController = new AbortController();
+    const controller = new AbortController();
+    const { signal } = controller;
 
     useEffect(() =>
     {
         return () =>
         {
-            abortController.abort();
+            controller.abort();
         };
     }, []);
 
@@ -56,7 +59,7 @@ const RegistrationForm = () =>
         {
             try
             {
-                const response = await Register(
+                const response = await authService.Register(
                     {
                         username,
                         firstName,
@@ -64,7 +67,7 @@ const RegistrationForm = () =>
                         email,
                         password,
                     },
-                    { signal: abortController.signal }
+                    { signal: signal }
                 );
 
                 updateAuth(response.data);

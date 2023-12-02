@@ -7,8 +7,10 @@ namespace api_server.Dtos
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
+        [JsonPropertyName("userId")]
         public string UserId { get; set; }
 
+        [JsonPropertyName("userName")]
         public string UserName { get; set; }
 
         [JsonPropertyName("title")]

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import InputField from '../../../partials/InputField';
-import useAuth from '../../../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
-import { Login } from '../../../../api/auth/auth';
+
+import * as authService from '../../../../api/auth/auth';
 import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
+import useAuth from '../../../../hooks/useAuth';
+
+import InputField from '../../../partials/InputField';
 
 const LoginForm = () =>
 {
@@ -12,13 +14,14 @@ const LoginForm = () =>
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const abortController = new AbortController();
+    const controller = new AbortController();
+    const { signal } = controller;
 
     useEffect(() =>
     {
         return () =>
         {
-            abortController.abort();
+            controller.abort();
         };
     }, []);
 
@@ -48,10 +51,10 @@ const LoginForm = () =>
         {
             try
             {
-                const response = await Login
+                const response = await authService.Login
                     (
                         { username, password },
-                        { signal: abortController.signal }
+                        { signal: signal }
                     );
 
                 updateAuth(response.data);

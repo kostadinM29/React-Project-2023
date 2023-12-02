@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faPen } from '@fortawesome/free-solid-svg-icons';
 
-import { GetOne, UpdateViews } from '../../../api/listing/listing';
+import * as listingService from '../../../api/listing/listing';
+import { ROUTE_ENDPOINTS } from '../../../constants/routeEndpoints';
 
 import Spinner from '../../Spinner';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 const Details = () =>
 {
@@ -48,8 +49,8 @@ const Details = () =>
     {
         const fetchListing = async () =>
         {
-            await UpdateViews(id, signal);
-            const listing = await GetOne(id, signal);
+            await listingService.UpdateViews(id, signal);
+            const listing = await listingService.GetOne(id, signal);
 
             setListing(listing);
             setLoading(false);
@@ -144,6 +145,14 @@ const Details = () =>
                                 ))}
                             </ul>
                         </div>
+                        <Link
+                            to={`/${ROUTE_ENDPOINTS.CHAT}/${listing.userId}`}
+                            className="inline-flex items-center m-2 px-3 py-2 text-sm font-medium text-center text-white bg-teal-600 rounded-lg hover:bg-pink-600 focus:ring-4">
+                            Chat with {listing.userName}
+                            <FontAwesomeIcon
+                                icon={faPen}
+                                className='ml-2' />
+                        </Link>
                     </div>
                 </div>
             }

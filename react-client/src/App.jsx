@@ -30,9 +30,9 @@ function App()
           {/* Private Routes */}
           <Route path={`${ROUTE_ENDPOINTS.LISTING_DETAIL}/:id`} element={<Private Component={Details} />} />
           <Route path={`${ROUTE_ENDPOINTS.EDIT_LISTING}/:id`} element={<Private Component={SaveListingForm} />} />
+          <Route path={`${ROUTE_ENDPOINTS.CHAT}/:id`} element={<Private Component={Chat} />} />
           <Route path={ROUTE_ENDPOINTS.CREATE_LISTING} element={<Private Component={SaveListingForm} />} />
           <Route path={ROUTE_ENDPOINTS.USER_PROFILE} element={<Private Component={ListingsByUser} />} />
-          <Route path={`${ROUTE_ENDPOINTS.CHAT}}/:id`} element={<Private Component={Chat} />} />
         </Routes>
       </Layout>
     </div >

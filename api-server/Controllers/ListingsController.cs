@@ -130,7 +130,7 @@ namespace api_server.Controllers
 
                 if (listings.IsNullOrEmpty())
                 {
-                    return NotFound("No listings found for the user!");
+                    return BadRequest("No listings found for the user!");
                 }
 
                 return Ok(listings);
