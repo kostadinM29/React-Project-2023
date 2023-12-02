@@ -18,6 +18,28 @@ namespace api_server.Controllers
     [SimulateSlowResponse(1000)] // 1000 milliseconds (1 seconds) delay.
     public class ListingController(IListingService listingService, ILogger<ListingController> logger, UserManager<ApplicationUser> userManager) : ControllerBase
     {
+        [HttpGet]
+        [Route("update-views")]
+        public async Task<IActionResult> UpdateViewsForListing(int id)
+        {
+            try
+            {
+                int? viewCount = await listingService.UpdateViewsForListing(id);
+
+                if (!viewCount.HasValue)
+                {
+                    return NotFound("Listing not found!");
+                }
+
+                return Ok(viewCount);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [Authorize]
         [HttpGet]
         [Route("one")]

@@ -105,7 +105,7 @@ namespace api_server.Controllers
 
                 if (savedRefreshToken is null || savedRefreshToken.RefreshToken != refreshToken)
                 {
-                    return Unauthorized("Invalid attempt!");
+                    return Unauthorized("Refresh token not found in the database!");
                 }
 
                 ClaimsIdentity? claimsIdentity = await userService.GetClaimsPrincipalFromUser(user);

@@ -16,6 +16,23 @@ namespace api_server.Services
 {
     public class ListingService(ApplicationDbContext context, IMapper mapper, ILogger<ListingController> logger, IWebHostEnvironment hostingEnvironment) : IListingService
     {
+        public async Task<int?> UpdateViewsForListing(int listingId)
+        {
+            Listing? listing = await GetListing(listingId);
+
+            if (listing is null)
+            {
+                return null;
+            }
+
+            listing.ViewsCount++;
+
+            context.Listings.Update(listing);
+            await context.SaveChangesAsync();
+
+            return listing.ViewsCount;
+        }
+
         public async Task<IEnumerable<ListingDTO>> GetListings()
         {
             List<Listing>? listings = await context.Listings

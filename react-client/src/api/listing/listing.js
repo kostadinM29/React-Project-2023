@@ -1,6 +1,25 @@
 import { ENDPOINTS } from '../../constants/apiEndpoints';
 import axios, { axiosPrivate } from '../axios';
 
+export const UpdateViews = async (id, signal) =>
+{
+    try
+    {
+        const response = await axiosPrivate.get(ENDPOINTS.LISTING_UPDATE_VIEWS, {
+            params: {
+                id,
+            },
+            signal: signal
+        });
+
+        return response.data;
+    }
+    catch (error)
+    {
+        throw new Error(`Axios error: ${error.message}`);
+    }
+};
+
 export const Edit = async (data) =>
 {
     try
@@ -14,7 +33,6 @@ export const Edit = async (data) =>
     }
     catch (error)
     {
-        console.log(error.response.data);
         throw new Error(`Axios error: ${error.message}`);
     }
 };
@@ -32,7 +50,6 @@ export const Delete = async (id) =>
     }
     catch (error)
     {
-        console.log(error.response.data);
         throw new Error(`Axios error: ${error.message}`);
     }
 };
@@ -51,7 +68,6 @@ export const Create = async (data) =>
     }
     catch (error)
     {
-        console.log(error.response.data);
         throw new Error(`Axios error: ${error.message}`);
     }
 };
@@ -77,7 +93,6 @@ export const GetOne = async (id, signal) =>
         }
         else
         {
-            console.log(error.response.data);
             throw new Error(`Axios error: ${error.message}`);
         }
     }
@@ -104,7 +119,6 @@ export const GetOneByUser = async (id, signal) =>
         }
         else
         {
-            console.log(error.response.data);
             throw new Error(`Axios error: ${error.message}`);
         }
     }
@@ -126,7 +140,6 @@ export const GetAll = async (signal) =>
         }
         else
         {
-            console.log(error.response.data);
             throw new Error(`Axios error: ${error.message}`);
         }
     }
@@ -151,7 +164,6 @@ export const GetAllByUser = async (signal) =>
         }
         else
         {
-            console.log(error.response.data);
             throw new Error(`Axios error: ${error.message}`);
         }
     }

@@ -81,11 +81,6 @@ const SaveListingForm = () =>
             errors.description = 'Description cannot exceed 200 characters!';
         }
 
-        if (!contactDetails.trim())
-        {
-            errors.contactDetails = 'Contact details are required!';
-        }
-
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
@@ -111,24 +106,20 @@ const SaveListingForm = () =>
             });
         };
 
-        const newImages = [...images];
-        for (let i = 0; i < files.length; i++)
+        try
         {
-            if (files[i])
-            {
-                try
+            const newImages = await Promise.all(
+                Array.from(files).map(async (file) =>
                 {
-                    const base64String = await readAsDataURL(files[i]);
-                    newImages.push(base64String);
-                }
-                catch (error)
-                {
-                    console.error("Error reading file:", error);
-                }
-            }
-        }
+                    return await readAsDataURL(file);
+                })
+            );
 
-        setImages(newImages);
+            setImages((prevImages) => [...prevImages, ...newImages]);
+        } catch (error)
+        {
+            console.error('Error reading files:', error);
+        }
     };
 
     const removeImage = (index) =>

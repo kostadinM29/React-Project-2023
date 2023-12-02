@@ -11,4 +11,5 @@ export const ENDPOINTS = {
   LISTINGS_ALL_BY_USER: 'listings/all-by-user',
   LISTING_BY_USER: 'listings/one-by-user', // Used for editing.
   LISTING_BY_ID: 'listings/one', // Used for details - where everyone can view the specific listing.
+  LISTING_UPDATE_VIEWS: 'listings/update-views',
 };
