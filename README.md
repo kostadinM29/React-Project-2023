@@ -11,13 +11,15 @@
 * [Room for Improvement](#room-for-improvement)
 
 ## General Information
-MarketMingle is a project designed to [provide brief project overview]. It aims to solve [specific problems] and serves the purpose of [its intended use]. The project was undertaken to [mention reasons behind starting the project].
+MarketMingle is a project designed to connect buyers with sellers. It aims to solve [specific problems] and serves the purpose of [its intended use].
+The project was created as a project assignment for [ReactJS - октомври 2023](https://softuni.bg/trainings/4238/reactjs-october-2023).
 
 ## Technologies Used
-- AutoMapper
+- ASP.NET Core 8.0
+- Auto Mapper
 - JWT
-- EntityFrameworkCore
-- SqlServer
+- Entity Framework Core
+- MS SQL Server
 
 
 ## Features
@@ -29,8 +31,7 @@ MarketMingle is a project designed to [provide brief project overview]. It aims 
 ![Example screenshot](./img/screenshot.png)
 
 ## Setup
-### Backend (ASP.NET Core 8.0)
-
+### Backend
 1. **Clone the Repository**
 2. **Open a terminal in the *api-server* folder and run the following commands:**
    ``` bash
@@ -42,11 +43,13 @@ MarketMingle is a project designed to [provide brief project overview]. It aims 
    dotnet user-secrets set "ConnectionStrings:DatabaseConnection" "your-db-connection-string"
    dotnet user-secrets set "CorsOrigins:AllowedOrigins" "your-client-url"
   Please change the values with your own.
-3. Run Backend:
+  
+3. **Run Backend:**
    1. Open the solution in Visual Studio or your preferred IDE.
    3. Build and run the solution.
-4. **Open a terminal in the *react-client* folder and run the following commands:**
+  
+### Frontend     
+1. **Open a terminal in the *react-client* folder and run the following commands:**
    ```bash
    npm install
    npm run dev
-5. You are ready to browse the project.
