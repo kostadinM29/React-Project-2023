@@ -7,4 +7,5 @@ export const ROUTE_ENDPOINTS = {
     LISTINGS_ALL: 'listings',
     LISTING_DETAIL: 'listing',
     USER_PROFILE: 'profile',
+    CHAT: 'chat',
 };

@@ -12,6 +12,7 @@ import ListingsByUser from './components/pages/listings/ListingsByUser';
 import SaveListingForm from './components/pages/forms/listing/SaveListingForm';
 import Private from './components/guards/Private';
 import Details from './components/pages/listings/Details';
+import Chat from './components/pages/Chat';
 
 function App()
 {
@@ -31,6 +32,7 @@ function App()
           <Route path={`${ROUTE_ENDPOINTS.EDIT_LISTING}/:id`} element={<Private Component={SaveListingForm} />} />
           <Route path={ROUTE_ENDPOINTS.CREATE_LISTING} element={<Private Component={SaveListingForm} />} />
           <Route path={ROUTE_ENDPOINTS.USER_PROFILE} element={<Private Component={ListingsByUser} />} />
+          <Route path={`${ROUTE_ENDPOINTS.CHAT}}/:id`} element={<Private Component={Chat} />} />
         </Routes>
       </Layout>
     </div >

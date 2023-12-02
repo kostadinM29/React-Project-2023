@@ -4,6 +4,7 @@ using System.Text;
 using api_server.Data;
 using api_server.Data.Models;
 using api_server.Extensions;
+using api_server.Hubs;
 using api_server.Profiles;
 using api_server.Services;
 using api_server.Services.Interfaces;
@@ -118,6 +119,8 @@ namespace api_server
                   };
               });
 
+            builder.Services.AddSignalR();
+
             builder.Services.AddScoped<ApplicationDbContext>();
 
             builder.Services.AddTransient<IAuthService, AuthService>();
@@ -141,6 +144,8 @@ namespace api_server
                     app.UseSwagger();
                     app.UseSwaggerUI();
                 }
+
+                app.MapHub<ChatHub>("/chatHub");
 
                 app.UseCors();
 
