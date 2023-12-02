@@ -135,6 +135,7 @@ const RegistrationForm = () =>
                             <div className='grid gap-y-4'>
                                 <InputField
                                     id='username'
+                                    value={username}
                                     label='Username'
                                     name='username'
                                     placeholder='Username'
@@ -146,6 +147,7 @@ const RegistrationForm = () =>
                                 />
                                 <InputField
                                     id='firstName'
+                                    value={firstName}
                                     label='First Name'
                                     name='firstName'
                                     placeholder='First Name'
@@ -156,6 +158,7 @@ const RegistrationForm = () =>
                                 />
                                 <InputField
                                     id='lastName'
+                                    value={lastName}
                                     label='Last Name'
                                     name='lastName'
                                     placeholder='Last Name'
@@ -166,6 +169,7 @@ const RegistrationForm = () =>
                                 />
                                 <InputField
                                     id='email'
+                                    value={email}
                                     label='Email'
                                     name='email'
                                     placeholder='Email'
@@ -177,6 +181,7 @@ const RegistrationForm = () =>
                                 />
                                 <InputField
                                     id='password'
+                                    value={password}
                                     label='Password'
                                     name='password'
                                     placeholder='Password'

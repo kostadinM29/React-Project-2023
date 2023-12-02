@@ -29,7 +29,19 @@ export const Register = async (userData) =>
     }
 };
 
-export const RefreshToken = async () => await axiosPrivate.get(ENDPOINTS.REFRESH_TOKEN);
+export const RefreshToken = async () => 
+{
+    try
+    {
+        const response = await axiosPrivate.get(ENDPOINTS.REFRESH_TOKEN);
+
+        return response;
+    } catch (error)
+    {
+        console.log(error.response);
+        throw new Error(`Axios error: ${error.message}`);
+    }
+}
 
 export const Logout = async () =>
 {

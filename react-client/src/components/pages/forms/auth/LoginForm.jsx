@@ -106,6 +106,7 @@ const LoginForm = () =>
                             <div className='grid gap-y-4'>
                                 <InputField
                                     id='username'
+                                    value={username}
                                     label='Username'
                                     name='username'
                                     placeholder='Username'
@@ -117,6 +118,7 @@ const LoginForm = () =>
                                 />
                                 <InputField
                                     id='password'
+                                    value={password}
                                     label='Password'
                                     name='password'
                                     placeholder='Password'

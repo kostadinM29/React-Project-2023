@@ -187,43 +187,43 @@ const SaveListingForm = () =>
                                     <div className='grid gap-y-4'>
                                         <InputField
                                             id='title'
+                                            value={title}
                                             label='Title'
                                             name='title'
                                             placeholder='Title'
                                             type='text'
                                             required={true}
-                                            value={title}
                                             onChange={(e) => setTitle(e.target.value)}
                                             error={errors.title}
                                         />
                                         <InputField
                                             id='description'
+                                            value={description}
                                             label='Description'
                                             name='description'
                                             placeholder='Description of the listing.'
                                             type='text'
                                             required={true}
-                                            value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                             error={errors.description}
                                         />
                                         <InputField
                                             id='contactDetails'
+                                            value={contactDetails}
                                             label='Contact Details'
                                             name='contactDetails'
                                             placeholder='Add your contact details like phone, email etc.'
                                             type='text'
                                             required={true}
-                                            value={contactDetails}
                                             onChange={(e) => setContactDetails(e.target.value)}
                                             error={errors.contactDetails}
                                         />
                                         <TagsInputField
+                                            value={tags}
                                             label='Tags'
                                             placeholder='Press enter or comma to add new tag and backspace to remove it.'
                                             separators={["Enter", ","]}
                                             removers={["Backspace"]}
-                                            value={tags}
                                             onChange={setTags}
                                         />
                                         <InputField
