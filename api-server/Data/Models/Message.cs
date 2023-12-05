@@ -6,6 +6,9 @@
         public string Sender { get; set; }
         public string Receiver { get; set; }
         public string Content { get; set; }
-        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+        public DateTime Timestamp { get; set; }
+
+        // New property for storing the group key
+        public string GroupKey { get; set; }
     }
 }

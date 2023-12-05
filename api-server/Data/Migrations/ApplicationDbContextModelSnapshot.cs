@@ -301,6 +301,10 @@ namespace api_server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("GroupKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Receiver")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

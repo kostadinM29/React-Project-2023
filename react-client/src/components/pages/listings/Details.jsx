@@ -146,7 +146,7 @@ const Details = () =>
                             </ul>
                         </div>
                         <Link
-                            to={`/${ROUTE_ENDPOINTS.CHAT}/${listing.userId}`}
+                            to={`/${ROUTE_ENDPOINTS.CHAT}/${listing.id}/${listing.userId}`}
                             className="inline-flex items-center m-2 px-3 py-2 text-sm font-medium text-center text-white bg-teal-600 rounded-lg hover:bg-pink-600 focus:ring-4">
                             Chat with {listing.userName}
                             <FontAwesomeIcon

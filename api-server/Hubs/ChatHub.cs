@@ -8,31 +8,41 @@ namespace api_server.Hubs
 {
     public class ChatHub(ApplicationDbContext _dbContext) : Hub
     {
-        public async Task SendMessage(string sender, string receiver, string message)
+        public async Task SendMessage(string groupKey, string sender, string receiver, string message)
         {
-            Message? newMessage = new() { Sender = sender, Receiver = receiver, Content = message };
+            // Prevent users from sending messages to themselves
+            if (sender == receiver)
+            {
+                return; // Do nothing
+            }
+
+            Message newMessage = new()
+            {
+                Sender = sender,
+                Receiver = receiver,
+                Content = message,
+                Timestamp = DateTime.Now,
+                GroupKey = groupKey
+            };
 
             _dbContext.Messages.Add(newMessage);
             await _dbContext.SaveChangesAsync();
 
-            await Clients.Group(receiver).SendAsync("ReceiveMessage", sender, message);
+            await Clients.Group(groupKey).SendAsync("ReceiveMessage", sender, message);
         }
 
-        public async Task RequestChatHistory(string user)
+        public async Task JoinChat(string groupKey)
         {
-            List<Message>? chatHistory = await _dbContext.Messages
-                .Where(m => m.Sender == user || m.Receiver == user)
-                .OrderByDescending(m => m.Timestamp)
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupKey);
+        }
+
+        public async Task<List<Message>> GetChatHistory(string groupKey)
+        {
+            return await _dbContext.Messages
+                .Where(m => m.GroupKey == groupKey)
+                .OrderBy(m => m.Timestamp)
                 .Take(50)
                 .ToListAsync();
-
-            await Clients.Caller.SendAsync("ReceiveChatHistory", chatHistory);
-        }
-
-        public async Task JoinChat(string user, string otherUser)
-        {
-            await Groups.AddToGroupAsync(Context.ConnectionId, user);
-            await Groups.AddToGroupAsync(Context.ConnectionId, otherUser);
         }
     }
 }
