@@ -39,7 +39,7 @@ const ListingsByUser = () =>
             setListings((prevListings) => prevListings.filter((listing) => listing.id !== id));
         } catch (error)
         {
-            console.error("Error deleting listing:", error);
+            console.error('Error deleting listing:', error);
         }
     };
 
@@ -48,11 +48,11 @@ const ListingsByUser = () =>
             {isLoading
                 ? <Spinner />
                 : listings && listings.length > 0
-                    ? <div className="container mx-auto pt-8">
-                        <h1 className="text-2xl text-gray dark:text-white font-bold mb-4">
+                    ? <div className='container mx-auto pt-8'>
+                        <h2 className='text-2xl text-gray dark:text-white font-bold mb-4'>
                             Your Listings
-                        </h1>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        </h2>
+                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                             {listings.map((listing) => (
                                 <CardMinimal
                                     key={listing.id}

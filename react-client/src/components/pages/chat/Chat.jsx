@@ -1,31 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import * as signalR from '@microsoft/signalr';
+import { ROUTE_ENDPOINTS } from '../../../constants/routeEndpoints';
+import { ENDPOINTS } from '../../../constants/apiEndpoints';
 
 import useAuth from '../../../hooks/useAuth';
 import InputField from '../../partials/InputField';
-import { ENDPOINTS } from '../../../constants/apiEndpoints';
 
 const Chat = () =>
 {
     const { auth } = useAuth();
-    const { listingId, otherUserId } = useParams();
+    const { listingId, otherUser } = useParams();
+    const navigate = useNavigate();
 
     const [connection, setConnection] = useState(null);
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
+    const [sendMessageError, setSendMessageError] = useState(null);
 
     useEffect(() =>
     {
-        if (auth.user && auth.user.nameid === otherUserId)
+        if (auth.user && auth.user.unique_name === otherUser)
         {
             // Prevent users from accessing chat with themselves
-            return <Navigate to={`/${ROUTE_ENDPOINTS.HOME}`} />;
+            navigate(ROUTE_ENDPOINTS.HOME);
         }
 
         const newConnection = new signalR.HubConnectionBuilder()
-            .withUrl('https://localhost:5001/chatHub')
+            .withUrl(`${ENDPOINTS.BASE_URL}chatHub`)
+            .withAutomaticReconnect()
             .build();
 
         setConnection(newConnection);
@@ -37,7 +41,7 @@ const Chat = () =>
                 newConnection.stop();
             }
         };
-    }, [auth.user, otherUserId]);
+    }, [auth.user, otherUser, navigate]);
 
     useEffect(() =>
     {
@@ -45,15 +49,20 @@ const Chat = () =>
         {
             startSignalRConnection();
         }
-    }, [connection, auth.user.nameid, otherUserId, listingId]);
+    }, [connection]);
 
     useEffect(() =>
     {
         if (connection)
         {
-            connection.on('ReceiveMessage', (sender, content) =>
+            connection.on('ReceiveMessage', (message) =>
             {
-                setMessages((prevMessages) => [...prevMessages, { sender, content }]);
+                setMessages((prevMessages) => [...prevMessages, message]);
+            });
+
+            connection.on('UserJoined', (userId) =>
+            {
+                console.log(`User ${userId} joined the chat`);
             });
         }
     }, [connection]);
@@ -65,7 +74,8 @@ const Chat = () =>
             await connection.start();
             console.log('Connected!');
             joinChat();
-        } catch (error)
+        }
+        catch (error)
         {
             console.error('Connection failed:', error);
         }
@@ -75,8 +85,10 @@ const Chat = () =>
     {
         if (connection)
         {
-            const groupKey = getGroupKey(auth.user.nameid, otherUserId, listingId);
-            connection.invoke('GetChatHistory', groupKey)
+            const groupKey = getGroupKey(auth.user.unique_name, otherUser, listingId);
+
+            connection
+                .invoke('GetChatHistory', groupKey)
                 .then((chatHistory) =>
                 {
                     setMessages(chatHistory);
@@ -86,7 +98,8 @@ const Chat = () =>
                     console.error('Error fetching chat history:', error);
                 });
 
-            connection.invoke('JoinChat', groupKey)
+            connection
+                .invoke('JoinChat', groupKey, auth.user.unique_name)
                 .catch((error) =>
                 {
                     console.error('Error joining chat:', error);
@@ -100,10 +113,20 @@ const Chat = () =>
         {
             try
             {
-                const groupKey = getGroupKey(auth.user.nameid, otherUserId, listingId);
-                await connection.invoke('SendMessage', groupKey, auth.user.nameid, otherUserId, message);
+                const groupKey = getGroupKey(auth.user.unique_name, otherUser, listingId);
+
+                if (!message.trim())
+                {
+                    setSendMessageError('Message cannot be empty!');
+                    return;
+                }
+
+                setSendMessageError(null);
+
+                await connection.invoke('SendMessage', groupKey, Number(listingId), auth.user.unique_name, otherUser, message);
                 setMessage('');
-            } catch (error)
+            }
+            catch (error)
             {
                 console.error('Error sending message:', error);
             }
@@ -112,29 +135,50 @@ const Chat = () =>
 
     const getGroupKey = (user1, user2, listingId) =>
     {
-        const sortedUserIds = [user1, user2].sort();
-        return `${sortedUserIds[0]}_${sortedUserIds[1]}_${listingId}`;
+        const sortedUsers = [user1, user2].sort();
+
+        return `${sortedUsers[0]}_${sortedUsers[1]}_${listingId}`;
     };
 
     return (
-        <div>
-            <div>
-                <ul>
-                    {messages.map((msg, index) => (
-                        <li key={index}>
-                            <strong>{msg.sender}</strong>: {msg.content}
+        <div className='flex flex-col h-full'>
+            <div className='flex-grow overflow-auto dark:bg-gray-800'>
+                <ul className='list-none p-4'>
+                    {messages.map((msg) => (
+                        <li
+                            key={msg.id}
+                            className={`flex items-end ${msg.sender === auth.user.unique_name
+                                ? 'justify-end'
+                                : ''} mb-2`}
+                        >
+                            <div
+                                className={`p-2 rounded ${msg.sender === auth.user.unique_name
+                                    ? 'rounded-br-none bg-teal-300'
+                                    : 'rounded-bl-none bg-pink-300'
+                                    }`}
+                            >
+                                <div className='flex justify-between items-center mb-1'>
+                                    <div className='text-lg font-bold'>{msg.sender}</div>
+                                    <div className='pl-2 text-sm text-gray-700'>{msg.timestamp}</div>
+                                </div>
+                                <div>{msg.content}</div>
+                            </div>
                         </li>
                     ))}
                 </ul>
             </div>
-            <div>
+            <div className='p-4'>
                 <InputField
                     type='text'
-                    placeholder="Type your message"
+                    placeholder='Type your message'
                     value={message}
+                    error={sendMessageError}
                     onChange={(e) => setMessage(e.target.value)}
                 />
-                <button onClick={sendMessage}>
+                <button
+                    onClick={sendMessage}
+                    className='px-4 py-2 m-2 bg-blue-500 text-white rounded-md ml-2'
+                >
                     Send
                 </button>
             </div>

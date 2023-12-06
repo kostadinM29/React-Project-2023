@@ -36,14 +36,11 @@ const ThemeSwitcher = () =>
             >
                 <div
                     className={`w-5 h-5 rounded-full bg-gray-800 dark:bg-yellow-400 dark:translate-x-full shadow-md`}
-                // style={{
-                //     transform: darkMode && 'translateX(100%)',
-                // }}
                 />
                 <div className='absolute w-6 h-6 rounded-full bg-white dark:bg-gray-200 flex items-center justify-center transition-transform transform -translate-x-2.5 dark:translate-x-6'>
                     {darkMode
-                        ? <FontAwesomeIcon icon={faMoon} size="xl" style={{ color: "#05090f", }} />
-                        : <FontAwesomeIcon icon={faSun} size="xl" style={{ color: "#ffbf00", }} />}
+                        ? <FontAwesomeIcon icon={faMoon} size='xl' style={{ color: '#05090f', }} />
+                        : <FontAwesomeIcon icon={faSun} size='xl' style={{ color: '#ffbf00', }} />}
                 </div>
             </div>
         </label>

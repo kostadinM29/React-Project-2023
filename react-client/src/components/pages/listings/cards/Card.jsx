@@ -41,7 +41,7 @@ const Card = ({ listing }) =>
                     {listing.title}
                 </h2>
                 {listing.images.length > 1 &&
-                    <div className="flex pl-2 space-x-2">
+                    <div className='flex pl-2 space-x-2'>
                         {listing.images.map((_, index) => (
                             <div
                                 key={index}
@@ -58,16 +58,16 @@ const Card = ({ listing }) =>
 
             {listing.images &&
                 (
-                    <div className="flex overflow-hidden relative">
-                        <div className="flex" style={updateSlider()}>
+                    <div className='flex overflow-hidden relative'>
+                        <div className='flex' style={updateSlider()}>
                             {listing.images.map((imageUrl, index) => (
                                 <div
                                     key={index}
-                                    className="flex-shrink-0 w-full"
+                                    className='flex-shrink-0 w-full'
                                 >
                                     <img
                                         src={imageUrl}
-                                        className="h-48 w-96"
+                                        className='h-48 w-96'
                                     />
                                 </div>
                             ))}
@@ -76,17 +76,17 @@ const Card = ({ listing }) =>
                 )
             }
 
-            <div className="p-2">
-                <p className="text-gray-700 dark:text-gray-300 overflow-ellipsis break-words">
+            <div className='p-2'>
+                <p className='text-gray-700 dark:text-gray-300 overflow-ellipsis break-words'>
                     {listing.description}
                 </p>
             </div>
-            <p className="text-xs ml-2 text-gray-500 dark:text-gray-400 ">
+            <p className='text-xs ml-2 text-gray-500 dark:text-gray-400 '>
                 {listing.created}
             </p>
 
             {listing.tags &&
-                <div className="m-2 space-x-1">
+                <div className='m-2 space-x-1'>
                     {listing.tags.map((title, index) => (
                         <span
                             key={index}
@@ -99,22 +99,22 @@ const Card = ({ listing }) =>
             }
 
             {listing.images.length > 1 &&
-                <div className="flex justify-between p-4">
+                <div className='flex justify-between p-4'>
                     <button
                         onClick={handlePrev}
-                        className="text-gray-700 dark:text-gray-300 focus:outline-none">
+                        className='text-gray-700 dark:text-gray-300 focus:outline-none'>
                         <FontAwesomeIcon icon={faChevronLeft} />
                     </button>
                     <button
                         onClick={handleNext}
-                        className="text-gray-700 dark:text-gray-300 focus:outline-none">
+                        className='text-gray-700 dark:text-gray-300 focus:outline-none'>
                         <FontAwesomeIcon icon={faChevronRight} />
                     </button>
                 </div>
             }
             <Link
                 to={`/${ROUTE_ENDPOINTS.LISTING_DETAIL}/${listing.id}`}
-                className="inline-flex items-center m-2 px-3 py-2 text-sm font-medium text-center text-white bg-teal-600 rounded-lg hover:bg-pink-600 focus:ring-4">
+                className='inline-flex items-center m-2 px-3 py-2 text-sm font-medium text-center text-white bg-teal-600 rounded-lg hover:bg-pink-600 focus:ring-4'>
                 Read more
                 <FontAwesomeIcon
                     icon={faArrowRight}

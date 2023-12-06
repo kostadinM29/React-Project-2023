@@ -47,7 +47,7 @@ const InputField = ({ id, value = '', label, name, placeholder, type, wrapperCla
                         </button>
                     )}
             </div>
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            {error && <p className='text-red-500 text-sm mt-1'>{error}</p>}
         </div>
     );
 };

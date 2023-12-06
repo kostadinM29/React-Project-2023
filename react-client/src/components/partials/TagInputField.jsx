@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { TagsInput } from "react-tag-input-component";
+import { useEffect } from 'react';
+import { TagsInput } from 'react-tag-input-component';
 
 
 const TagsInputField = ({ id, value = [], label, placeholder, wrapperClassName, separators, removers, onChange, error }) =>

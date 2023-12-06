@@ -177,8 +177,8 @@ const SaveListingForm = () =>
                 : <section className='w-full max-w-xl mx-auto p-6'>
                     <div className='mt-7 bg-white border border-gray-200 rounded'>
                         <div className='p-4 sm:p-7 dark:bg-gray-700'>
-                            <div className="text-center">
-                                <h1 className="block text-2xl font-bold text-gray-800">
+                            <div className='text-center'>
+                                <h1 className='block text-2xl font-bold text-gray-800'>
                                     {isEditing ? 'Edit Listing' : 'Create Listing'}
                                 </h1>
                             </div>
@@ -222,8 +222,8 @@ const SaveListingForm = () =>
                                             value={tags}
                                             label='Tags'
                                             placeholder='Press enter or comma to add new tag and backspace to remove it.'
-                                            separators={["Enter", ","]}
-                                            removers={["Backspace"]}
+                                            separators={['Enter', ',']}
+                                            removers={['Backspace']}
                                             onChange={setTags}
                                         />
                                         <InputField
@@ -237,17 +237,17 @@ const SaveListingForm = () =>
                                         />
                                         {images.length > 0 &&
                                             (
-                                                <div className="flex space-x-2 mb-2">
+                                                <div className='flex space-x-2 mb-2'>
                                                     {images.map((imageUrl, index) => (
-                                                        <div key={index} className="relative">
+                                                        <div key={index} className='relative'>
                                                             <img
                                                                 src={imageUrl}
                                                                 alt={`Preview ${index}`}
-                                                                className="object-cover w-16 h-16 rounded-md"
+                                                                className='object-cover w-16 h-16 rounded-md'
                                                             />
                                                             <button
-                                                                type="button"
-                                                                className="absolute top-0 right-0 text-red-500 p-1 cursor-pointer"
+                                                                type='button'
+                                                                className='absolute top-0 right-0 text-red-500 p-1 cursor-pointer'
                                                                 onClick={() => removeImage(index)}
                                                             >
                                                                 <FontAwesomeIcon icon={faX} />
@@ -258,11 +258,11 @@ const SaveListingForm = () =>
                                             )}
                                         {errors.apiError &&
                                             (
-                                                <p className="text-red-500 mb-4">{errors.apiError}</p>
+                                                <p className='text-red-500 mb-4'>{errors.apiError}</p>
                                             )}
                                         <button
-                                            type="submit"
-                                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                                            type='submit'
+                                            className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center'
                                         >
                                             {isEditing
                                                 ? 'Update Listing'

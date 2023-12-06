@@ -305,6 +305,9 @@ namespace api_server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ListingId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Receiver")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -317,6 +320,8 @@ namespace api_server.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ListingId");
 
                     b.ToTable("Messages");
                 });
@@ -438,6 +443,17 @@ namespace api_server.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("api_server.Data.Models.Message", b =>
+                {
+                    b.HasOne("api_server.Data.Models.Listing", "Listing")
+                        .WithMany()
+                        .HasForeignKey("ListingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Listing");
                 });
 
             modelBuilder.Entity("api_server.Data.Models.Tag", b =>

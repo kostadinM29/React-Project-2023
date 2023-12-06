@@ -93,12 +93,12 @@ const LoginForm = () =>
         <section className='w-full max-w-xl mx-auto p-6'>
             <div className='mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700'>
                 <div className='p-4 sm:p-7'>
-                    <div className="text-center">
-                        <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Log in</h1>
-                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    <div className='text-center'>
+                        <h1 className='block text-2xl font-bold text-gray-800 dark:text-white'>Log in</h1>
+                        <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
                             Don't have an account yet?
                             <Link
-                                className="ml-1 text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                                className='ml-1 text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600'
                                 to='/register'>
                                 Register here
                             </Link>
@@ -132,11 +132,11 @@ const LoginForm = () =>
                                     error={errors.password}
                                 />
                                 {errors.apiError && (
-                                    <p className="text-red-500 mb-4">{errors.apiError}</p>
+                                    <p className='text-red-500 mb-4'>{errors.apiError}</p>
                                 )}
                                 <button
-                                    type="submit"
-                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+                                    type='submit'
+                                    className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center'
                                 >
                                     Submit
                                 </button>

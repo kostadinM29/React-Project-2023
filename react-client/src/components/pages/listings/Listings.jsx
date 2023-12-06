@@ -36,7 +36,7 @@ const Listings = () =>
                 ? <Spinner />
                 : listings.length > 0
                     ? <div className='container mx-auto '>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-3">
+                        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-3'>
                             {listings?.map((listing) => (
                                 <Card key={listing.id} listing={listing} />
                             ))}

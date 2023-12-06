@@ -127,6 +127,7 @@ namespace api_server
             builder.Services.AddTransient<IJWTService, JWTService>();
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IListingService, ListingService>();
+            builder.Services.AddTransient<IChatService, ChatService>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             WebApplication app = builder.Build();

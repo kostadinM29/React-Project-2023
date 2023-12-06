@@ -16,6 +16,9 @@ namespace api_server.Profiles
                 .ForMember(dest => dest.Created, opt => opt.MapFrom(src => src.CreatedDate.ToString("yyyy-MM-dd")))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
                 .ForMember(dest => dest.ViewCount, opt => opt.MapFrom(src => src.ViewsCount));
+            CreateMap<Message, MessageDTO>()
+                .ForMember(dest => dest.Timestamp, opt => opt.MapFrom(src => src.Timestamp.ToShortTimeString()));
+                
         }
     }
 }

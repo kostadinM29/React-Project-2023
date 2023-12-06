@@ -44,6 +44,18 @@ namespace api_server.Services
             return listings.Select(l => mapper.Map<ListingDTO>(l)).ToList();
         }
 
+        public async Task<Listing?> GetListingItemById(int listingId)
+        {
+            Listing? listing = await GetListing(listingId);
+
+            if (listing is null)
+            {
+                return null;
+            }
+
+            return listing;
+        }
+
         public async Task<ListingDTO?> GetListingById(int listingId)
         {
             Listing? listing = await GetListing(listingId);

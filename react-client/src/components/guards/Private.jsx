@@ -1,8 +1,8 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
-import useAuth from "../../hooks/useAuth";
-import { ROUTE_ENDPOINTS } from "../../constants/routeEndpoints";
+import useAuth from '../../hooks/useAuth';
+import { ROUTE_ENDPOINTS } from '../../constants/routeEndpoints';
 
 const Private = ({ Component }) =>
 {
