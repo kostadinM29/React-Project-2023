@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { faEdit, faTrashAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faLink } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
@@ -57,7 +57,7 @@ const CardMinimal = ({ listing, onDelete }) =>
                 <Link
                     to={`/${ROUTE_ENDPOINTS.LISTING_DETAIL}/${listing.id}`}
                     className={buttonStyles}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
+                    <FontAwesomeIcon icon={faLink} />
                 </Link>
             </div>
 

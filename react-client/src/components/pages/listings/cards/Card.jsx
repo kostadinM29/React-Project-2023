@@ -4,9 +4,11 @@ import { faArrowRight, faChevronLeft, faChevronRight } from '@fortawesome/free-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
+import useAuth from '../../../../hooks/useAuth';
 
 const Card = ({ listing }) =>
 {
+    const { auth } = useAuth();
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const updateSlider = () =>
@@ -110,14 +112,16 @@ const Card = ({ listing }) =>
                     </button>
                 </div>
             }
-            <Link
-                to={`/${ROUTE_ENDPOINTS.LISTING_DETAIL}/${listing.id}`}
-                className='inline-flex items-center m-2 px-3 py-2 text-sm font-medium text-center text-white bg-teal-600 rounded-lg hover:bg-pink-600 focus:ring-4'>
-                Read more
-                <FontAwesomeIcon
-                    icon={faArrowRight}
-                    className='ml-2' />
-            </Link>
+            {auth && auth.user && Object.keys(auth.user).length > 0 &&
+                <Link
+                    to={`/${ROUTE_ENDPOINTS.LISTING_DETAIL}/${listing.id}`}
+                    className='inline-flex items-center m-2 px-3 py-2 text-sm font-medium text-center text-white bg-teal-600 rounded-lg hover:bg-pink-600 focus:ring-4'>
+                    Read more
+                    <FontAwesomeIcon
+                        icon={faArrowRight}
+                        className='ml-2' />
+                </Link>
+            }
         </div>
     );
 };

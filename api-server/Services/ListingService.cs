@@ -144,7 +144,7 @@ namespace api_server.Services
                 Description = listingRequest.Description,
                 Tags = tags,
                 Images = images,
-                ContactDetails = listingRequest.ContactDetails,
+                Details = listingRequest.Details,
             };
 
             await context.Listings.AddAsync(listing);
@@ -224,7 +224,7 @@ namespace api_server.Services
             listing.Description = listingRequest.Description;
             listing.Tags = tags;
             listing.Images = images;
-            listing.ContactDetails = listingRequest.ContactDetails;
+            listing.Details = listingRequest.Details;
 
             context.Listings.Update(listing);
 

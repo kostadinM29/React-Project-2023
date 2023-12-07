@@ -32,6 +32,6 @@ namespace api_server.Dtos
         public List<string> Tags { get; set; }
 
         [JsonPropertyName("details")]
-        public string? ContactDetails { get; set; }
+        public string? Details { get; set; }
     }
 }

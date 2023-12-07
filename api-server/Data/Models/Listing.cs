@@ -30,6 +30,6 @@ namespace api_server.Data.Models
 
         public virtual ICollection<Image> Images { get; set; } = new List<Image>();
 
-        public string? ContactDetails { get; set; }
+        public string? Details { get; set; }
     }
 }

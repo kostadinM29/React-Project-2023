@@ -15,10 +15,9 @@ const SaveListingForm = () =>
     const { id } = useParams();
     const isEditing = Boolean(id);
     const [isLoading, setLoading] = useState(isEditing);
-
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [contactDetails, setContactDetails] = useState('');
+    const [details, setDetails] = useState('');
     const [tags, setTags] = useState([]);
     const [images, setImages] = useState([]);
     const [errors, setErrors] = useState({});
@@ -36,10 +35,10 @@ const SaveListingForm = () =>
             {
                 const response = await listingService.GetOneByUser(id, signal);
 
-                const { title, description, contactDetails, tags, images } = response;
+                const { title, description, details, tags, images } = response;
                 setTitle(title);
                 setDescription(description);
-                setContactDetails(contactDetails);
+                setDetails(details);
                 setTags(tags);
                 setImages(images);
                 setLoading(false);
@@ -53,7 +52,7 @@ const SaveListingForm = () =>
             // Reset form data when the component unmounts - fixing issue Edit -> Create saving edit data.
             setTitle('');
             setDescription('');
-            setContactDetails('');
+            setDetails('');
             setTags([]);
             setImages([]);
             setErrors({});
@@ -139,7 +138,7 @@ const SaveListingForm = () =>
                     id: id,
                     title: title,
                     description: description,
-                    contactDetails: contactDetails,
+                    details: details,
                     tags: tags,
                     images: images,
                 };
@@ -208,15 +207,14 @@ const SaveListingForm = () =>
                                             error={errors.description}
                                         />
                                         <InputField
-                                            id='contactDetails'
-                                            value={contactDetails}
-                                            label='Contact Details'
-                                            name='contactDetails'
-                                            placeholder='Add your contact details like phone, email etc.'
+                                            id='Details'
+                                            value={details}
+                                            label='Details'
+                                            name='Details'
+                                            placeholder='Add your details like phone, email etc.'
                                             type='text'
                                             required={true}
-                                            onChange={(e) => setContactDetails(e.target.value)}
-                                            error={errors.contactDetails}
+                                            onChange={(e) => setDetails(e.target.value)}
                                         />
                                         <TagsInputField
                                             value={tags}

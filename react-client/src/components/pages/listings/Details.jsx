@@ -156,7 +156,7 @@ const Details = () =>
 
                         {listing.details &&
                             <div className='mb-6'>
-                                <h2 className='text-xl font-bold mb-2'>Contact Details</h2>
+                                <h2 className='text-xl font-bold mb-2'>Details</h2>
                                 <p>{listing.details}</p>
                             </div>
                         }
