@@ -85,17 +85,17 @@ access their profile page.
 - Client-side search
 - Client-side pagination
 - JWT authentication
-
+  
   
 ## 📷 Screenshots
 <a name="screenshots"/>
 
-![Example screenshot](./images/image6.png)
-![Example screenshot](./images/image5.png)
-![Example screenshot](./images/image4.png)
-![Example screenshot](./images/image3.png)
-![Example screenshot](./images/image2.png)
-![Example screenshot](./images/image1.png)
+![SS1](./images/image6.png)
+![SS2](./images/image5.png)
+![SS3](./images/image4.png)
+![SS4](./images/image3.png)
+![SS5](./images/image2.png)
+![SS6](./images/image1.png)
 
 
 ## ⚙️ Setup
