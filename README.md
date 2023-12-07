@@ -49,6 +49,7 @@ The project was created as a project assignment for [ReactJS - октомври 
 - jwt-decode - 4.0.0
 - react - 18.2.0
 - react-dom - 18.2.0
+- react-paginate - 8.2.0
 - react-router-dom - 6.18.0
 - react-tag-input-component - 2.0.2
 - typeface-raleway - 1.1.13
@@ -77,11 +78,12 @@ access their profile page.
 
 - CRUD operations for listings
 - Uploading multiple images as files
-- Searching listings
 - Chat functionality
 - Dark/Light theme
 - Responsive design
-- Client side validations
+- Client-side validations
+- Client-side search
+- Client-side pagination
 - JWT authentication
 
   
