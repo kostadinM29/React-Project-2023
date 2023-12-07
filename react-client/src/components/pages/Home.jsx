@@ -15,17 +15,19 @@ const Home = () =>
                 <p className='text-lg mb-8'>Discover the latest listings and more!</p>
                 <div className='p-8'>
                     <ListingsLatest />
+                    <div className='mt-6'>
+                        <Link
+                            to={ROUTE_ENDPOINTS.LISTINGS_ALL}
+                            className='bg-white text-teal-500 hover:bg-teal-300 text-2xl font-semibold py-4 px-6 rounded-xl dark:bg-slate-800'
+                        >
+                            Explore Listings
+                            <FontAwesomeIcon
+                                icon={faAnglesRight}
+                                className='ml-2'
+                            />
+                        </Link>
+                    </div>
                 </div>
-                <Link
-                    to={ROUTE_ENDPOINTS.LISTINGS_ALL}
-                    className='bg-white text-teal-500 hover:bg-teal-300 text-2xl font-semibold py-4 px-6 rounded dark:bg-slate-800'
-                >
-                    Explore Listings
-                    <FontAwesomeIcon
-                        icon={faAnglesRight}
-                        className='ml-2'
-                    />
-                </Link>
             </div>
         </div>
     );

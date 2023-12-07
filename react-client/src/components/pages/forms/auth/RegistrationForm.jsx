@@ -118,6 +118,16 @@ const RegistrationForm = () =>
         setErrors((prevErrors) => ({ ...prevErrors, password: '', apiError: '' }));
     };
 
+    const isFormValid = () =>
+    {
+        return (
+            username.trim() !== '' ||
+            email.trim() !== '' ||
+            password.trim() !== ''
+        );
+    };
+
+
     return (
         <section className='w-full max-w-xl mx-auto p-6'>
             <div className='mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700'>
@@ -199,7 +209,11 @@ const RegistrationForm = () =>
                                 )}
                                 <button
                                     type='submit'
-                                    className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center'
+                                    className={`text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center ${isFormValid()
+                                        ? ''
+                                        : 'bg-opacity-50 cursor-not-allowed'
+                                        }`}
+                                    disabled={!isFormValid()}
                                 >
                                     Register
                                 </button>

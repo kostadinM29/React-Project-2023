@@ -107,6 +107,7 @@ const Chat = () =>
         }
     };
 
+
     const sendMessage = async () =>
     {
         if (connection)
@@ -130,6 +131,15 @@ const Chat = () =>
             {
                 console.error('Error sending message:', error);
             }
+        }
+    };
+
+    const handleKeyDown = (e) =>
+    {
+        if (e.key === 'Enter' && !e.shiftKey)
+        {
+            e.preventDefault();
+            sendMessage();
         }
     };
 
@@ -167,17 +177,25 @@ const Chat = () =>
                     ))}
                 </ul>
             </div>
-            <div className='p-4'>
+            <div className='flex items-center p-4'>
                 <InputField
                     type='text'
                     placeholder='Type your message'
                     value={message}
+                    required={true}
                     error={sendMessageError}
                     onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    wrapperClassName='flex-grow'
                 />
                 <button
                     onClick={sendMessage}
-                    className='px-4 py-2 m-2 bg-blue-500 text-white rounded-md ml-2'
+                    onenter
+                    className={`px-4 py-2 m-2 bg-blue-500 text-white rounded-md ml-2 ${message.trim()
+                        ? ''
+                        : 'bg-opacity-50 cursor-not-allowed'
+                        }`}
+                    disabled={!message.trim()}
                 >
                     Send
                 </button>

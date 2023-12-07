@@ -8,9 +8,11 @@ import { ROUTE_ENDPOINTS } from '../../../constants/routeEndpoints';
 
 import Spinner from '../../Spinner';
 import ImageModal from '../../modals/ImageModal';
+import useAuth from '../../../hooks/useAuth';
 
 const Details = () =>
 {
+    const { auth } = useAuth();
     const { id } = useParams();
     const [listing, setListing] = useState({});
     const [isLoading, setLoading] = useState(true);
@@ -174,16 +176,21 @@ const Details = () =>
                                 ))}
                             </ul>
                         </div>
-                        <Link
-                            to={`/${ROUTE_ENDPOINTS.CHAT}/${listing.id}/${listing.userName}`}
-                            className='inline-flex items-center m-2 px-3 py-2 text-sm font-medium text-center text-white bg-teal-600 rounded-lg hover:bg-pink-600 focus:ring-4'>
-                            Chat with {listing.userName}
-                            <FontAwesomeIcon
-                                icon={faPen}
-                                className='ml-2' />
-                        </Link>
+                        {auth.user.unique_name !== listing.userName
+                            ? < Link
+                                to={`/${ROUTE_ENDPOINTS.CHAT}/${listing.id}/${listing.userName}`}
+                                className='inline-flex items-center m-2 px-3 py-2 text-sm font-medium text-center text-white bg-teal-600 rounded-lg hover:bg-pink-600 focus:ring-4'>
+                                Chat with {listing.userName}
+                                <FontAwesomeIcon
+                                    icon={faPen}
+                                    className='ml-2' />
+                            </Link>
+                            : <h3 className='text-sm text-gray-500 mb-2'>
+                                This is your listing.
+                            </h3>
+                        }
                     </div>
-                </div>
+                </div >
             }
         </>
     );

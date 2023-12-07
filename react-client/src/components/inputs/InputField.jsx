@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 
-const InputField = ({ id, value = '', label, name, placeholder, type, wrapperClassName, onChange, accept, multiple, error }) =>
+const InputField = ({ id, value = '', label, name, placeholder, type, wrapperClassName, onChange, onKeyDown, accept, required, multiple, error }) =>
 {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -14,11 +14,12 @@ const InputField = ({ id, value = '', label, name, placeholder, type, wrapperCla
     return (
         <div className={wrapperClassName}>
             {label &&
-                (
-                    <label htmlFor={id} className='block text-sm mb-2 dark:text-white'>
-                        {label}
-                    </label>
-                )}
+                <label htmlFor={id} className='block text-sm mb-2 dark:text-white'>
+                    {label}
+                    {required &&
+                        <span className='text-red-500'>*</span>}
+                </label>
+            }
             <div className='relative'>
                 <input
                     id={id}
@@ -31,6 +32,7 @@ const InputField = ({ id, value = '', label, name, placeholder, type, wrapperCla
                         } disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-600 dark:text-gray-400 dark:focus:ring-gray-600`}
                     placeholder={placeholder}
                     onChange={onChange}
+                    onKeyDown={onKeyDown}
                     accept={accept}
                     multiple={multiple}
                 />

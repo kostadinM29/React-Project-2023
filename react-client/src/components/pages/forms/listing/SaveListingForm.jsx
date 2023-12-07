@@ -169,6 +169,17 @@ const SaveListingForm = () =>
         }
     };
 
+    const isFormValid = () =>
+    {
+        return (
+            title.trim() !== '' ||
+            description.trim() !== '' ||
+            details.trim() !== '' ||
+            tags.length > 0 ||
+            images.length > 0
+        );
+    };
+
     return (
         <>
             {isLoading
@@ -213,7 +224,7 @@ const SaveListingForm = () =>
                                             name='Details'
                                             placeholder='Add your details like phone, email etc.'
                                             type='text'
-                                            required={true}
+                                            required={false}
                                             onChange={(e) => setDetails(e.target.value)}
                                         />
                                         <TagsInputField
@@ -260,7 +271,11 @@ const SaveListingForm = () =>
                                             )}
                                         <button
                                             type='submit'
-                                            className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center'
+                                            className={`text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center ${isFormValid()
+                                                ? ''
+                                                : 'bg-opacity-50 cursor-not-allowed'
+                                                }`}
+                                            disabled={!isFormValid()}
                                         >
                                             {isEditing
                                                 ? 'Update Listing'
