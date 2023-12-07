@@ -10,14 +10,18 @@
 * [Screenshots](#screenshots)
 * [Setup](#setup)
 
-<a name="general-information"/>
 ## ℹ️ General Information
+<a name="general-information"/>
+
 MarketMingle is a project designed to connect buyers with sellers. It aims to solve [specific problems] and serves the purpose of [its intended use].
 The project was created as a project assignment for [ReactJS - октомври 2023](https://softuni.bg/trainings/4238/reactjs-october-2023).
 
-<a name="built-with"/>
+
 ## ⚒️ Built With
+<a name="built-with"/>
+
 ### The following NuGet packages are used in the backend project:
+
 - ASP.NET Core: 8.0
 - AutoMapper: 12.0.1
 - AutoMapper.Extensions.Microsoft.DependencyInjection: 12.0.1
@@ -49,13 +53,16 @@ The project was created as a project assignment for [ReactJS - октомври 
 - react-tag-input-component - 2.0.2
 - typeface-raleway - 1.1.13
 
-<a name="how-it-works"/>
+
 ## 💁 How It Works
+<a name="how-it-works"/>
+
 ### Guests:
 Can view the homepage,\
 browse all available listings,\
 login/register,\
 read doctor profiles.
+
 
 ### Logged-In Users:
 Can do the same things as a Guest,\
@@ -64,8 +71,10 @@ create/update their listings,\
 chat with other users,\
 access their profile page.
 
-<a name="features"/>
+
 ## 🔨 Features
+<a name="features"/>
+
 - CRUD operations for listings
 - Uploading multiple images as files
 - Searching listings
@@ -74,13 +83,17 @@ access their profile page.
 - Responsive design
 - Client side validations
 - JWT authentication
+
   
-<a name="screenshots"/>
 ## 📷 Screenshots
+<a name="screenshots"/>
+
 ![Example screenshot](./img/screenshot.png)
 
-<a name="setup"/>
+
 ## ⚙️ Setup
+<a name="setup"/>
+
 ### Backend
 1. **Clone the Repository**
 2. **Open a terminal in the *api-server* folder and run the following commands:**
