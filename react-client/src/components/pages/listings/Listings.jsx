@@ -115,9 +115,9 @@ const Listings = () =>
                                     ))}
                             </div>
                         </div>
-                        <nav className="flex items-center gap-x-1 py-2 m-2 justify-center">
+                        <nav className='flex items-center gap-x-1 py-2 m-2 justify-center'>
                             <ReactPaginate
-                                breakLabel="..."
+                                breakLabel='...'
                                 nextLabel={
                                     <>
                                         <span>Next </span>

@@ -15,4 +15,5 @@ export const ENDPOINTS = {
   LISTING_BY_ID: 'listings/one', // Used for details - where everyone can view the specific listing.
   LISTING_UPDATE_VIEWS: 'listings/update-views',
   CHATS_BY_USER: 'chats/get-chats-by-user',
+  STATS: 'stats/get-stats',
 };

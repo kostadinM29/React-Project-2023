@@ -188,8 +188,10 @@ const SaveListingForm = () =>
                     <div className='mt-7 bg-white border border-gray-200 rounded'>
                         <div className='p-4 sm:p-7 dark:bg-gray-700'>
                             <div className='text-center'>
-                                <h1 className='block text-2xl font-bold text-gray-800'>
-                                    {isEditing ? 'Edit Listing' : 'Create Listing'}
+                                <h1 className='block text-2xl font-bold text-gray-800 dark:text-white'>
+                                    {isEditing
+                                        ? 'Edit Listing'
+                                        : 'Create Listing'}
                                 </h1>
                             </div>
                             <form onSubmit={handleSubmit}>
