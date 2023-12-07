@@ -3,34 +3,84 @@
 > A React project with a .NET backend.
 
 ## Table of Contents
-* [General Info](#general-information)
-* [Technologies Used](#technologies-used)
+* [General Information](#general-information)
+* [Built With](#built-with)
+* [How It Works](#how-it-works)
 * [Features](#features)
 * [Screenshots](#screenshots)
 * [Setup](#setup)
-* [Room for Improvement](#room-for-improvement)
 
-## General Information
+<a name="general-information"/>
+## ℹ️ General Information
 MarketMingle is a project designed to connect buyers with sellers. It aims to solve [specific problems] and serves the purpose of [its intended use].
 The project was created as a project assignment for [ReactJS - октомври 2023](https://softuni.bg/trainings/4238/reactjs-october-2023).
 
-## Technologies Used
-- ASP.NET Core 8.0
-- Auto Mapper
-- JWT
-- Entity Framework Core
-- MS SQL Server
+<a name="built-with"/>
+## ⚒️ Built With
+### The following NuGet packages are used in the backend project:
+- ASP.NET Core: 8.0
+- AutoMapper: 12.0.1
+- AutoMapper.Extensions.Microsoft.DependencyInjection: 12.0.1
+- Microsoft.AspNetCore.Authentication.JwtBearer: 8.0.0
+- Microsoft.AspNetCore.Identity.EntityFrameworkCore: 8.0.0
+- Microsoft.AspNetCore.OpenApi: 8.0.0
+- Microsoft.AspNetCore.SignalR: 1.1.0
+- Microsoft.EntityFrameworkCore: 8.0.0
+- Microsoft.EntityFrameworkCore.Analyzers: 8.0.0
+- Microsoft.EntityFrameworkCore.Design: 8.0.0
+- Microsoft.EntityFrameworkCore.SqlServer: 8.0.0
+- Microsoft.EntityFrameworkCore.Tools: 8.0.0
+- MimeTypesMap: 1.0.8
+- Swashbuckle.AspNetCore: 6.5.0
 
+### The following packages are used in the frontend project: 
+- @fortawesome/fontawesome-svg-core - 6.4.2
+- @fortawesome/free-brands-svg-icons - 6.4.2
+- @fortawesome/free-regular-svg-icons - 6.4.2
+- @fortawesome/free-solid-svg-icons - 6.4.2
+- @fortawesome/react-fontawesome - 0.2.0
+- @microsoft/signalr - 8.0.0
+- axios - 1.6.1
+- js-cookie - 3.0.5
+- jwt-decode - 4.0.0
+- react - 18.2.0
+- react-dom - 18.2.0
+- react-router-dom - 6.18.0
+- react-tag-input-component - 2.0.2
+- typeface-raleway - 1.1.13
 
-## Features
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+<a name="how-it-works"/>
+## 💁 How It Works
+### Guests:
+Can view the homepage,\
+browse all available listings,\
+login/register,\
+read doctor profiles.
 
-## Screenshots
+### Logged-In Users:
+Can do the same things as a Guest,\
+view a listing's details,\
+create/update their listings,\
+chat with other users,\
+access their profile page.
+
+<a name="features"/>
+## 🔨 Features
+- CRUD operations for listings
+- Uploading multiple images as files
+- Searching listings
+- Chat functionality
+- Dark/Light theme
+- Responsive design
+- Client side validations
+- JWT authentication
+  
+<a name="screenshots"/>
+## 📷 Screenshots
 ![Example screenshot](./img/screenshot.png)
 
-## Setup
+<a name="setup"/>
+## ⚙️ Setup
 ### Backend
 1. **Clone the Repository**
 2. **Open a terminal in the *api-server* folder and run the following commands:**
