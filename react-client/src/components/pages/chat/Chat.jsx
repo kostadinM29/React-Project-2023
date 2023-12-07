@@ -6,7 +6,7 @@ import { ROUTE_ENDPOINTS } from '../../../constants/routeEndpoints';
 import { ENDPOINTS } from '../../../constants/apiEndpoints';
 
 import useAuth from '../../../hooks/useAuth';
-import InputField from '../../partials/InputField';
+import InputField from '../../inputs/InputField';
 
 const Chat = () =>
 {

@@ -57,23 +57,21 @@ const Card = ({ listing }) =>
             </div>
 
             {listing.images &&
-                (
-                    <div className='flex overflow-hidden relative'>
-                        <div className='flex' style={updateSlider()}>
-                            {listing.images.map((imageUrl, index) => (
-                                <div
-                                    key={index}
-                                    className='flex-shrink-0 w-full'
-                                >
-                                    <img
-                                        src={imageUrl}
-                                        className='h-48 w-96'
-                                    />
-                                </div>
-                            ))}
-                        </div>
+                <div className='flex overflow-hidden relative'>
+                    <div className='flex' style={updateSlider()}>
+                        {listing.images.map((imageUrl, index) => (
+                            <div
+                                key={index}
+                                className='flex-shrink-0 w-full'
+                            >
+                                <img
+                                    src={imageUrl}
+                                    className='h-48 w-96'
+                                />
+                            </div>
+                        ))}
                     </div>
-                )
+                </div>
             }
 
             <div className='p-2'>

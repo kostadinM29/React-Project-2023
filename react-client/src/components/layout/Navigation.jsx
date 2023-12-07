@@ -1,9 +1,10 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { Logout } from '../../api/auth/auth';
+
+import * as authService from '../../api/auth/auth';
 import { ROUTE_ENDPOINTS } from '../../constants/routeEndpoints';
+import useAuth from '../../hooks/useAuth';
 
 const Navigation = () =>
 {
@@ -19,7 +20,7 @@ const Navigation = () =>
 
     const logout = async () =>
     {
-        await Logout();
+        await authService.Logout();
 
         updateAuth({});
         navigate(ROUTE_ENDPOINTS.HOME);
@@ -53,7 +54,7 @@ const Navigation = () =>
                             <NavLink
                                 to={ROUTE_ENDPOINTS.LISTINGS_ALL}
                                 className={({ isActive }) => getNavLinkClassName(isActive)}
-                            >Listings</NavLink>
+                            >All Listings</NavLink>
                         </li>
                         <li>
                             <NavLink

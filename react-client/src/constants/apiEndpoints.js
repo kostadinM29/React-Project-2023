@@ -8,6 +8,7 @@ export const ENDPOINTS = {
   LISTING_CREATE: 'listings/create',
   LISTING_EDIT: 'listings/edit',
   LISTING_DELETE: 'listings/delete',
+  LISTINGS_LATEST: 'listings/latest',
   LISTINGS_ALL: 'listings/all',
   LISTINGS_ALL_BY_USER: 'listings/all-by-user',
   LISTING_BY_USER: 'listings/one-by-user', // Used for editing.

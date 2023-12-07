@@ -3,8 +3,6 @@ using api_server.Data.Models;
 using api_server.Dtos;
 using api_server.Services.Interfaces;
 
-using AutoMapper;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace api_server.Services

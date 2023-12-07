@@ -93,6 +93,27 @@ namespace api_server.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("latest")]
+        public async Task<IActionResult> GetListings(int count)
+        {
+            try
+            {
+                IEnumerable<ListingDTO>? listings = await listingService.GetLatestListings(count);
+
+                string jsonString = JsonSerializer.Serialize(listings);
+
+                return Ok(jsonString);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
         [HttpGet]
         [Route("all")]
         public async Task<IActionResult> GetListings()

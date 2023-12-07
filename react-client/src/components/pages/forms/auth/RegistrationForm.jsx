@@ -5,7 +5,7 @@ import * as authService from '../../../../api/auth/auth';
 import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
 import useAuth from '../../../../hooks/useAuth';
 
-import InputField from '../../../partials/InputField';
+import InputField from '../../../inputs/InputField';
 
 const RegistrationForm = () =>
 {

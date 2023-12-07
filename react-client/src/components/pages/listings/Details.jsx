@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faEye, faPen } from '@fortawesome/free-solid-svg-icons';
 
 import * as listingService from '../../../api/listing/listing';
 import { ROUTE_ENDPOINTS } from '../../../constants/routeEndpoints';
 
 import Spinner from '../../Spinner';
+import ImageModal from '../../modals/ImageModal';
 
 const Details = () =>
 {
@@ -14,6 +15,7 @@ const Details = () =>
     const [listing, setListing] = useState({});
     const [isLoading, setLoading] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
     const controller = new AbortController();
     const { signal } = controller;
 
@@ -45,6 +47,16 @@ const Details = () =>
         setCurrentIndex(index);
     };
 
+    const openModal = () =>
+    {
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () =>
+    {
+        setModalIsOpen(false);
+    };
+
     useEffect(() =>
     {
         const fetchListing = async () =>
@@ -69,7 +81,7 @@ const Details = () =>
             {isLoading
                 ? <Spinner />
                 : <div className='dark:bg-gray-900 mx-auto'>
-                    {listing.images.length > 1 && (
+                    {listing.images.length > 0 &&
                         <div className='overflow-hidden relative h-56 rounded-lg sm:h-64 xl:h-80 2xl:h-96 dark:bg-gray-900'>
                             <div className='flex h-full' style={{ width: `${listing.images.length * 100}%` }}>
                                 {listing.images.map((imageUrl, index) => (
@@ -81,40 +93,57 @@ const Details = () =>
                                         <img
                                             src={imageUrl}
                                             alt={`Image ${index + 1}`}
-                                            className='h-full w-full object-cover'
+                                            className='w-full h-full object-cover cursor-pointer'
+                                            onClick={() =>
+                                            {
+                                                setCurrentIndex(index);
+                                                openModal();
+                                            }}
                                         />
                                     </div>
                                 ))}
                             </div>
 
-                            <button
-                                type='button'
-                                className='absolute top-1/2 -translate-y-1/2 left-4 text-white z-10 bg-gray-800/50 p-2 rounded-full focus:outline-none dark:text-gray-300'
-                                onClick={handlePrev}
-                            >
-                                &lt;
-                            </button>
-                            <button
-                                type='button'
-                                className='absolute top-1/2 -translate-y-1/2 right-4 text-white z-10 bg-gray-800/50 p-2 rounded-full focus:outline-none dark:text-gray-300'
-                                onClick={handleNext}
-                            >
-                                &gt;
-                            </button>
+                            <ImageModal
+                                isOpen={modalIsOpen}
+                                onClose={closeModal}
+                                imageUrl={listing.images[currentIndex]}
+                            />
 
-                            <div className='absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2'>
-                                {listing.images.map((_, index) => (
+                            {listing.images.length > 1 && !modalIsOpen &&
+                                <>
                                     <button
-                                        key={index}
                                         type='button'
-                                        className={`h-4 w-4 rounded-full cursor-pointer ${index === currentIndex ? 'bg-pink-500' : 'bg-teal-500'
-                                            }`}
-                                        onClick={() => handleDotClick(index)}
-                                    />
-                                ))}
-                            </div>
+                                        className='absolute top-1/2 -translate-y-1/2 left-4 text-white z-0 bg-gray-800/50 p-2 rounded-full focus:outline-none dark:text-gray-300'
+                                        onClick={handlePrev}
+                                    >
+                                        <FontAwesomeIcon icon={faChevronLeft} />
+                                    </button>
+                                    <button
+                                        type='button'
+                                        className='absolute top-1/2 -translate-y-1/2 right-4 text-white z-0 bg-gray-800/50 p-2 rounded-full focus:outline-none dark:text-gray-300'
+                                        onClick={handleNext}
+                                    >
+                                        <FontAwesomeIcon icon={faChevronRight} />
+                                    </button>
+
+                                    <div className='absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2'>
+                                        {listing.images.map((_, index) => (
+                                            <button
+                                                key={index}
+                                                type='button'
+                                                className={`h-4 w-4 z-10 rounded-full cursor-pointer ${index === currentIndex
+                                                    ? 'bg-pink-500'
+                                                    : 'bg-teal-500'
+                                                    }`}
+                                                onClick={() => handleDotClick(index)}
+                                            />
+                                        ))}
+                                    </div>
+                                </>
+                            }
                         </div>
-                    )}
+                    }
 
                     <div className='mt-6 p-6 md:p-10 lg:p-16 xl:p-20 bg-white shadow-lg rounded-lg text-gray-800 dark:bg-gray-800 dark:text-white'>
                         <h1 className='text-4xl font-bold mb-4'>{listing.title}</h1>

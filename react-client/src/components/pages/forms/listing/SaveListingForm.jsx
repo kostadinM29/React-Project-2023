@@ -6,8 +6,8 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 import { ROUTE_ENDPOINTS } from '../../../../constants/routeEndpoints';
 import * as listingService from '../../../../api/listing/listing';
 
-import InputField from '../../../partials/InputField';
-import TagsInputField from '../../../partials/TagInputField';
+import InputField from '../../../inputs/InputField';
+import TagsInputField from '../../../inputs/TagInputField';
 import Spinner from '../../../Spinner';
 
 const SaveListingForm = () =>

@@ -10,6 +10,8 @@ namespace api_server.Services.Interfaces
         Task<Listing?> GetListingItemById(int listingId);
         Task<ListingDTO?> GetListingById(int listingId);
         Task<ListingDTO?> GetListingById(int listingId, string userId);
+
+        Task<IEnumerable<ListingDTO>> GetLatestListings(int count);
         Task<IEnumerable<ListingDTO>> GetListings();
         Task<IEnumerable<ListingDTO>?> GetListingsByUser(string userId);
         Task<ListingDTO?> Create(ListingRequestModel listingRequest, string userId);

@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom';
 import { ROUTE_ENDPOINTS } from './constants/routeEndpoints';
 
 import Layout from './components/layout/Layout';
-import Test from './components/Test';
 import Home from './components/pages/Home';
 import RegistrationForm from './components/pages/forms/auth/RegistrationForm';
 import LoginForm from './components/pages/forms/auth/LoginForm';
@@ -21,7 +20,6 @@ function App()
       <Layout>
         <Routes>
           {/* Public Routes */}
-          <Route path='test' element={<Test />} />
           <Route path={ROUTE_ENDPOINTS.HOME} element={<Home />} />
           <Route path={ROUTE_ENDPOINTS.LISTINGS_ALL} element={<Listings />} />
           <Route path={ROUTE_ENDPOINTS.REGISTER} element={<RegistrationForm />} />

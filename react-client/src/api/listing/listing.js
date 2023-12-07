@@ -145,6 +145,32 @@ export const GetAll = async (signal) =>
     }
 };
 
+export const GetLatest = async (count, signal) =>
+{
+    try
+    {
+        const response = await axios.get(ENDPOINTS.LISTINGS_LATEST, {
+            params: {
+                count,
+            },
+            signal: signal
+        });
+
+        return response.data;
+    }
+    catch (error)
+    {
+        if (error.name === 'AbortError')
+        {
+            console.log('Fetch aborted');
+        }
+        else
+        {
+            throw new Error(`Axios error: ${error.message}`);
+        }
+    }
+};
+
 export const GetAllByUser = async (signal) =>
 {
     try

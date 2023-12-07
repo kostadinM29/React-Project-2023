@@ -33,6 +33,19 @@ namespace api_server.Services
             return listing.ViewsCount;
         }
 
+        public async Task<IEnumerable<ListingDTO>> GetLatestListings(int count)
+        {
+            List<Listing>? listings = await context.Listings
+                .Include(l => l.User)
+                .Include(l => l.Images)
+                .Include(l => l.Tags)
+                .OrderByDescending(l => l.CreatedDate)
+                .Take(count)
+                .ToListAsync();
+
+            return listings.Select(l => mapper.Map<ListingDTO>(l)).ToList();
+        }
+
         public async Task<IEnumerable<ListingDTO>> GetListings()
         {
             List<Listing>? listings = await context.Listings
