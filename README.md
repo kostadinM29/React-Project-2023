@@ -90,7 +90,12 @@ access their profile page.
 ## 📷 Screenshots
 <a name="screenshots"/>
 
-![Example screenshot](./img/screenshot.png)
+![Example screenshot](./images/image6.png)
+![Example screenshot](./images/image5.png)
+![Example screenshot](./images/image4.png)
+![Example screenshot](./images/image3.png)
+![Example screenshot](./images/image2.png)
+![Example screenshot](./images/image1.png)
 
 
 ## ⚙️ Setup
