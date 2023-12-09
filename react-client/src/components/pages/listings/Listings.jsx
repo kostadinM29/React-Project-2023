@@ -43,11 +43,10 @@ const Listings = () =>
     {
         setSearchTerm(searchValue);
 
-        if (searchValue.trim() === '')
+        if (!searchValue.trim())
         {
             return;
-        }
-        else
+        } else
         {
             const filteredListings = listings.filter((listing) =>
                 ['details', 'tags', 'description', 'title'].some(
@@ -65,9 +64,9 @@ const Listings = () =>
     {
         const updatePageCount = () =>
         {
-            const items = searchTerm.trim() === ''
-                ? listings
-                : filteredListings;
+            const items = searchTerm.trim()
+                ? filteredListings
+                : listings;
             const pageCount = Math.ceil(items.length / itemsPerPage);
             setPageCount(pageCount);
         };
@@ -81,19 +80,23 @@ const Listings = () =>
         setItemOffset(newOffset);
     };
 
-    const displayedListings = searchTerm.trim() === ''
-        ? listings
-        : filteredListings;
+    const displayedListings = searchTerm.trim()
+        ? filteredListings
+        : listings;
 
     return (
         <div className='max-w-screen-xl mx-auto'>
             <div className='flex items-center py-2 mb-4'>
-                <label htmlFor='simple-search' className='sr-only'>Search</label>
+                <label
+                    htmlFor='simple-search'
+                    className='sr-only'>
+                    Search
+                </label>
                 <div className='relative w-full'>
                     <InputField
                         type='text'
                         id='simple-search'
-                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                         placeholder='Search...'
                         value={searchTerm}
                         onChange={(e) => handleSearch(e.target.value)}
@@ -105,7 +108,8 @@ const Listings = () =>
             {isLoading
                 ? <Spinner />
                 : displayedListings.length > 0
-                    ? <>
+                    ?
+                    <>
                         <div className='container mx-auto '>
                             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-y-2 gap-x-3'>
                                 {displayedListings
@@ -122,7 +126,8 @@ const Listings = () =>
                                     <>
                                         <span>Next </span>
                                         <FontAwesomeIcon icon={faChevronRight} />
-                                    </>}
+                                    </>
+                                }
                                 onPageChange={handlePageClick}
                                 pageRangeDisplayed={3}
                                 pageCount={pageCount}
@@ -130,7 +135,8 @@ const Listings = () =>
                                     <>
                                         <FontAwesomeIcon icon={faChevronLeft} />
                                         <span> Previous</span>
-                                    </>}
+                                    </>
+                                }
                                 renderOnZeroPageCount={null}
                                 containerClassName='flex items-center gap-x-1'
                                 pageClassName='min-h-[38px] min-w-[38px] flex justify-center items-center text-gray-800 hover:bg-gray-100 py-2 px-3 text-sm rounded-lg focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10'
@@ -144,7 +150,7 @@ const Listings = () =>
                         No listings found.
                     </h2>
             }
-        </div >
+        </div>
     );
 };
 
